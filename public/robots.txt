@@ -1,4 +1,7 @@
 User-agent: *
 Allow: /
+# Grilles passées (une par date) : pas d'intérêt SEO, ne pas indexer.
+# La liste /archive reste autorisée (pas de slash final ici).
+Disallow: /archive/
 
 Sitemap: https://tamdoku.fr/sitemap.xml

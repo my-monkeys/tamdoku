@@ -358,9 +358,14 @@ export function useGame() {
     const path = pathFor(g.screen, g.game, g.puzzleDate);
     if (!didMount.current) {
       didMount.current = true;
-      return;
+    } else if (path !== window.location.pathname) {
+      window.history.pushState(null, "", path);
     }
-    if (path !== window.location.pathname) window.history.pushState(null, "", path);
+    // Les grilles passées (/archive/<date>) ne doivent pas être indexées.
+    const onArchiveDate = g.screen === "game" && g.game === "archive";
+    document
+      .querySelector('meta[name="robots"]')
+      ?.setAttribute("content", onArchiveDate ? "noindex, follow" : "index, follow, max-image-preview:large");
   }, [g.screen, g.game, g.puzzleDate]);
 
   // Suggestions (mode simple)
