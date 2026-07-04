@@ -17,7 +17,10 @@ export interface Criterion {
   /** Numéro de ligne (pastille colorée) pour les critères « ligne ». */
   n?: number;
   valClass: string;
+  /** Repère typographique (lettre, « St », « 18+ »…) quand il EST le critère. */
   icon: string;
+  /** Clé d'icône SVG (cf. components/icons.tsx) pour les critères conceptuels. */
+  iconKey?: string;
   /** Libellé compact affiché dans la case d'en-tête de la grille. */
   short: string;
   /** Libellé complet affiché en titre du « ? ». */
@@ -35,22 +38,25 @@ const LINE_FLAVOR: Record<LineRef, string> = {
 };
 
 /** Métadonnées des règles fixes (hors lignes, lettres et communes, générées). */
-const META: Record<string, { icon: string; short: string; label: string; expl: string }> = {
+const META: Record<string, { icon: string; iconKey?: string; short: string; label: string; expl: string }> = {
   // Réseau
   correspondance: {
     icon: "⇄",
+    iconKey: "swap",
     short: "Corresp.",
     label: "Correspondance",
     expl: "Au moins deux lignes de tram s’arrêtent à cette station.",
   },
   terminus: {
     icon: "⇥",
+    iconKey: "terminus",
     short: "Terminus",
     label: "Terminus",
     expl: "La station est le départ ou l’arrivée d’une ligne (la ligne 4, circulaire, part et revient à son terminus).",
   },
   "p-tram": {
-    icon: "Ⓟ",
+    icon: "P",
+    iconKey: "parking",
     short: "P+Tram",
     label: "Parking-relais",
     expl: "Un parking-relais P+Tram permet de garer sa voiture à cette station.",
@@ -93,7 +99,8 @@ const META: Record<string, { icon: string; short: string; label: string; expl: s
     expl: "Deux lettres identiques se suivent dans le nom (espaces et tirets ignorés).",
   },
   "nom-chiffre": {
-    icon: "①",
+    icon: "#",
+    iconKey: "hash",
     short: "Un chiffre",
     label: "Contient un chiffre",
     expl: "Le nom contient un chiffre.",
@@ -125,18 +132,21 @@ const META: Record<string, { icon: string; short: string; label: string; expl: s
   // Sémantique
   "tag-personnalite": {
     icon: "☺",
+    iconKey: "user",
     short: "Nom propre",
     label: "Nom propre",
     expl: "La station porte le nom d’une personnalité, pas d’un lieu ni d’un quartier. Les saints ne comptent pas.",
   },
   "tag-espace-vert": {
     icon: "✿",
+    iconKey: "tree",
     short: "Espace vert",
     label: "Espace vert",
     expl: "Le nom évoque un parc, un jardin, un zoo ou un domaine.",
   },
   "tag-enseignement": {
     icon: "✎",
+    iconKey: "cap",
     short: "Études",
     label: "Études & recherche",
     expl: "Le nom évoque l’enseignement supérieur ou la recherche.",
@@ -144,48 +154,56 @@ const META: Record<string, { icon: string; short: string; label: string; expl: s
   // Géographie
   "geo-montpellier": {
     icon: "⌂",
+    iconKey: "building",
     short: "Montpellier",
     label: "Dans Montpellier",
     expl: "La station se trouve sur la commune de Montpellier.",
   },
   "geo-hors-montpellier": {
     icon: "⌖",
+    iconKey: "signpost",
     short: "Hors Mtp",
     label: "Hors Montpellier",
     expl: "La station se trouve hors de la ville de Montpellier, dans une autre commune de la métropole.",
   },
   "geo-nord-comedie": {
     icon: "↑",
+    iconKey: "arrowUp",
     short: "Nord",
     label: "Au nord du centre",
     expl: "La station est située au nord du centre-ville.",
   },
   "geo-sud-comedie": {
     icon: "↓",
+    iconKey: "arrowDown",
     short: "Sud",
     label: "Au sud du centre",
     expl: "La station est située au sud du centre-ville.",
   },
   "geo-est-comedie": {
     icon: "→",
+    iconKey: "arrowRight",
     short: "Est",
     label: "À l’est du centre",
     expl: "La station est située à l’est du centre-ville.",
   },
   "geo-ouest-comedie": {
     icon: "←",
+    iconKey: "arrowLeft",
     short: "Ouest",
     label: "À l’ouest du centre",
     expl: "La station est située à l’ouest du centre-ville.",
   },
   "geo-proche-comedie": {
     icon: "◉",
+    iconKey: "target",
     short: "Près du centre",
     label: "Proche du centre",
     expl: "La station est à moins de 1,5 km à vol d’oiseau du centre-ville.",
   },
   "geo-loin-comedie": {
     icon: "◌",
+    iconKey: "expand",
     short: "Loin du centre",
     label: "Loin du centre",
     expl: "La station est à plus de 5 km à vol d’oiseau du centre-ville.",
@@ -225,6 +243,7 @@ function criterionFor(rule: CompiledRule): Criterion {
       kind: "attr",
       valClass: "",
       icon: "⚑",
+      iconKey: "pin",
       short: commune,
       label: `À ${commune}`,
       expl: `La station se trouve sur la commune de ${commune}.`,

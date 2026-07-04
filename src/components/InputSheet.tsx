@@ -1,13 +1,14 @@
 import { criterion } from "../data.ts";
 import type { useGame } from "../useGame.ts";
 import { LineDots } from "./tokens.tsx";
+import { CritGlyph } from "./icons.tsx";
 import type { Criterion } from "../../engine/criteria.ts";
 
 function CritHeader({ crit }: { crit: Criterion }) {
   if (crit.kind === "line") return <span className={`rd mini ${crit.valClass}`}>{crit.n}</span>;
   return (
     <span className="achip">
-      {crit.icon} {crit.short}
+      <CritGlyph crit={crit} size={15} /> {crit.short}
     </span>
   );
 }

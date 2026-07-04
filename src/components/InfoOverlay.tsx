@@ -1,5 +1,6 @@
 import { criterion } from "../data.ts";
 import type { useGame } from "../useGame.ts";
+import { CritGlyph } from "./icons.tsx";
 
 export function InfoOverlay({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
@@ -19,7 +20,7 @@ export function InfoOverlay({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
               className="rd mini"
               style={{ width: 48, height: 48, fontSize: 22, background: "var(--soft)", color: "var(--ink)" }}
             >
-              {c.icon}
+              <CritGlyph crit={c} size={24} />
             </span>
           )}
         </div>

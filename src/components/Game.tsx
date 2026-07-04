@@ -1,6 +1,7 @@
 import { byId, criterion } from "../data.ts";
 import { MAX_MISTAKES, type useGame } from "../useGame.ts";
 import { LineDots } from "./tokens.tsx";
+import { CritGlyph } from "./icons.tsx";
 
 export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
@@ -52,7 +53,9 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                   </>
                 ) : (
                   <>
-                    <span className="aico">{c.icon}</span>
+                    <span className="aico">
+                      <CritGlyph crit={c} size={18} />
+                    </span>
                     <span className="alab">{c.short}</span>
                     <span className="qm">?</span>
                   </>
@@ -74,7 +77,9 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                     </>
                   ) : (
                     <>
-                      <span className="aico">{rc.icon}</span>
+                      <span className="aico">
+                        <CritGlyph crit={rc} size={18} />
+                      </span>
                       <span className="alab">{rc.short}</span>
                       <span className="qm">?</span>
                     </>

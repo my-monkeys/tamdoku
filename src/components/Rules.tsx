@@ -1,6 +1,7 @@
 import { criteria, pool } from "../data.ts";
 import type { RuleFamily } from "../../engine/types.ts";
 import type { useGame } from "../useGame.ts";
+import { CritGlyph } from "./icons.tsx";
 
 const FAMILY_ORDER: { family: RuleFamily; label: string }[] = [
   { family: "ligne", label: "Les lignes" },
@@ -97,7 +98,7 @@ export function Rules({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                         className="rd mini"
                         style={{ background: "var(--soft)", color: "var(--ink)", fontSize: 15 }}
                       >
-                        {c.icon}
+                        <CritGlyph crit={c} size={17} />
                       </span>
                     )}
                     <div style={{ flex: 1 }}>
