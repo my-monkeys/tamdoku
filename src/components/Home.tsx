@@ -16,7 +16,7 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
     : "Une nouvelle grille, la même pour tout le monde. Trouve les 9 stations.";
 
   return (
-    <div className="screen">
+    <div className="screen home">
       <div className="pad stack">
         <div className="brandrow">
           <div className="tagpill">Montpellier · TaM</div>
