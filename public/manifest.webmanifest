@@ -1,0 +1,18 @@
+{
+  "name": "Tamdoku — le puzzle quotidien du tram de Montpellier",
+  "short_name": "Tamdoku",
+  "description": "Le puzzle quotidien du tramway de Montpellier : remplis la grille 3×3 avec les stations qui cochent le critère de leur ligne et de leur colonne.",
+  "lang": "fr",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#F4F1E9",
+  "theme_color": "#F4F1E9",
+  "categories": ["games", "puzzle", "entertainment"],
+  "icons": [
+    { "src": "/favicon.svg", "type": "image/svg+xml", "sizes": "any" },
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any maskable" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any maskable" }
+  ]
+}

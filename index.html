@@ -4,25 +4,89 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#F4F1E9" />
-    <title>Tamdoku — le tram de Montpellier en grille</title>
+
+    <title>Tamdoku — le puzzle quotidien du tram de Montpellier</title>
+    <meta
+      name="description"
+      content="Le puzzle quotidien du tramway de Montpellier : remplis la grille 3×3 avec les stations qui cochent le critère de leur ligne et de leur colonne. Une nouvelle grille chaque jour, gratuite, sans compte."
+    />
+    <meta
+      name="keywords"
+      content="tamdoku, tram Montpellier, TaM, jeu quotidien, puzzle, sudoku, stations tramway, ubahndoku, jeu gratuit"
+    />
+    <meta name="author" content="My-Monkey" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <link rel="canonical" href="https://tamdoku.fr/" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="icon" href="/favicon.png" sizes="48x48" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <meta property="og:title" content="Tamdoku" />
+    <meta name="apple-mobile-web-app-title" content="Tamdoku" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Tamdoku" />
+    <meta property="og:locale" content="fr_FR" />
+    <meta property="og:title" content="Tamdoku — le puzzle quotidien du tram de Montpellier" />
     <meta
       property="og:description"
-      content="Le puzzle quotidien du tramway de Montpellier."
+      content="Remplis la grille 3×3 avec les stations du tram de Montpellier qui cochent le critère de leur ligne et de leur colonne. Une nouvelle grille chaque jour."
     />
     <meta property="og:url" content="https://tamdoku.fr/" />
     <meta property="og:image" content="https://tamdoku.fr/og.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
-    <meta property="og:type" content="website" />
+    <meta property="og:image:alt" content="Tamdoku — grille de stations du tram de Montpellier" />
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Tamdoku — le puzzle quotidien du tram de Montpellier" />
     <meta
-      name="description"
-      content="Le puzzle quotidien du tramway de Montpellier : remplis la grille 3×3 avec les stations qui cochent le critère de leur ligne et de leur colonne."
+      name="twitter:description"
+      content="Le sudoku des stations du tram de Montpellier. Une nouvelle grille chaque jour."
     />
+    <meta name="twitter:image" content="https://tamdoku.fr/og.png" />
+
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "https://tamdoku.fr/#website",
+            "url": "https://tamdoku.fr/",
+            "name": "Tamdoku",
+            "description": "Le puzzle quotidien du tramway de Montpellier.",
+            "inLanguage": "fr",
+            "publisher": { "@id": "https://my-monkey.fr/#org" }
+          },
+          {
+            "@type": "WebApplication",
+            "@id": "https://tamdoku.fr/#app",
+            "name": "Tamdoku",
+            "url": "https://tamdoku.fr/",
+            "description": "Le puzzle quotidien du tramway de Montpellier : remplis la grille 3×3 avec les stations qui cochent le critère de leur ligne et de leur colonne.",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Web browser",
+            "browserRequirements": "Requires JavaScript",
+            "inLanguage": "fr",
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "EUR" },
+            "image": "https://tamdoku.fr/og.png",
+            "screenshot": "https://tamdoku.fr/og.png",
+            "publisher": { "@id": "https://my-monkey.fr/#org" }
+          },
+          {
+            "@type": "Organization",
+            "@id": "https://my-monkey.fr/#org",
+            "name": "My-Monkey",
+            "url": "https://my-monkey.fr",
+            "sameAs": ["https://www.linkedin.com/company/my-monkey"]
+          }
+        ]
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -31,7 +95,22 @@
     />
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <noscript>
+        <h1>Tamdoku — le puzzle quotidien du tram de Montpellier</h1>
+        <p>
+          Tamdoku est un jeu de réflexion quotidien inspiré d'UbahnDoku, adapté au réseau de
+          tramway de Montpellier (TaM). Chaque jour, une grille 3×3 : chaque ligne et chaque colonne
+          porte un critère (une ligne de tram, un terminus, une correspondance, une lettre du nom…),
+          et il faut remplir chaque case avec une station qui satisfait à la fois le critère de sa
+          ligne et celui de sa colonne, sans jamais réutiliser une station.
+        </p>
+        <p>
+          La grille est la même pour tout le monde et se renouvelle chaque nuit. Le jeu est gratuit
+          et ne nécessite aucun compte. Il faut activer JavaScript pour jouer.
+        </p>
+      </noscript>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
