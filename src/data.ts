@@ -19,7 +19,7 @@ const ruleMap = new Map<string, CompiledRule>(allRules.map((r) => [r.id, r]));
 
 /** Les 9 critères évocateurs du jeu quotidien (règles compilées, ordre d'affichage). */
 export const pool: CompiledRule[] = dailyPool(allRules);
-export const criteria: Map<string, Criterion> = buildCriteria(network);
+export const criteria: Map<string, Criterion> = buildCriteria();
 export const fame: Map<string, number> = fameByStation(network);
 
 export function rule(id: string): CompiledRule {

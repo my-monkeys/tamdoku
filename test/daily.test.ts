@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { loadNetwork, stationById } from "../engine/network.ts";
 import { buildRules } from "../engine/rules.ts";
-import { buildCriteria, dailyPool } from "../engine/criteria.ts";
+import { buildCriteria, dailyPool, terminiPhrase } from "../engine/criteria.ts";
 import { generateDaily, seedForDate } from "../engine/daily.ts";
 import { fameByStation, originalityPoints } from "../engine/fame.ts";
 import { hasPerfectAssignment } from "../engine/matching.ts";
@@ -9,7 +9,7 @@ import { hasPerfectAssignment } from "../engine/matching.ts";
 const net = loadNetwork();
 const rules = buildRules(net);
 const pool = dailyPool(rules);
-const criteria = buildCriteria(net);
+const criteria = buildCriteria();
 const byId = stationById(net);
 
 describe("pool quotidien + critères", () => {
@@ -22,10 +22,19 @@ describe("pool quotidien + critères", () => {
     }
   });
 
-  it("la copie des lignes reflète les terminus réels (L1 → Gare Sud de France, pas Odysseum)", () => {
-    const l1 = criteria.get("ligne-1")!;
-    expect(l1.expl).toContain("Gare Sud de France");
-    expect(l1.expl).not.toContain("Odysseum");
+  it("aucune explication ne divulgue de station en exemple", () => {
+    const stationNames = net.stations.map((s) => s.name);
+    for (const rule of pool) {
+      const expl = criteria.get(rule.id)!.expl;
+      for (const name of stationNames) {
+        expect(expl.includes(name), `${rule.id} cite « ${name} »`).toBe(false);
+      }
+    }
+  });
+
+  it("les terminus réels restent exacts (L1 → Gare Sud de France, pas Odysseum)", () => {
+    expect(terminiPhrase(net, "1")).toContain("Gare Sud de France");
+    expect(terminiPhrase(net, "1")).not.toContain("Odysseum");
   });
 });
 

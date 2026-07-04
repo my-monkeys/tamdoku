@@ -54,25 +54,21 @@ export function terminiPhrase(net: Network, ref: LineRef): string {
   return `${names[0]} ↔ ${names.slice(1).join(" / ")}`;
 }
 
-export function buildCriteria(net: Network): Map<string, Criterion> {
+export function buildCriteria(): Map<string, Criterion> {
   const map = new Map<string, Criterion>();
 
   for (const ref of ["1", "2", "3", "4", "5"] as LineRef[]) {
-    const n = Number(ref);
-    const where = terminiPhrase(net, ref);
-    const expl =
-      ref === "4"
-        ? `La station est desservie par la ligne 4, ${LINE_FLAVOR["4"]}.`
-        : `La station est desservie par la ligne ${ref} (${where}), ${LINE_FLAVOR[ref]}.`;
     map.set(`ligne-${ref}`, {
       ruleId: `ligne-${ref}`,
       kind: "line",
-      n,
+      n: Number(ref),
       valClass: `v${ref}`,
       icon: "",
       short: `Ligne ${ref}`,
       label: `Ligne ${ref}`,
-      expl,
+      // Pas d'exemples de stations (les terminus sont des réponses valides) : on
+      // se contente d'identifier la ligne par son habillage.
+      expl: `La station est desservie par la ligne ${ref}, ${LINE_FLAVOR[ref]}.`,
     });
   }
 
@@ -84,7 +80,7 @@ export function buildCriteria(net: Network): Map<string, Criterion> {
       icon: "⇥",
       short: "Terminus",
       label: "Terminus",
-      expl: "La station est un terminus : le départ ou l’arrivée d’une ligne (Mosson, Gare Sud de France, Jacou, Juvignac, Clapiers…). La ligne 4, circulaire, n’en a pas.",
+      expl: "La station est le départ ou l’arrivée d’une ligne. La ligne 4, circulaire, n’en a pas.",
     },
     {
       ruleId: "correspondance",
@@ -93,7 +89,7 @@ export function buildCriteria(net: Network): Map<string, Criterion> {
       icon: "⇄",
       short: "Corresp.",
       label: "Correspondance",
-      expl: "Au moins deux lignes de tram s’arrêtent à cette station (Gare Saint-Roch, Corum, Comédie, Gambetta…).",
+      expl: "Au moins deux lignes de tram s’arrêtent à cette station.",
     },
     {
       ruleId: "geo-hors-montpellier",
@@ -102,7 +98,7 @@ export function buildCriteria(net: Network): Map<string, Criterion> {
       icon: "⌖",
       short: "Hors Mtp",
       label: "Hors Montpellier",
-      expl: "La station se trouve dans une autre commune de la métropole : Jacou, Castelnau-le-Lez, Juvignac, Saint-Jean-de-Védas, Lattes, Pérols, Clapiers, Montferrier-sur-Lez.",
+      expl: "La station se trouve hors de la ville de Montpellier, dans une autre commune de la métropole.",
     },
     {
       ruleId: "tag-personnalite",
@@ -111,7 +107,7 @@ export function buildCriteria(net: Network): Map<string, Criterion> {
       icon: "☺",
       short: "Nom propre",
       label: "Nom propre",
-      expl: "La station porte le nom d’une personnalité : Léon Blum, Gambetta, Charles de Gaulle, Garcia Lorca, Voltaire, Jules Guesde… Les saints ne comptent pas.",
+      expl: "La station porte le nom d’une personnalité, pas d’un lieu ni d’un quartier. Les saints ne comptent pas.",
     },
   ];
   for (const c of attrs) map.set(c.ruleId, c);
