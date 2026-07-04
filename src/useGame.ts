@@ -9,6 +9,7 @@ import { generateDaily, seedForDate, type DailyPuzzle } from "../engine/daily.ts
 import { findStation, suggestStations } from "../engine/answer.ts";
 import { originalityPoints } from "../engine/fame.ts";
 import type { Station } from "../engine/types.ts";
+import { track } from "./analytics.ts";
 import { fame, pool, satisfies, stations } from "./data.ts";
 import { emojiGrid, todayStr, yesterdayStr } from "./format.ts";
 import {
@@ -98,7 +99,15 @@ export function useGame() {
   }, []);
 
   // ── Navigation ────────────────────────────────────────────────────────────
-  const goScreen = useCallback((screen: Screen) => patch({ screen }), [patch]);
+  const goScreen = useCallback(
+    (screen: Screen) => {
+      if (screen === "rules" || screen === "stats" || screen === "about") {
+        track("view", { screen });
+      }
+      patch({ screen });
+    },
+    [patch],
+  );
   const goHome = useCallback(
     () => patch({ screen: "home", sheetOpen: false, infoCrit: null, dailySave: lsGet(dailyKey(), null) }),
     [patch],
@@ -136,6 +145,7 @@ export function useGame() {
       });
       return;
     }
+    track("play", { mode: lsGet<Mode>("mode", "simple"), game: "daily" });
     patch({
       screen: "game", game: "daily", puzzle: dailyPuzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
@@ -146,6 +156,7 @@ export function useGame() {
   const startPractice = useCallback(() => {
     const seed = (seedForDate(todayStr()) ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
     const puzzle = generateDaily(pool, seed);
+    track("play", { mode: lsGet<Mode>("mode", "simple"), game: "practice" });
     patch({
       screen: "game", game: "practice", puzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
@@ -191,6 +202,7 @@ export function useGame() {
       won, score, solved, mistakes, stars,
       rare: rare?.name ?? "—", emoji: emojiGrid(finalCells),
     };
+    track(won ? "win" : "loss", { game, score, solved, mistakes });
     setG((prev) => {
       const stats: Stats = { ...prev.stats };
       stats.played++;

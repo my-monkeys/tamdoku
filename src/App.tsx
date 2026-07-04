@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { track } from "./analytics.ts";
 import { shareText } from "./format.ts";
 import { useGame } from "./useGame.ts";
 import { Home } from "./components/Home.tsx";
@@ -20,6 +21,7 @@ export default function App() {
 
   const doShare = () => {
     if (!g.result) return;
+    track("share", { game: g.game, won: g.result.won });
     const text = shareText(g.game, g.result);
     const done = () => ctrl.toast("Résultat copié !");
     if (navigator.share) {
