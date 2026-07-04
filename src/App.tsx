@@ -7,6 +7,7 @@ import { Game } from "./components/Game.tsx";
 import { Rules } from "./components/Rules.tsx";
 import { Stats } from "./components/Stats.tsx";
 import { About } from "./components/About.tsx";
+import { Archive } from "./components/Archive.tsx";
 import { InputSheet } from "./components/InputSheet.tsx";
 import { InfoOverlay } from "./components/InfoOverlay.tsx";
 import { ResultOverlay } from "./components/ResultOverlay.tsx";
@@ -22,7 +23,7 @@ export default function App() {
   const doShare = () => {
     if (!g.result) return;
     track("share", { game: g.game, won: g.result.won });
-    const text = shareText(g.game, g.result);
+    const text = shareText(g.game, g.result, g.puzzleDate);
     const done = () => ctrl.toast("Résultat copié !");
     if (navigator.share) {
       navigator.share({ text }).catch(() => copy(text, done));
@@ -38,6 +39,7 @@ export default function App() {
       {g.screen === "rules" && <Rules ctrl={ctrl} />}
       {g.screen === "stats" && <Stats ctrl={ctrl} />}
       {g.screen === "about" && <About ctrl={ctrl} />}
+      {g.screen === "archive" && <Archive ctrl={ctrl} />}
 
       <InputSheet ctrl={ctrl} />
       <InfoOverlay ctrl={ctrl} />

@@ -1,5 +1,6 @@
 import { byId, criterion } from "../data.ts";
 import { MAX_MISTAKES, type useGame } from "../useGame.ts";
+import { prettyDate } from "../format.ts";
 import { LineDots } from "./tokens.tsx";
 import { CritGlyph, hasGlyph, Icon } from "./icons.tsx";
 
@@ -16,7 +17,13 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           <Icon name="back" size={22} />
         </button>
         <div className="gtitle">
-          <span className="gchip">{g.game === "daily" ? "Défi du jour" : "Entraînement"}</span>
+          <span className="gchip">
+            {g.game === "daily"
+              ? "Défi du jour"
+              : g.game === "archive"
+                ? `Grille du ${prettyDate(g.puzzleDate)}`
+                : "Entraînement"}
+          </span>
           <span className="gmode">{g.mode === "simple" ? "Mode simple" : "Mode expert"}</span>
         </div>
         <button className="icbtn" onClick={() => ctrl.goScreen("rules")} aria-label="Aide">

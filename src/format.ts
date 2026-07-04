@@ -19,6 +19,16 @@ export function prettyDate(iso?: string): string {
   return `${parts[2]}/${parts[1]}`;
 }
 
+/** Date longue française (ex. « sam. 5 juil. »), pour l'archive. */
+export function prettyDateLong(iso: string): string {
+  const [y, m, d] = iso.split("-").map(Number);
+  return new Date(y!, m! - 1, d!, 12).toLocaleDateString("fr-FR", {
+    weekday: "short",
+    day: "numeric",
+    month: "short",
+  });
+}
+
 const LINE_EMOJI: Record<number, string> = { 1: "🟦", 2: "🟧", 3: "🟩", 4: "🟨", 5: "🟪" };
 
 /** Trois lignes d'emojis : couleur de la 1re ligne de chaque station placée, ⬛ si vide. */
@@ -38,10 +48,16 @@ export function emojiGrid(cells: (string | null)[]): string[] {
 }
 
 export function shareText(
-  game: "daily" | "practice",
+  game: "daily" | "practice" | "archive",
   result: { score: number; solved: number; mistakes: number; rare: string; emoji: string[] },
+  date?: string,
 ): string {
-  const head = game === "daily" ? `Tamdoku ${prettyDate()}` : "Tamdoku · Entraînement";
+  const head =
+    game === "daily"
+      ? `Tamdoku ${prettyDate()}`
+      : game === "archive"
+        ? `Tamdoku · ${prettyDate(date)}`
+        : "Tamdoku · Entraînement";
   return [
     `🚋 ${head}`,
     `${result.score}/900 · ${result.solved}/9 cases · ${result.mistakes} ❌`,

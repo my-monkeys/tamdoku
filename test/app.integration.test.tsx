@@ -72,7 +72,7 @@ describe("app — partie complète du jour (jsdom)", () => {
 
     // Écran de victoire
     expect(screen.getByText("Terminus !")).toBeTruthy();
-    expect(screen.getByText("/ 900 points d'originalité")).toBeTruthy();
+    expect(screen.getByText(/points d.originalit/i)).toBeTruthy();
 
     // Statistiques persistées
     const stats = JSON.parse(localStorage.getItem("tamdoku:stats")!);
@@ -81,6 +81,50 @@ describe("app — partie complète du jour (jsdom)", () => {
     expect(stats.bestScore).toBeGreaterThan(0);
     const streak = JSON.parse(localStorage.getItem("tamdoku:streak")!);
     expect(streak.current).toBe(1);
+
+    // « Voir la grille » masque le résultat, « Voir le résultat » le rouvre
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Voir la grille" })));
+    await flush();
+    expect(screen.queryByText("Terminus !")).toBeNull();
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Voir le résultat" })));
+    await flush();
+    expect(screen.getByText("Terminus !")).toBeTruthy();
+  });
+
+  it("l'archive : rejouer un jour passé est un bonus (n'incrémente pas la série)", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-07-10T10:00:00"));
+    try {
+      const App = (await import("../src/App.tsx")).default;
+      const { pool, byId } = await import("../src/data.ts");
+      const { generateDaily, seedForDate } = await import("../engine/daily.ts");
+      const { archiveDates } = await import("../src/useGame.ts");
+
+      render(<App />);
+      await act(async () => fireEvent.click(screen.getByRole("button", { name: "Archive" })));
+      expect(screen.getByText("Archive")).toBeTruthy();
+
+      const past = archiveDates()[1]!; // la veille = 2026-07-09
+      const names = solve(generateDaily(pool, seedForDate(past)).valid).map((id) => byId.get(id)!.name);
+
+      const rows = document.querySelectorAll(".arow");
+      await act(async () => fireEvent.click(rows[1] as HTMLElement));
+      for (let ci = 0; ci < 9; ci++) {
+        await act(async () => fireEvent.click(screen.getAllByText("＋")[0]!));
+        const input = screen.getByPlaceholderText(/station/i) as HTMLInputElement;
+        await act(async () => fireEvent.change(input, { target: { value: names[ci] } }));
+        await act(async () => fireEvent.click(screen.getByRole("button", { name: "OK" })));
+        await flush();
+      }
+      expect(screen.getByText("Terminus !")).toBeTruthy();
+      // bonus : la série reste à 0
+      const streak = JSON.parse(localStorage.getItem("tamdoku:streak") ?? "null");
+      expect(streak?.current ?? 0).toBe(0);
+      // mais la grille passée est sauvegardée sous sa date
+      expect(localStorage.getItem("tamdoku:daily:2026-07-09")).toBeTruthy();
+    } finally {
+      vi.useRealTimers();
+    }
   });
 
   it("une réponse hors critère coûte un cœur", async () => {

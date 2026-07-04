@@ -88,6 +88,9 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
         <button className="flink" onClick={() => ctrl.goScreen("rules")}>
           Règles du jeu
         </button>
+        <button className="flink" onClick={() => ctrl.goScreen("archive")}>
+          Archive
+        </button>
         <button className="flink" onClick={() => ctrl.goScreen("stats")}>
           Statistiques
         </button>

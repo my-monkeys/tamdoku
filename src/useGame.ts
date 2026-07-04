@@ -24,14 +24,19 @@ import {
 } from "./storage.ts";
 
 export const MAX_MISTAKES = 3;
-export type Screen = "home" | "game" | "rules" | "stats" | "about";
+/** Jour de lancement = grille nº 1 ; l'archive part de là. */
+export const LAUNCH_DATE = "2026-07-04";
+export type Screen = "home" | "game" | "rules" | "stats" | "about" | "archive";
 export type Mode = "simple" | "expert";
 export type Status = "idle" | "playing" | "won" | "lost";
+export type GameType = "daily" | "practice" | "archive";
 
 export interface Game {
   screen: Screen;
   mode: Mode;
-  game: "daily" | "practice";
+  game: GameType;
+  /** Date (YYYY-MM-DD) de la grille en cours ; "" pour l'entraînement. */
+  puzzleDate: string;
   puzzle: DailyPuzzle | null;
   cells: (string | null)[];
   mistakes: number;
@@ -53,8 +58,37 @@ export interface Game {
   dailySave: DailySave | null;
 }
 
-function dailyKey(): string {
-  return `daily:${todayStr()}`;
+const DAY_MS = 86_400_000;
+const pad2 = (x: number) => String(x).padStart(2, "0");
+const saveKey = (date: string) => `daily:${date}`;
+const dailyKey = () => saveKey(todayStr());
+
+/** Charge la sauvegarde d'une date (browser-safe, utilisé par l'écran Archive). */
+export function loadDaySave(date: string): DailySave | null {
+  return lsGet<DailySave | null>(saveKey(date), null);
+}
+
+function dayNum(date: string): number {
+  const [y, m, d] = date.split("-").map(Number);
+  return Math.floor(Date.UTC(y!, m! - 1, d!) / DAY_MS);
+}
+function dateOfDayNum(n: number): string {
+  const dt = new Date(n * DAY_MS);
+  return `${dt.getUTCFullYear()}-${pad2(dt.getUTCMonth() + 1)}-${pad2(dt.getUTCDate())}`;
+}
+
+/** Numéro de la grille (nº 1 = jour de lancement). */
+export function puzzleNumber(date: string): number {
+  return dayNum(date) - dayNum(LAUNCH_DATE) + 1;
+}
+
+/** Dates du lancement à aujourd'hui, la plus récente d'abord. */
+export function archiveDates(): string[] {
+  const start = dayNum(LAUNCH_DATE);
+  const end = dayNum(todayStr());
+  const out: string[] = [];
+  for (let n = end; n >= start; n--) out.push(dateOfDayNum(n));
+  return out;
 }
 
 function buzz(pattern: number | number[]): void {
@@ -74,6 +108,7 @@ export function useGame() {
     screen: "home",
     mode: lsGet<Mode>("mode", "simple"),
     game: "daily",
+    puzzleDate: todayStr(),
     puzzle: null,
     cells: new Array(9).fill(null),
     mistakes: 0,
@@ -101,7 +136,7 @@ export function useGame() {
   // ── Navigation ────────────────────────────────────────────────────────────
   const goScreen = useCallback(
     (screen: Screen) => {
-      if (screen === "rules" || screen === "stats" || screen === "about") {
+      if (screen === "rules" || screen === "stats" || screen === "about" || screen === "archive") {
         track("view", { screen });
       }
       patch({ screen });
@@ -121,17 +156,19 @@ export function useGame() {
     [patch],
   );
 
-  const saveDaily = useCallback((next: Partial<DailySave> & { forResult?: GameResult | null }) => {
+  /** Sauve la partie en cours sous sa date (défi ET archive) ; l'entraînement n'est pas sauvé. */
+  const savePlay = useCallback((next: Partial<DailySave> & { forResult?: GameResult | null }) => {
     setG((prev) => {
-      if (prev.game !== "daily") return prev;
+      if (prev.game !== "daily" && prev.game !== "archive") return prev;
       const save: DailySave = {
         cells: next.cells ?? prev.cells,
         mistakes: next.mistakes ?? prev.mistakes,
         status: (next.status ?? prev.status) as DailySave["status"],
         result: next.forResult !== undefined ? next.forResult : prev.result,
       };
-      lsSet(dailyKey(), save);
-      return { ...prev, dailySave: save };
+      lsSet(saveKey(prev.puzzleDate), save);
+      // dailySave (carte d'accueil) ne reflète QUE la grille du jour.
+      return prev.puzzleDate === todayStr() ? { ...prev, dailySave: save } : prev;
     });
   }, []);
 
@@ -139,7 +176,7 @@ export function useGame() {
     const saved = lsGet<DailySave | null>(dailyKey(), null);
     if (saved) {
       patch({
-        screen: "game", game: "daily", puzzle: dailyPuzzle,
+        screen: "game", game: "daily", puzzleDate: todayStr(), puzzle: dailyPuzzle,
         cells: saved.cells, mistakes: saved.mistakes, status: saved.status,
         result: saved.result, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
       });
@@ -147,18 +184,41 @@ export function useGame() {
     }
     track("play", { mode: lsGet<Mode>("mode", "simple"), game: "daily" });
     patch({
-      screen: "game", game: "daily", puzzle: dailyPuzzle,
+      screen: "game", game: "daily", puzzleDate: todayStr(), puzzle: dailyPuzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
     });
   }, [dailyPuzzle, patch]);
+
+  /** Rejoue une grille passée (bonus : ne compte pas dans la série quotidienne). */
+  const startArchive = useCallback(
+    (date: string) => {
+      if (date === todayStr()) {
+        startDaily();
+        return;
+      }
+      const puzzle = generateDaily(pool, seedForDate(date));
+      const saved = loadDaySave(date);
+      const common = {
+        screen: "game" as const, game: "archive" as const, puzzleDate: date, puzzle,
+        resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
+      };
+      if (saved) {
+        patch({ ...common, cells: saved.cells, mistakes: saved.mistakes, status: saved.status, result: saved.result });
+        return;
+      }
+      track("play", { mode: lsGet<Mode>("mode", "simple"), game: "archive" });
+      patch({ ...common, cells: new Array(9).fill(null), mistakes: 0, status: "playing", result: null });
+    },
+    [patch, startDaily],
+  );
 
   const startPractice = useCallback(() => {
     const seed = (seedForDate(todayStr()) ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
     const puzzle = generateDaily(pool, seed);
     track("play", { mode: lsGet<Mode>("mode", "simple"), game: "practice" });
     patch({
-      screen: "game", game: "practice", puzzle,
+      screen: "game", game: "practice", puzzleDate: "", puzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
     });
@@ -186,7 +246,7 @@ export function useGame() {
     [patch],
   );
 
-  const finish = useCallback((won: boolean, finalCells: (string | null)[], mistakes: number, game: "daily" | "practice") => {
+  const finish = useCallback((won: boolean, finalCells: (string | null)[], mistakes: number, game: GameType) => {
     let score = 0;
     let rare: Station | null = null;
     for (const id of finalCells) {
@@ -224,8 +284,10 @@ export function useGame() {
       buzz(won ? [25, 45, 25] : 200);
       return { ...prev, status: won ? "won" : "lost", result, resultHidden: false, stats, streak };
     });
-    if (game === "daily") saveDaily({ cells: finalCells, mistakes, status: won ? "won" : "lost", forResult: result });
-  }, [saveDaily]);
+    if (game === "daily" || game === "archive") {
+      savePlay({ cells: finalCells, mistakes, status: won ? "won" : "lost", forResult: result });
+    }
+  }, [savePlay]);
 
   const registerMistake = useCallback((msg: string) => {
     buzz(70);
@@ -236,13 +298,13 @@ export function useGame() {
           setG((p) => ({ ...p, sheetOpen: false, sel: -1 }));
           finish(false, prev.cells, mistakes, prev.game);
         }, 680);
-      } else if (prev.game === "daily") {
-        saveDaily({ mistakes });
+      } else if (prev.game === "daily" || prev.game === "archive") {
+        savePlay({ mistakes });
       }
       return { ...prev, mistakes, sheetMsg: msg, sheetMsgCls: "bad", shakeCell: prev.sel };
     });
     window.setTimeout(() => patch({ shakeCell: -1 }), 380);
-  }, [finish, patch, saveDaily]);
+  }, [finish, patch, savePlay]);
 
   const submit = useCallback((text: string) => {
     setG((prev) => {
@@ -264,10 +326,10 @@ export function useGame() {
       buzz(18);
       const won = cells.every(Boolean);
       if (won) queueMicrotask(() => finish(true, cells, prev.mistakes, prev.game));
-      else if (prev.game === "daily") queueMicrotask(() => saveDaily({ cells }));
+      else if (prev.game === "daily" || prev.game === "archive") queueMicrotask(() => savePlay({ cells }));
       return { ...prev, cells, sheetOpen: false, sel: -1, query: "", sheetMsg: "" };
     });
-  }, [finish, registerMistake, saveDaily]);
+  }, [finish, registerMistake, savePlay]);
 
   const reopenResult = useCallback(() => patch({ resultHidden: false }), [patch]);
   const hideResult = useCallback(() => patch({ resultHidden: true }), [patch]);
@@ -286,7 +348,7 @@ export function useGame() {
 
   return {
     g, inputRef, suggestions, remainingForSel,
-    goScreen, goHome, setMode, startDaily, startPractice,
+    goScreen, goHome, setMode, startDaily, startPractice, startArchive,
     openSheet, closeSheet, openInfo, closeInfo, setQuery, submit,
     toast, reopenResult, hideResult,
   };
