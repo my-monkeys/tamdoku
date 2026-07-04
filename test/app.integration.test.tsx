@@ -132,6 +132,32 @@ describe("app — partie complète du jour (jsdom)", () => {
     }
   });
 
+  it("une grille passée pose meta robots=noindex, l'accueil reste indexable", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-07-10T10:00:00"));
+    try {
+      document.head.innerHTML = '<meta name="robots" content="index, follow" />';
+      window.history.replaceState(null, "", "/archive/2026-07-05");
+      const App = (await import("../src/App.tsx")).default;
+      const { unmount } = render(<App />);
+      await flush();
+      expect(document.querySelector('meta[name="robots"]')?.getAttribute("content")).toContain(
+        "noindex",
+      );
+      // retour à l'accueil → réindexable
+      unmount();
+      window.history.replaceState(null, "", "/");
+      render(<App />);
+      await flush();
+      expect(document.querySelector('meta[name="robots"]')?.getAttribute("content")).not.toContain(
+        "noindex",
+      );
+    } finally {
+      vi.useRealTimers();
+      document.head.innerHTML = "";
+    }
+  });
+
   it("un lien direct /regles ouvre l'écran des règles", async () => {
     window.history.replaceState(null, "", "/regles");
     const App = (await import("../src/App.tsx")).default;
