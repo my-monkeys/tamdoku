@@ -4,7 +4,7 @@
  * conservée que si son nombre de stations reste dans une bande jouable —
  * assez de réponses pour remplir une ligne de grille, pas au point d'être triviale.
  */
-import { metersBetween } from "./network.ts";
+import { metersBetween } from "./geo.ts";
 import {
   containsLetter,
   endsWithVowel,

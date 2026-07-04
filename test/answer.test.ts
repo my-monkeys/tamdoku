@@ -30,10 +30,21 @@ describe("correspondance des réponses", () => {
     expect(findStation("Albert 1er", net.stations)).toBeUndefined();
   });
 
-  it("suggestions par préfixe", () => {
-    const names = suggestStations("saint", net.stations, 20).map((s) => s.id);
+  it("suggestions par préfixe puis sous-chaîne", () => {
+    const names = suggestStations("saint", net.stations, { limit: 20 }).map((s) => s.id);
     expect(names).toContain("saint-eloi");
     expect(names).toContain("saint-lazare");
-    expect(suggestStations("x", net.stations)).toEqual([]);
+    expect(suggestStations("", net.stations)).toEqual([]);
+  });
+
+  it("exclut les stations déjà placées et classe par notoriété", () => {
+    const fame = new Map([
+      ["comedie", 9],
+      ["corum", 4],
+    ]);
+    const out = suggestStations("co", net.stations, { fame, exclude: new Set(["corum"]) });
+    expect(out.map((s) => s.id)).not.toContain("corum");
+    const ids = out.map((s) => s.id);
+    if (ids.includes("comedie")) expect(ids[0]).toBe("comedie");
   });
 });
