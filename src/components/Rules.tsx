@@ -1,7 +1,7 @@
 import { criteria, pool } from "../data.ts";
 import type { RuleFamily } from "../../engine/types.ts";
 import type { useGame } from "../useGame.ts";
-import { CritGlyph } from "./icons.tsx";
+import { CritGlyph, Icon } from "./icons.tsx";
 
 const FAMILY_ORDER: { family: RuleFamily; label: string }[] = [
   { family: "ligne", label: "Les lignes" },
@@ -63,8 +63,8 @@ export function Rules({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   return (
     <div className="screen">
       <div className="subhead">
-        <button className="icbtn" onClick={ctrl.goHome}>
-          ‹
+        <button className="icbtn" onClick={ctrl.goHome} aria-label="Retour">
+          <Icon name="back" size={22} />
         </button>
         <span className="subttl">Comment jouer</span>
       </div>

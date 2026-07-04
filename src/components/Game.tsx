@@ -1,7 +1,7 @@
 import { byId, criterion } from "../data.ts";
 import { MAX_MISTAKES, type useGame } from "../useGame.ts";
 import { LineDots } from "./tokens.tsx";
-import { CritGlyph } from "./icons.tsx";
+import { CritGlyph, Icon } from "./icons.tsx";
 
 export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
@@ -12,15 +12,15 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   return (
     <div className="screen">
       <div className="gbar">
-        <button className="icbtn" onClick={ctrl.goHome}>
-          ‹
+        <button className="icbtn" onClick={ctrl.goHome} aria-label="Retour">
+          <Icon name="back" size={22} />
         </button>
         <div className="gtitle">
           <span className="gchip">{g.game === "daily" ? "Défi du jour" : "Entraînement"}</span>
           <span className="gmode">{g.mode === "simple" ? "Mode simple" : "Mode expert"}</span>
         </div>
-        <button className="icbtn" onClick={() => ctrl.goScreen("rules")}>
-          ?
+        <button className="icbtn" onClick={() => ctrl.goScreen("rules")} aria-label="Aide">
+          <Icon name="help" size={21} />
         </button>
       </div>
 

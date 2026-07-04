@@ -1,12 +1,13 @@
 import type { useGame } from "../useGame.ts";
+import { Icon } from "./icons.tsx";
 
 export function Stats({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
   return (
     <div className="screen">
       <div className="subhead">
-        <button className="icbtn" onClick={ctrl.goHome}>
-          ‹
+        <button className="icbtn" onClick={ctrl.goHome} aria-label="Retour">
+          <Icon name="back" size={22} />
         </button>
         <span className="subttl">Statistiques</span>
       </div>
