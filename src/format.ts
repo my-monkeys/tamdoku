@@ -47,6 +47,6 @@ export function shareText(
     `${result.score}/900 · ${result.solved}/9 cases · ${result.mistakes} ❌`,
     result.emoji.join("\n"),
     `Rare : ${result.rare}`,
-    "tamdoku.my-monkey.fr",
+    "tamdoku.fr",
   ].join("\n");
 }

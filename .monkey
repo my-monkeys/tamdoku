@@ -1,5 +1,5 @@
 {
-  "target": "tamdoku.my-monkey.fr",
+  "target": "tamdoku.fr",
   "source": "./dist/",
   "site": {
     "title": "Tamdoku",

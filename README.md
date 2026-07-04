@@ -36,7 +36,7 @@ Progression, série et stats sont stockées en `localStorage`.
 
 ## Déploiement
 
-Vite SPA → `dist/` → `tamdoku.my-monkey.fr` via le système `.monkey` (cf. CLAUDE.md monorepo).
+Vite SPA → `dist/` → **`tamdoku.fr`** (domaine dédié) via le système `.monkey` (cf. CLAUDE.md monorepo).
 
 ## Voir aussi
 

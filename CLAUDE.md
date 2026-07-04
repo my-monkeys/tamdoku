@@ -47,7 +47,7 @@ Puis **lire le rapport de croisement OSM↔GTFS** affiché par le build : chaque
 
 ## Déploiement
 
-Vite SPA : `npm run build` → `dist/` → `.monkey` (`source: ./dist/`, target `tamdoku.my-monkey.fr`). Confirmer le deploy via l'API admin monkey (`status: success`), cf. CLAUDE.md monorepo. OG image générée dans `public/og.png`. **À faire avant/juste après le 1er deploy** : créer le site dans Umami et injecter le script `u.js` dans `index.html` (cf. mémoire `umami-website-ids`).
+Vite SPA : `npm run build` → `dist/` → `.monkey` (`source: ./dist/`, target **`tamdoku.fr`** — domaine dédié, pas un sous-domaine `my-monkey.fr` ; O2switch doit avoir le vhost `tamdoku.fr`). Confirmer le deploy via l'API admin monkey (`status: success`), cf. CLAUDE.md monorepo. OG image dans `public/og.png` (méta OG absolues sur `https://tamdoku.fr`). **À faire avant/juste après le 1er deploy** : créer le site dans Umami et injecter le script `u.js` dans `index.html` (cf. mémoire `umami-website-ids`).
 
 ## À venir
 
