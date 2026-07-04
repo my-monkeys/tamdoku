@@ -55,15 +55,17 @@ const META: Record<string, { icon: string; iconKey?: string; short: string; labe
     expl: "La station est le départ ou l’arrivée d’une ligne (la ligne 4, circulaire, part et revient à son terminus).",
   },
   // Nom — structure
+  // Pas de lettre en icône : un « A » laisserait croire qu'il faut une station
+  // commençant par A. On affiche le libellé en toutes lettres.
   "nom-commence-voyelle": {
-    icon: "A",
-    short: "Voyelle début",
+    icon: "",
+    short: "Voyelle au début",
     label: "Commence par une voyelle",
     expl: "La première lettre du nom est une voyelle (a, e, i, o, u, y).",
   },
   "nom-finit-voyelle": {
-    icon: "a",
-    short: "Voyelle fin",
+    icon: "",
+    short: "Voyelle à la fin",
     label: "Se termine par une voyelle",
     expl: "La dernière lettre du nom est une voyelle (a, e, i, o, u, y).",
   },

@@ -140,3 +140,8 @@ export function Icon({ name, size = 18 }: { name: string; size?: number }) {
 export function CritGlyph({ crit, size = 18 }: { crit: Criterion; size?: number }) {
   return crit.iconKey ? <Icon name={crit.iconKey} size={size} /> : <>{crit.icon}</>;
 }
+
+/** Un critère a-t-il un symbole à afficher (icône SVG ou marque typographique) ? */
+export function hasGlyph(crit: Criterion): boolean {
+  return Boolean(crit.iconKey || crit.icon);
+}
