@@ -128,11 +128,15 @@ for (const acc of stations.values()) {
 console.log(diffCount === 0 ? "✓ Aucune divergence" : `${diffCount} divergence(s) à examiner`);
 
 // ── Terminus, P+Tram, communes, tags ─────────────────────────────────────────
+// Ligne classique : les deux extrémités de chaque branche. Ligne circulaire (L4) :
+// l'origine de la boucle, qui est bien un terminus (Garcia Lorca, départ/arrivée
+// des deux sens 4A/4B) même si la ligne fait le tour de l'Écusson.
 const terminusOf = new Map<string, Set<LineRef>>();
 for (const [ref, branches] of lineBranches) {
-  if (ref === "4") continue; // ligne circulaire : pas de terminus
+  const circular = ref === "4";
   for (const branch of branches) {
-    for (const name of [branch[0], branch[branch.length - 1]]) {
+    const ends = circular ? [branch[0]] : [branch[0], branch[branch.length - 1]];
+    for (const name of ends) {
       if (!name) continue;
       (terminusOf.get(name) ?? terminusOf.set(name, new Set()).get(name)!).add(ref);
     }
@@ -204,9 +208,11 @@ const lineList: Line[] = [...lineBranches.keys()].sort().map((ref) => {
     .get(ref)!
     .map((branch) => branch.map((name) => idByName.get(name)!));
   const circular = ref === "4";
-  const termini = circular
-    ? []
-    : [...new Set(branches.flatMap((b) => [b[0]!, b[b.length - 1]!]))].sort();
+  // Circulaire : origine de la boucle (Garcia Lorca). Sinon : les deux bouts.
+  const ends = circular
+    ? branches.map((b) => b[0]!)
+    : branches.flatMap((b) => [b[0]!, b[b.length - 1]!]);
+  const termini = [...new Set(ends)].sort();
   return {
     ref,
     name: gtfs.routes[ref]?.longName ?? `Ligne ${ref}`,

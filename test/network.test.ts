@@ -42,7 +42,7 @@ describe("network.json — invariants du réseau TaM", () => {
     expect(byId.has("gambetta-chaptal")).toBe(false);
   });
 
-  it("terminus corrects, ligne 4 circulaire sans terminus", () => {
+  it("terminus corrects ; L4 circulaire mais terminus Garcia Lorca", () => {
     const l1 = net.lines.find((l) => l.ref === "1")!;
     expect(l1.termini.sort()).toEqual(["gare-sud-de-france", "mosson"]);
     const l3 = net.lines.find((l) => l.ref === "3")!;
@@ -50,7 +50,8 @@ describe("network.json — invariants du réseau TaM", () => {
     expect(l3.termini).toContain("perols-etang-de-l-or");
     const l4 = net.lines.find((l) => l.ref === "4")!;
     expect(l4.circular).toBe(true);
-    expect(l4.termini).toEqual([]);
+    expect(l4.termini).toEqual(["garcia-lorca"]);
+    expect(byId.get("garcia-lorca")!.terminusOf).toEqual(["4"]);
     expect(byId.get("jacou")!.terminusOf).toEqual(["2"]);
   });
 

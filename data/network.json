@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-04T10:37:33.535Z",
+ "generatedAt": "2026-07-04T13:21:28.178Z",
  "source": "OSM (Overpass, service nominal) + GTFS TaM (identité/alias) + geo.api.gouv.fr (communes)",
  "stations": [
   {
@@ -448,7 +448,9 @@
    "lat": 43.591181,
    "lon": 3.891064,
    "commune": "Montpellier",
-   "terminusOf": [],
+   "terminusOf": [
+    "4"
+   ],
    "parkRide": true,
    "tags": [
     "personnalite"
@@ -1857,7 +1859,9 @@
    "name": "MONTPELLIER - Garcia Lorca",
    "color": "#4B2A0E",
    "circular": true,
-   "termini": [],
+   "termini": [
+    "garcia-lorca"
+   ],
    "branches": [
     [
      "garcia-lorca",
