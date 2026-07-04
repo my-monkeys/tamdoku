@@ -19,12 +19,6 @@ const PATHS: Record<string, ReactNode> = {
       <path d="m14 8-4 4 4 4" />
     </>
   ),
-  parking: (
-    <>
-      <rect x="3" y="3" width="18" height="18" rx="4" />
-      <path d="M9 17V8h4a2.5 2.5 0 0 1 0 5H9" />
-    </>
-  ),
   user: (
     <>
       <circle cx="12" cy="8" r="4" />
@@ -105,6 +99,14 @@ const PATHS: Record<string, ReactNode> = {
   hash: (
     <>
       <path d="M5 9h14M4 15h14M10 4 8 20M16 4l-2 16" />
+    </>
+  ),
+  back: <path d="m15 5-7 7 7 7" />,
+  help: (
+    <>
+      <circle cx="12" cy="12" r="9" />
+      <path d="M9.2 9.3a2.8 2.8 0 0 1 5.4 1c0 1.9-2.6 2.2-2.6 4" />
+      <path d="M12 17.5h.01" />
     </>
   ),
 };

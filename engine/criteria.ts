@@ -54,13 +54,6 @@ const META: Record<string, { icon: string; iconKey?: string; short: string; labe
     label: "Terminus",
     expl: "La station est le départ ou l’arrivée d’une ligne (la ligne 4, circulaire, part et revient à son terminus).",
   },
-  "p-tram": {
-    icon: "P",
-    iconKey: "parking",
-    short: "P+Tram",
-    label: "Parking-relais",
-    expl: "Un parking-relais P+Tram permet de garer sa voiture à cette station.",
-  },
   // Nom — structure
   "nom-commence-voyelle": {
     icon: "A",

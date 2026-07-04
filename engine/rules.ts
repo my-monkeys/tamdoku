@@ -69,16 +69,8 @@ export function buildRules(net: Network): CompiledRule[] {
       subfamily: "terminus",
       label: "Terminus d'une ligne",
       description:
-        "Cette station est le terminus d'au moins une ligne (la ligne 4 est circulaire et n'a pas de terminus).",
+        "Cette station est le terminus d'au moins une ligne (la ligne 4, circulaire, part et revient à son terminus, Garcia Lorca).",
       test: (s) => s.terminusOf.length > 0,
-    },
-    {
-      id: "p-tram",
-      family: "reseau",
-      subfamily: "p-tram",
-      label: "Dessert un P+Tram",
-      description: "Un parking relais P+Tram se trouve à cette station.",
-      test: (s) => s.parkRide,
     },
   );
 
