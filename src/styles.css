@@ -9,7 +9,7 @@ button{font-family:inherit}
 .pad{padding:20px}
 .brandrow{display:flex;flex-direction:column;gap:9px;align-items:center;text-align:center;padding-top:12px}
 .tagpill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);background:var(--soft);padding:5px 11px;border-radius:999px}
-.brand{font-family:'Archivo';font-weight:900;letter-spacing:-.03em;font-size:44px;line-height:.9;text-transform:uppercase}
+.brand{font-family:'Archivo';font-weight:900;letter-spacing:-.03em;font-size:44px;line-height:.9;text-transform:uppercase;background:linear-gradient(95deg,#0064B0 4%,#009E3D 30%,#F07D00 52%,#F4B223 70%,#C51A7F 96%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 1px rgba(23,24,28,.12))}
 .dots{display:flex;gap:7px}
 .dot{width:14px;height:14px;border-radius:50%}
 .brandsub{font-size:13.5px;font-weight:600;color:var(--muted);max-width:250px;line-height:1.35}
@@ -30,8 +30,10 @@ button{font-family:inherit}
 .segb{flex:1;border:none;background:transparent;color:rgba(255,255,255,.75);font-weight:800;font-size:13px;padding:9px;border-radius:9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
 .segb .sst{font-size:9.5px;font-weight:700;opacity:.7;text-transform:none;letter-spacing:0}
 .segb.on{background:var(--paper);color:var(--ink)}
-.bigbtn{width:100%;margin-top:14px;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--paper);color:var(--ink)}
-.bigbtn.done{background:transparent;color:var(--paper);border:1.5px solid rgba(255,255,255,.28)}
+.bigbtn{width:100%;margin-top:14px;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;color:#fff;background:linear-gradient(90deg,#0064B0,#009E3D 28%,#F07D00 52%,#F4B223 74%,#C51A7F);background-size:160% 100%;text-shadow:0 1px 3px rgba(0,0,0,.32);box-shadow:0 8px 22px rgba(0,0,0,.24);transition:transform .12s,background-position .5s}
+.bigbtn:hover{background-position:100% 0}
+.bigbtn:active{transform:scale(.985)}
+.bigbtn.done{background:transparent;color:var(--paper);border:1.5px solid rgba(255,255,255,.28);text-shadow:none;box-shadow:none}
 .teaser{display:flex;gap:10px}
 .tcell{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 8px;text-align:center}
 .tnum{font-family:'Archivo';font-weight:800;font-size:22px;line-height:1}
