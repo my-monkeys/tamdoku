@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet"><style>
+*{box-sizing:border-box}html,body{margin:0;padding:0}body{background:#d9d6cc;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#17181c;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+button{font-family:inherit}
+.app{--paper:#F4F1E9;--card:#FFFFFF;--ink:#17181C;--muted:#7E7C72;--line:#E4DFD2;--soft:#EDE9DD;max-width:468px;margin:0 auto;min-height:100dvh;background:var(--paper);color:var(--ink);position:relative;overflow-x:hidden;display:flex;flex-direction:column}
+.app.dark{--paper:#111319;--card:#1B1E27;--ink:#ECEAE2;--muted:#989588;--line:#2B303D;--soft:#232733}
+.v1{background:#0064B0;color:#fff}.v2{background:#F07D00;color:#fff}.v3{background:#009E3D;color:#fff}.v4{background:#F4B223;color:#17181C}.v5{background:#C51A7F;color:#fff}
+.screen{flex:1;display:flex;flex-direction:column}
+.pad{padding:20px}
+.brandrow{display:flex;flex-direction:column;gap:9px;align-items:center;text-align:center;padding-top:12px}
+.tagpill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);background:var(--soft);padding:5px 11px;border-radius:999px}
+.brand{font-family:'Archivo';font-weight:900;letter-spacing:-.03em;font-size:44px;line-height:.9;text-transform:uppercase}
+.dots{display:flex;gap:7px}
+.dot{width:14px;height:14px;border-radius:50%}
+.brandsub{font-size:13.5px;font-weight:600;color:var(--muted);max-width:250px;line-height:1.35}
+.stack{display:flex;flex-direction:column;gap:14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:18px}
+.daily{background:var(--ink);color:var(--paper);border:none;position:relative;overflow:hidden}
+.daily .rail{position:absolute;top:0;right:0;bottom:0;width:7px;display:flex;flex-direction:column}
+.daily .rail i{flex:1}
+.dhead{display:flex;align-items:center;justify-content:space-between}
+.klabel{font-size:11px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;opacity:.6}
+.ddate{font-size:12px;font-weight:700;opacity:.6}
+.dtitle{font-family:'Archivo';font-weight:800;font-size:23px;margin:9px 0 3px}
+.dsub{font-size:13px;font-weight:600;opacity:.72;line-height:1.35}
+.chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}
+.chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:5px 9px;border-radius:9px;background:rgba(255,255,255,.11);text-transform:uppercase;letter-spacing:.02em}
+.chip .rd{width:19px;height:19px;font-size:11px}
+.seg{display:flex;background:rgba(255,255,255,.1);border-radius:12px;padding:4px;margin-top:15px;gap:4px}
+.segb{flex:1;border:none;background:transparent;color:rgba(255,255,255,.75);font-weight:800;font-size:13px;padding:9px;border-radius:9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+.segb .sst{font-size:9.5px;font-weight:700;opacity:.7;text-transform:none;letter-spacing:0}
+.segb.on{background:var(--paper);color:var(--ink)}
+.bigbtn{width:100%;margin-top:14px;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--paper);color:var(--ink)}
+.bigbtn.done{background:transparent;color:var(--paper);border:1.5px solid rgba(255,255,255,.28)}
+.teaser{display:flex;gap:10px}
+.tcell{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 8px;text-align:center}
+.tnum{font-family:'Archivo';font-weight:800;font-size:22px;line-height:1}
+.tlab{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+.rowbtns{display:flex;gap:10px}
+.sbtn{flex:1;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px;font-weight:800;font-size:14px;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:7px}
+.sbtn:active{transform:scale(.98)}
+.footlinks{display:flex;justify-content:center;gap:4px;padding:4px 0 20px;flex-wrap:wrap}
+.flink{background:transparent;border:none;color:var(--muted);font-weight:700;font-size:13px;cursor:pointer;padding:8px 12px;border-radius:10px}
+.gbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 4px;gap:10px}
+.icbtn{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:19px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
+.gtitle{display:flex;flex-direction:column;align-items:center;gap:1px}
+.gchip{font-family:'Archivo';font-weight:800;font-size:15px}
+.gmode{font-size:10px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--muted)}
+.statusbar{display:flex;align-items:center;justify-content:space-between;padding:8px 20px 10px}
+.hearts{display:flex;gap:4px;font-size:20px;line-height:1}
+.heart{color:#E23B3B}.heart.off{color:var(--line)}
+.solved{font-size:13px;font-weight:800;color:var(--muted)}
+.hint{font-size:12px;font-weight:700;color:var(--muted)}
+.gridwrap{display:flex;justify-content:center;padding:2px 0 8px}
+.grid3{display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:6px;width:min(94vw,436px)}
+.gc{border-radius:14px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;padding:7px 5px;min-height:78px;position:relative;color:var(--ink);cursor:pointer;text-align:center;font-family:inherit}
+.gc:active{transform:scale(.98)}
+.gc.corner{background:transparent;border:none;cursor:default}
+.gc.head{background:var(--soft)}
+.gc.ans.empty{border-style:dashed;border-width:1.5px}
+.gc.ans.filled{cursor:default}
+.gc.ans.sel{outline:2.5px solid var(--ink);outline-offset:-1px;border-color:transparent}
+.gc.shake{animation:shake .35s}
+@keyframes shake{10%,90%{transform:translateX(-2px)}30%,70%{transform:translateX(3px)}50%{transform:translateX(-3px)}}
+.rd{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Archivo';font-weight:800;line-height:1;box-shadow:inset 0 -2px 0 rgba(0,0,0,.14),0 1px 2px rgba(0,0,0,.14)}
+.rd.mini{width:37px;height:37px;font-size:17px}
+.alab{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.01em;line-height:1.12;color:var(--ink)}
+.aico{font-size:17px;line-height:1}
+.qm{position:absolute;top:5px;right:7px;font-size:10px;font-weight:800;color:var(--muted);opacity:.7}
+.sname{font-size:11.5px;font-weight:700;line-height:1.13;text-wrap:balance}
+.ldots{display:flex;gap:3px;margin-top:1px}
+.ldot{width:7px;height:7px;border-radius:50%;box-shadow:none}
+.locki{position:absolute;top:5px;right:7px;font-size:9px;opacity:.4}
+.plus{font-size:24px;color:var(--muted);font-weight:300;line-height:1}
+.legend{text-align:center;font-size:11.5px;font-weight:600;color:var(--muted);padding:2px 24px 18px;line-height:1.4}
+.sheetback{position:fixed;inset:0;background:rgba(10,10,14,.45);z-index:50}
+.sheet{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(468px,100%);background:var(--card);border-radius:22px 22px 0 0;z-index:51;padding:14px 16px calc(18px + env(safe-area-inset-bottom));box-shadow:0 -18px 50px rgba(0,0,0,.32);animation:slideup .22s ease}
+@keyframes slideup{from{transform:translate(-50%,102%)}to{transform:translate(-50%,0)}}
+.grip{width:40px;height:4px;border-radius:2px;background:var(--line);margin:0 auto 13px}
+.scrit{display:flex;align-items:center;justify-content:center;gap:9px;margin-bottom:11px;flex-wrap:wrap}
+.scrit .x{font-weight:800;color:var(--muted);font-size:15px}
+.achip{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border-radius:11px;background:var(--soft);font-weight:800;font-size:12px;text-transform:uppercase;letter-spacing:.02em}
+.poss{text-align:center;font-size:12.5px;font-weight:700;color:var(--muted);margin-bottom:11px}
+.poss b{color:var(--ink)}
+.inprow{display:flex;gap:8px}
+.inp{flex:1;min-width:0;border:2px solid var(--line);border-radius:13px;padding:13px 14px;font-size:16px;font-family:inherit;font-weight:600;background:var(--paper);color:var(--ink);outline:none}
+.inp:focus{border-color:var(--ink)}
+.vbtn{border:none;border-radius:13px;padding:0 18px;font-weight:800;background:var(--ink);color:var(--paper);cursor:pointer;font-size:15px;flex:none}
+.sugs{margin-top:10px;display:flex;flex-direction:column;gap:6px;max-height:216px;overflow:auto}
+.sugitem{display:flex;align-items:center;justify-content:space-between;gap:10px;border:1px solid var(--line);background:var(--paper);border-radius:12px;padding:11px 13px;cursor:pointer;color:var(--ink);width:100%}
+.sugitem:active{transform:scale(.99)}
+.sname2{font-weight:700;font-size:14.5px;text-align:left}
+.smsg{margin-top:11px;text-align:center;font-size:13px;font-weight:700;padding:10px;border-radius:11px}
+.smsg.bad{background:#F8DED9;color:#B4271A}
+.smsg.warn{background:var(--soft);color:var(--muted)}
+.smsg.good{background:#DBF1E3;color:#1C7A46}
+.app.dark .smsg.bad{background:#43231f;color:#f0a89e}
+.app.dark .smsg.good{background:#1e3a2b;color:#8bdca9}
+.passer{margin-top:12px;width:100%;background:transparent;border:none;color:var(--muted);font-weight:700;font-size:13.5px;padding:8px;cursor:pointer}
+.ov{position:absolute;inset:0;background:rgba(12,12,16,.6);display:flex;align-items:center;justify-content:center;padding:24px;z-index:55;backdrop-filter:blur(3px)}
+.ovcard{background:var(--card);color:var(--ink);border-radius:28px;padding:26px 22px;width:100%;max-width:366px;text-align:center;position:relative;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.ovkick{font-size:12px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--muted)}
+.ovtitle{font-family:'Archivo';font-weight:900;font-size:32px;margin:5px 0 2px;line-height:1}
+.scorebig{font-family:'Archivo';font-weight:900;font-size:54px;line-height:1;margin:14px 0 0}
+.scoreout{font-size:13px;font-weight:700;color:var(--muted);margin-top:2px}
+.stars{display:flex;justify-content:center;gap:9px;font-size:30px;color:#F4B223;margin:10px 0 2px}
+.star.off{color:var(--line)}
+.emoji{font-size:25px;letter-spacing:5px;line-height:1.42;margin:14px 0 4px}
+.ovstats{display:flex;justify-content:center;gap:22px;margin:12px 0 16px}
+.ovs{display:flex;flex-direction:column;gap:2px}
+.ovsn{font-family:'Archivo';font-weight:800;font-size:20px}
+.ovsl{font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.ovbtns{display:flex;flex-direction:column;gap:10px}
+.obtn{border:none;border-radius:14px;padding:14px;font-weight:800;font-size:15px;cursor:pointer;background:var(--ink);color:var(--paper);display:flex;align-items:center;justify-content:center;gap:8px}
+.obtn.sec{background:transparent;color:var(--ink);border:1.5px solid var(--line)}
+.infocard{background:var(--card);color:var(--ink);border-radius:24px;padding:24px 22px;width:100%;max-width:340px;text-align:center;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.infochip{display:flex;justify-content:center;margin-bottom:12px}
+.infotitle{font-family:'Archivo';font-weight:800;font-size:21px;margin-bottom:8px}
+.infotext{font-size:14px;line-height:1.45;font-weight:500;color:var(--ink)}
+.reopen{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--paper);border:none;border-radius:999px;padding:12px 20px;font-weight:800;font-size:14px;z-index:48;box-shadow:0 12px 30px rgba(0,0,0,.3);cursor:pointer}
+.tramfx{position:absolute;left:0;right:0;top:12px;height:50px;pointer-events:none;overflow:hidden}
+.tram{position:absolute;top:6px;left:-150px;width:118px;height:38px;border-radius:10px 18px 12px 12px;background:#0064B0;box-shadow:0 6px 14px rgba(0,0,0,.25);animation:glide 2.4s cubic-bezier(.45,0,.55,1) .1s both}
+.tram .face{position:absolute;right:0;top:0;bottom:0;width:19px;background:#0a4f86;border-radius:0 16px 10px 0}
+.tram .strip{position:absolute;left:8px;right:23px;top:9px;height:12px;background:rgba(255,255,255,.9);border-radius:3px;display:flex;gap:4px;padding:2px}
+.tram .strip b{flex:1;background:#0064B0;border-radius:1px}
+.tram .wheel{position:absolute;bottom:-5px;width:9px;height:9px;border-radius:50%;background:#17181c}
+.tram .w1{left:20px}.tram .w2{right:32px}
+@keyframes glide{0%{left:-150px}100%{left:120%}}
+.conf{position:absolute;top:-16px;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{0%{transform:translateY(-16px) rotate(0);opacity:1}100%{transform:translateY(440px) rotate(400deg);opacity:0}}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:11px 18px;border-radius:999px;font-weight:700;font-size:13.5px;z-index:60;box-shadow:0 12px 30px rgba(0,0,0,.3);max-width:88vw;text-align:center}
+.subhead{display:flex;align-items:center;gap:12px;padding:16px 16px 6px}
+.subttl{font-family:'Archivo';font-weight:900;font-size:26px}
+.sub{padding:14px 20px 30px;display:flex;flex-direction:column;gap:15px}
+.step{display:flex;gap:13px;align-items:flex-start}
+.stepn{width:30px;height:30px;border-radius:50%;background:var(--ink);color:var(--paper);font-family:'Archivo';font-weight:800;display:flex;align-items:center;justify-content:center;flex:none;font-size:15px}
+.steptx{font-size:14.5px;line-height:1.42;font-weight:500}
+.steptx b{font-weight:800}
+.critline{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.critline:last-child{border-bottom:none}
+.critn{font-weight:800;font-size:14px}
+.critd{font-size:12.5px;line-height:1.35;color:var(--muted);font-weight:500}
+.prose{font-size:14.5px;line-height:1.5;font-weight:500}
+.prose .m{color:var(--muted)}
+.bigstat{display:flex;gap:12px}
+.bscard{flex:1;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:16px;text-align:center}
+.bsn{font-family:'Archivo';font-weight:900;font-size:28px;line-height:1}
+.bsl{font-size:11px;font-weight:700;color:var(--muted);margin-top:5px;text-transform:uppercase;letter-spacing:.04em}
+.elrow{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--line)}
+.elrow:last-child{border-bottom:none}
+.elname{font-weight:800;font-size:14.5px}
+.elel{font-size:12px;font-weight:700;color:var(--muted)}
+</style></helmet><div class="{{ appClass }}"><sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}"><div class="screen" data-screen-label="Accueil"><div class="pad stack"><div class="brandrow"><div class="tagpill">Montpellier · TaM</div><div class="brand">Tamdoku</div><div class="dots"><span class="dot v1"></span><span class="dot v2"></span><span class="dot v3"></span><span class="dot v4"></span><span class="dot v5"></span></div><div class="brandsub">La grille de stations du tram de Montpellier</div></div><div class="card daily"><div class="rail"><i class="v1"></i><i class="v2"></i><i class="v3"></i><i class="v4"></i><i class="v5"></i></div><div class="dhead"><span class="klabel">Défi du jour</span><span class="ddate">{{ prettyToday }}</span></div><div class="dtitle">{{ dailyTitle }}</div><div class="dsub">{{ dailySub }}</div><div class="chiprow"><sc-for list="{{ dailyChips }}" as="c" hint-placeholder-count="6"><span class="chip"><sc-if value="{{ c.isLine }}" hint-placeholder-val="{{ false }}"><span class="rd {{ c.valClass }}">{{ c.n }}</span></sc-if>{{ c.short }}</span></sc-for></div><div class="seg"><button class="segb {{ simpleCls }}" onClick="{{ onSimple }}">Simple<span class="sst">suggestions</span></button><button class="segb {{ expertCls }}" onClick="{{ onExpert }}">Expert<span class="sst">de mémoire</span></button></div><button class="bigbtn {{ dailyBtnCls }}" onClick="{{ onDaily }}">{{ dailyBtnText }}</button></div><div class="teaser"><div class="tcell"><div class="tnum">{{ statPlayed }}</div><div class="tlab">Parties</div></div><div class="tcell"><div class="tnum">{{ statBest }}</div><div class="tlab">Meilleur score</div></div><div class="tcell"><div class="tnum">{{ streakCur }}</div><div class="tlab">Série</div></div></div></div><div class="footlinks"><button class="flink" onClick="{{ onRules }}">Règles du jeu</button><button class="flink" onClick="{{ onStats }}">Statistiques</button><button class="flink" onClick="{{ onAbout }}">À propos</button></div></div></sc-if><sc-if value="{{ isGame }}" hint-placeholder-val="{{ false }}"><div class="screen" data-screen-label="Jeu"><div class="gbar"><button class="icbtn" onClick="{{ onBack }}">‹</button><div class="gtitle"><span class="gchip">{{ gLabel }}</span><span class="gmode">{{ gModeLabel }}</span></div><button class="icbtn" onClick="{{ onHelp }}">?</button></div><div class="statusbar"><div class="hearts"><sc-for list="{{ hearts }}" as="h" hint-placeholder-count="3"><span class="heart {{ h.cls }}">{{ h.ch }}</span></sc-for></div><div class="solved">{{ solvedTxt }}</div><div class="hint">Tape une case</div></div><div class="gridwrap"><div class="grid3"><sc-for list="{{ board }}" as="b" hint-placeholder-count="16"><button class="{{ b.cls }}" onClick="{{ b.onClick }}"><sc-if value="{{ b.isLine }}" hint-placeholder-val="{{ false }}"><span class="rd mini {{ b.valClass }}">{{ b.n }}</span><span class="qm">?</span></sc-if><sc-if value="{{ b.isAttr }}" hint-placeholder-val="{{ false }}"><span class="aico">{{ b.ico }}</span><span class="alab">{{ b.short }}</span><span class="qm">?</span></sc-if><sc-if value="{{ b.filled }}" hint-placeholder-val="{{ false }}"><span class="sname">{{ b.sname }}</span><span class="ldots"><sc-for list="{{ b.dots }}" as="d" hint-placeholder-count="0"><span class="ldot {{ d.valClass }}"></span></sc-for></span><span class="locki">🔒</span></sc-if><sc-if value="{{ b.empty }}" hint-placeholder-val="{{ false }}"><span class="plus">＋</span></sc-if></button></sc-for></div></div><div class="legend">{{ legend }}</div></div></sc-if><sc-if value="{{ isRules }}" hint-placeholder-val="{{ false }}"><div class="screen" data-screen-label="Règles"><div class="subhead"><button class="icbtn" onClick="{{ onHome }}">‹</button><span class="subttl">Comment jouer</span></div><div class="sub"><div class="step"><span class="stepn">1</span><span class="steptx">Une grille <b>3×3</b> apparaît. Chaque <b>ligne</b> et chaque <b>colonne</b> possède un critère (une ligne de tram ou une catégorie).</span></div><div class="step"><span class="stepn">2</span><span class="steptx">Remplis chaque case avec une <b>station du tram</b> qui respecte à la fois le critère de sa ligne <b>et</b> celui de sa colonne.</span></div><div class="step"><span class="stepn">3</span><span class="steptx">Une station ne sert qu'<b>une seule fois</b>. Une fois validée, elle est <b>verrouillée</b>. Seules les lignes qui s'arrêtent vraiment à la station comptent.</span></div><div class="step"><span class="stepn">4</span><span class="steptx"><b>3 erreurs</b> maximum. Score d'originalité jusqu'à <b>900</b> : une station rare et peu évidente rapporte plus de points.</span></div><div class="step"><span class="stepn">5</span><span class="steptx">Touche un critère <b>?</b> pour lire son explication. Mode <b>Simple</b> : suggestions + nombre de réponses. Mode <b>Expert</b> : de mémoire.</span></div><div class="card"><div class="klabel" style="color:var(--muted);margin-bottom:4px">Les critères possibles</div><sc-for list="{{ critList }}" as="c" hint-placeholder-count="9"><div class="critline"><sc-if value="{{ c.isLine }}" hint-placeholder-val="{{ true }}"><span class="rd mini {{ c.valClass }}">{{ c.n }}</span></sc-if><sc-if value="{{ c.isAttr }}" hint-placeholder-val="{{ false }}"><span class="rd mini" style="background:var(--soft);color:var(--ink);font-size:15px">{{ c.ico }}</span></sc-if><div style="flex:1"><div class="critn">{{ c.label }}</div><div class="critd">{{ c.expl }}</div></div></div></sc-for></div><button class="obtn" onClick="{{ onHome }}">C'est parti</button></div></div></sc-if><sc-if value="{{ isStats }}" hint-placeholder-val="{{ false }}"><div class="screen" data-screen-label="Stats"><div class="subhead"><button class="icbtn" onClick="{{ onHome }}">‹</button><span class="subttl">Statistiques</span></div><div class="sub"><div class="bigstat"><div class="bscard"><div class="bsn">{{ statPlayed }}</div><div class="bsl">Parties</div></div><div class="bscard"><div class="bsn">{{ statWins }}</div><div class="bsl">Gagnées</div></div><div class="bscard"><div class="bsn">{{ statBest }}</div><div class="bsl">Meilleur score</div></div></div><div class="bigstat"><div class="bscard"><div class="bsn">{{ streakCur }}</div><div class="bsl">Série actuelle</div></div><div class="bscard"><div class="bsn">{{ streakBest }}</div><div class="bsl">Record de série</div></div></div><p class="prose m" style="text-align:center;font-size:13px">Le défi du jour est le même pour tout le monde et se renouvelle chaque nuit. Reviens demain pour prolonger ta série !</p><button class="obtn sec" onClick="{{ onHome }}">Retour</button></div></div></sc-if><sc-if value="{{ isAbout }}" hint-placeholder-val="{{ false }}"><div class="screen" data-screen-label="À propos"><div class="subhead"><button class="icbtn" onClick="{{ onHome }}">‹</button><span class="subttl">À propos</span></div><div class="sub"><p class="prose"><b>Tamdoku</b> est un hommage ludique au réseau de tramway de Montpellier — la version montpelliéraine d'<span class="m">UbahnDoku</span>. Au lieu de chiffres, on joue avec les <b>stations</b> du réseau TaM.</p><p class="prose">Depuis 2000, le tram de Montpellier est célèbre pour ses habillages d'artistes : les <b>hirondelles</b> de Garouste &amp; Bonetti (L1), les <b>fleurs</b> (L2), les univers de <b>Christian Lacroix</b> (L3, L4) et la <b>Feuille de Vie</b> de Barthélémy Toguo (L5).</p><div class="card"><sc-for list="{{ lines5 }}" as="l" hint-placeholder-count="5"><div class="elrow"><span class="rd mini {{ l.valClass }}">{{ l.n }}</span><div style="flex:1"><span class="elname">{{ l.name }}</span> · <span class="elel">{{ l.term }}</span></div></div></sc-for></div><p class="prose m" style="font-size:12px">Projet non officiel, sans lien avec TaM. Données de lignes et de correspondances d'après les informations publiques du réseau ; les couleurs approchent la charte à des fins ludiques.</p><button class="obtn sec" onClick="{{ onHome }}">Retour</button></div></div></sc-if><sc-if value="{{ sheetOpen }}" hint-placeholder-val="{{ false }}"><div class="sheetback" onClick="{{ onCloseSheet }}"></div><div class="sheet"><div class="grip"></div><div class="scrit"><sc-if value="{{ sRow.isLine }}" hint-placeholder-val="{{ true }}"><span class="rd mini {{ sRow.valClass }}">{{ sRow.n }}</span></sc-if><sc-if value="{{ sRow.isAttr }}" hint-placeholder-val="{{ false }}"><span class="achip">{{ sRow.ico }} {{ sRow.short }}</span></sc-if><span class="x">×</span><sc-if value="{{ sCol.isLine }}" hint-placeholder-val="{{ false }}"><span class="rd mini {{ sCol.valClass }}">{{ sCol.n }}</span></sc-if><sc-if value="{{ sCol.isAttr }}" hint-placeholder-val="{{ false }}"><span class="achip">{{ sCol.ico }} {{ sCol.short }}</span></sc-if></div><sc-if value="{{ showPoss }}" hint-placeholder-val="{{ false }}"><div class="poss"><b>{{ possN }}</b> réponses possibles</div></sc-if><div class="inprow"><input class="inp" value="{{ query }}" onInput="{{ onQuery }}" onKeyDown="{{ onKey }}" ref="{{ setInpRef }}" placeholder="{{ inpPlaceholder }}" autoComplete="off" autoCapitalize="words" autoCorrect="off" /><button class="vbtn" onClick="{{ onValidate }}">OK</button></div><sc-if value="{{ showSug }}" hint-placeholder-val="{{ false }}"><div class="sugs"><sc-for list="{{ sugs }}" as="s" hint-placeholder-count="0"><button class="sugitem" onClick="{{ s.onPick }}"><span class="sname2">{{ s.name }}</span><span class="ldots"><sc-for list="{{ s.dots }}" as="d" hint-placeholder-count="0"><span class="ldot {{ d.valClass }}"></span></sc-for></span></button></sc-for></div></sc-if><sc-if value="{{ sheetMsg }}" hint-placeholder-val="{{ false }}"><div class="smsg {{ sheetMsgCls }}">{{ sheetMsg }}</div></sc-if><button class="passer" onClick="{{ onCloseSheet }}">Fermer</button></div></sc-if><sc-if value="{{ infoOpen }}" hint-placeholder-val="{{ false }}"><div class="ov" onClick="{{ onCloseInfo }}"><div class="infocard"><div class="infochip"><sc-if value="{{ infoIsLine }}" hint-placeholder-val="{{ true }}"><span class="rd mini {{ infoValClass }}" style="width:48px;height:48px;font-size:22px">{{ infoN }}</span></sc-if><sc-if value="{{ infoIsAttr }}" hint-placeholder-val="{{ false }}"><span class="rd mini" style="width:48px;height:48px;font-size:22px;background:var(--soft);color:var(--ink)">{{ infoIco }}</span></sc-if></div><div class="infotitle">{{ infoLabel }}</div><div class="infotext">{{ infoText }}</div><button class="obtn" style="margin-top:16px" onClick="{{ onCloseInfo }}">Compris</button></div></div></sc-if><sc-if value="{{ showResult }}" hint-placeholder-val="{{ false }}"><div class="ov"><div class="ovcard"><sc-if value="{{ resWon }}" hint-placeholder-val="{{ false }}"><div class="tramfx"><div class="tram"><span class="face"></span><span class="strip"><b></b><b></b><b></b><b></b></span><span class="wheel w1"></span><span class="wheel w2"></span></div></div>{{ confetti }}</sc-if><div class="ovkick" style="margin-top:{{ resTopGap }}">{{ resKick }}</div><div class="ovtitle">{{ resTitle }}</div><div class="scorebig">{{ resScore }}</div><div class="scoreout">/ 900 points d'originalité</div><div class="stars"><sc-for list="{{ resStars }}" as="s" hint-placeholder-count="3"><span class="star {{ s.cls }}">★</span></sc-for></div><div class="emoji"><sc-for list="{{ resEmoji }}" as="e" hint-placeholder-count="3"><div>{{ e.row }}</div></sc-for></div><div class="ovstats"><div class="ovs"><span class="ovsn">{{ resSolved }}</span><span class="ovsl">Cases</span></div><div class="ovs"><span class="ovsn">{{ resMist }}</span><span class="ovsl">Erreurs</span></div><div class="ovs"><span class="ovsn">{{ streakCur }}</span><span class="ovsl">Série</span></div></div><div class="prose m" style="font-size:12.5px;margin-bottom:16px">Station la plus rare trouvée : <b style="color:var(--ink)">{{ resRare }}</b></div><div class="ovbtns"><button class="obtn" onClick="{{ onShare }}">Partager mon résultat</button><button class="obtn sec" onClick="{{ onSeeGrid }}">Voir la grille</button><button class="obtn sec" onClick="{{ onHome }}">Accueil</button></div></div></div></sc-if><sc-if value="{{ showReopen }}" hint-placeholder-val="{{ false }}"><button class="reopen" onClick="{{ onReopen }}">Voir le résultat</button></sc-if><sc-if value="{{ toastShow }}" hint-placeholder-val="{{ false }}"><div class="toast">{{ toast }}</div></sc-if></div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:440,&quot;height&quot;:924},&quot;theme&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Clair&quot;,&quot;Sombre&quot;],&quot;default&quot;:&quot;Clair&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Apparence&quot;},&quot;maxMistakes&quot;:{&quot;editor&quot;:&quot;int&quot;,&quot;default&quot;:3,&quot;min&quot;:1,&quot;max&quot;:6,&quot;unit&quot;:&quot;erreurs&quot;,&quot;tsType&quot;:&quot;number&quot;,&quot;section&quot;:&quot;Règles du jeu&quot;}}">
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    const S=(id,name,l,opts)=>Object.assign({id,name,l,m:1,t:0,p:0,f:5,a:[]},opts||{});
+    this.stations=[
+      S('gsr','Gare Saint-Roch',[1,2,3,4],{f:10,a:['gare','saint roch','gare saint roch']}),
+      S('com','Comédie',[1,2],{f:10,a:['comedie','la comedie','place de la comedie']}),
+      S('cor','Corum',[1,2,4],{f:9,a:['le corum']}),
+      S('rdl','Rives du Lez',[1,3,4],{f:7,a:['rives du lez','place des rives du lez']}),
+      S('eur','Place de l\u2019Europe',[1,4],{f:8,a:['europe','place europe','place de l europe']}),
+      S('lbl','Louis Blanc',[1,4],{p:1,f:7}),
+      S('nsr','Nouveau Saint-Roch',[2,4],{f:6,a:['nouveau saint roch']}),
+      S('ron','Rondelet',[2,4],{f:6}),
+      S('obs','Observatoire',[3,4],{f:6}),
+      S('mos','Mosson',[1,3],{t:1,f:8,a:['stade de la mosson']}),
+      S('pma','Port Marianne',[1,3],{f:7}),
+      S('gfr','Georges Frêche - Hôtel de Ville',[1,3],{p:1,f:6,a:['georges freche','hotel de ville','moulares','mairie']}),
+      S('gam','Gambetta',[3,5],{p:1,f:6,a:['cours gambetta']}),
+      S('sgc','Saint-Guilhem - Courreau',[4,5],{f:6,a:['saint guilhem','courreau','saint guilhem courreau']}),
+      S('pey','Peyrou - Arc de Triomphe',[4,5],{f:7,a:['peyrou','arc de triomphe','le peyrou']}),
+      S('phi','Stade Philippidès',[1,5],{f:5,a:['philippides','stade philippides']}),
+      S('sel','Saint-Éloi',[1,5],{f:5,a:['saint eloi']}),
+      S('bou','Boutonnet - Cité des Arts',[1,5],{f:5,a:['boutonnet','cite des arts']}),
+      S('ody','Odysseum',[1],{t:1,f:9,a:['odyseum']}),
+      S('pdf','Place de France',[1],{f:6,a:['place de france']}),
+      S('ant','Antigone',[1],{f:8}),
+      S('leo','Léon Blum',[1],{p:1,f:6,a:['leon blum']}),
+      S('mil','Millénaire',[1],{f:5,a:['millenaire']}),
+      S('usl','Universités des Sciences et Lettres',[1],{f:5,a:['sciences et lettres','fac de lettres','universite sciences','universites des sciences et lettres']}),
+      S('jac','Jacou',[2],{t:1,m:0,f:6}),
+      S('sjc','Saint-Jean-de-Védas Centre',[2],{t:1,m:0,f:5,a:['saint jean de vedas centre','sjdv centre','saint jean de vedas','vedas centre']}),
+      S('nds','Notre-Dame de Sablassou',[2],{m:0,f:5,a:['sablassou','notre dame de sablassou']}),
+      S('cdg','Charles de Gaulle',[2],{p:1,m:0,f:6,a:['charles de gaulle']}),
+      S('sab','Sabines',[2],{f:5}),
+      S('scl','Saint-Cléophas',[2],{f:4,a:['saint cleophas']}),
+      S('rau','La Rauze',[2],{f:4,a:['rauze']}),
+      S('pom','Lycée Georges Pompidou',[2],{p:1,m:0,f:4,a:['georges pompidou','pompidou','lycee georges pompidou']}),
+      S('sjs','Saint-Jean le Sec',[2],{m:0,f:3,a:['saint jean le sec']}),
+      S('aig','Aiguelongue',[2],{f:5}),
+      S('juv','Juvignac',[3],{t:1,m:0,f:5}),
+      S('lat','Lattes Centre',[3],{t:1,m:0,f:5,a:['lattes','lattes centre']}),
+      S('peo','Pérols Étang de l\u2019Or',[3],{t:1,m:0,f:5,a:['perols etang de l or','etang de l or','perols']}),
+      S('pec','Pérols Centre',[3],{m:0,f:4,a:['perols centre']}),
+      S('pex','Parc Expo',[3],{m:0,f:6,a:['parc expo','parc des expositions','sud de france arena']}),
+      S('pca','Plan Cabanes',[3],{f:6,a:['plan cabanes']}),
+      S('ast','Astruc',[3],{f:4}),
+      S('vol','Voltaire',[3],{p:1,f:4}),
+      S('sor','Soriech',[3],{m:0,f:4,a:['boirargues']}),
+      S('glo','Garcia Lorca',[4],{p:1,f:6,a:['garcia lorca','mediatheque garcia lorca']}),
+      S('aub','Les Aubes',[4],{f:4,a:['aubes']}),
+      S('cla','Clapiers',[5],{t:1,m:0,f:4}),
+      S('sjg','Saint-Jean-de-Védas Grès de Montpellier',[5],{t:1,m:0,f:3,a:['gres de montpellier','saint jean de vedas gres','vedas gres']}),
+      S('agr','Agropolis',[5],{f:4}),
+      S('cnr','CNRS',[5],{f:4}),
+      S('upv','Université Paul-Valéry',[5],{p:1,f:5,a:['paul valery','fac paul valery','universite paul valery','fac de lettres paul valery']}),
+      S('ova','Ovalie',[5],{f:4}),
+      S('est','Estanove',[5],{f:3})
+    ];
+    this.byIdMap={};this.stations.forEach(s=>{s._n=[this.norm(s.name),...s.a.map(x=>this.norm(x))];this.byIdMap[s.id]=s;});
+    this.CRIT={
+      l1:{kind:'line',n:1,short:'Ligne 1',ico:'',label:'Ligne 1',valClass:'v1',expl:'La station est desservie par la ligne 1 (Mosson ↔ Odysseum), la ligne bleue aux hirondelles.'},
+      l2:{kind:'line',n:2,short:'Ligne 2',ico:'',label:'Ligne 2',valClass:'v2',expl:'La station est desservie par la ligne 2 (Jacou ↔ Saint-Jean-de-Védas), la ligne des fleurs.'},
+      l3:{kind:'line',n:3,short:'Ligne 3',ico:'',label:'Ligne 3',valClass:'v3',expl:'La station est desservie par la ligne 3 (Juvignac ↔ Lattes / Pérols), l\u2019univers marin de Christian Lacroix.'},
+      l4:{kind:'line',n:4,short:'Ligne 4',ico:'',label:'Ligne 4',valClass:'v4',expl:'La station est desservie par la ligne 4, la circulaire dorée autour de l\u2019Écusson.'},
+      l5:{kind:'line',n:5,short:'Ligne 5',ico:'',label:'Ligne 5',valClass:'v5',expl:'La station est desservie par la ligne 5 (Clapiers ↔ Saint-Jean-de-Védas), la ligne des Parcs.'},
+      terminus:{kind:'attr',ico:'⇥',short:'Terminus',label:'Terminus',valClass:'',expl:'La station est un terminus : le départ ou l\u2019arrivée d\u2019une ligne (Mosson, Odysseum, Jacou, Juvignac, Pérols…).'},
+      hors:{kind:'attr',ico:'⌖',short:'Hors Mtp',label:'Hors Montpellier',valClass:'',expl:'La station se trouve dans une autre commune de la métropole : Jacou, Castelnau-le-Lez, Juvignac, Saint-Jean-de-Védas, Lattes, Pérols, Clapiers.'},
+      corr:{kind:'attr',ico:'⇄',short:'Corresp.',label:'Correspondance',valClass:'',expl:'Au moins deux lignes de tram s\u2019arrêtent à cette station (Gare Saint-Roch, Corum, Rives du Lez…).'},
+      person:{kind:'attr',ico:'☺',short:'Nom propre',label:'Nom propre',valClass:'',expl:'La station porte le nom d\u2019une personnalité : Louis Blanc, Gambetta, Charles de Gaulle, Garcia Lorca, Voltaire…'}
+    };
+    this.pool=['l1','l2','l3','l4','l5','terminus','hors','corr','person'];
+    this.state={screen:'home',mode:this.lsGet('tamdoku2:mode','simple'),game:'daily',puzzle:null,cells:new Array(9).fill(null),
+      mistakes:0,sel:-1,query:'',sheetOpen:false,sheetMsg:'',sheetMsgCls:'',shakeCell:-1,
+      infoOpen:false,infoCrit:null,status:'idle',result:null,resultHidden:false,
+      daily:null,toast:'',
+      stats:this.lsGet('tamdoku2:stats',{played:0,wins:0,bestScore:0}),
+      streak:this.lsGet('tamdoku2:streak',{current:0,best:0,last:''})};
+  }
+  componentDidMount(){this.loadDaily();}
+  lsGet(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d;}catch(e){return d;}}
+  lsSet(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+  buzz(p){try{if(navigator.vibrate)navigator.vibrate(p);}catch(e){}}
+  byId(id){return this.byIdMap[id];}
+  pad2(x){return String(x).padStart(2,'0');}
+  todayStr(){const d=new Date();return d.getFullYear()+'-'+this.pad2(d.getMonth()+1)+'-'+this.pad2(d.getDate());}
+  yStr(){const d=new Date(Date.now()-86400000);return d.getFullYear()+'-'+this.pad2(d.getMonth()+1)+'-'+this.pad2(d.getDate());}
+  prettyDate(s){const p=(s||this.todayStr()).split('-');return p[2]+'/'+p[1];}
+  norm(t){return (t||'').toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/[\u2019']/g,' ').replace(/[-\u2013\u2014]/g,' ').replace(/[^a-z0-9 ]/g,'').replace(/\bst\b/g,'saint').replace(/\s+/g,' ').trim();}
+  hashSeed(str){let h=1779033703^str.length;for(let i=0;i<str.length;i++){h=Math.imul(h^str.charCodeAt(i),3432918353);h=h<<13|h>>>19;}return (h>>>0);}
+  prng(seed){let a=seed>>>0;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  shuffle(arr,rnd){const a=arr.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(rnd()*(i+1));const t=a[i];a[i]=a[j];a[j]=t;}return a;}
+  sat(s,c){if(c[0]==='l')return s.l.indexOf(+c.slice(1))>=0;if(c==='terminus')return !!s.t;if(c==='hors')return !s.m;if(c==='corr')return s.l.length>=2;if(c==='person')return !!s.p;return false;}
+  validFor(rows,cols){const v=[];for(let r=0;r<3;r++)for(let c=0;c<3;c++){v.push(this.stations.filter(s=>this.sat(s,rows[r])&&this.sat(s,cols[c])).map(s=>s.id));}return v;}
+  hasSDR(valid){const match={};const tryCell=(ci,seen)=>{for(const sid of valid[ci]){if(seen[sid])continue;seen[sid]=1;if(match[sid]===undefined||tryCell(match[sid],seen)){match[sid]=ci;return true;}}return false;};for(let ci=0;ci<9;ci++){if(!tryCell(ci,{}))return false;}return true;}
+  genPuzzle(seed){const rnd=this.prng(seed);let best=null;for(let att=0;att<400;att++){const sh=this.shuffle(this.pool,rnd);const rows=sh.slice(0,3),cols=sh.slice(3,6);const valid=this.validFor(rows,cols);if(valid.some(v=>v.length===0))continue;if(!this.hasSDR(valid))continue;const avg=valid.reduce((a,v)=>a+v.length,0)/9;const distinctLines=new Set([...rows,...cols].filter(x=>x[0]==='l')).size;let q=0;if(avg>=1.8&&avg<=6)q+=2;else if(avg>6)q-=1;if(distinctLines>=3)q+=1;if(distinctLines>=2)q+=1;if(valid.some(v=>v.length>12))q-=2;if(valid.filter(v=>v.length===1).length<=2)q+=1;const cand={rows,cols,valid,q};if(!best||cand.q>best.q)best=cand;if(best&&best.q>=4&&att>25)break;}
+    if(!best){const rows=['l1','l4','corr'],cols=['l2','l3','person'];best={rows,cols,valid:this.validFor(rows,cols),q:0};}
+    return best;}
+  loadDaily(){const seed=this.hashSeed('tamdoku-'+this.todayStr());const puzzle=this.genPuzzle(seed);const saved=this.lsGet('tamdoku2:daily:'+this.todayStr(),null);this.setState({daily:{puzzle,saved}});}
+  setMode(m){this.lsSet('tamdoku2:mode',m);this.setState({mode:m});}
+  startDaily(){const d=this.state.daily;if(!d)return;const p=d.puzzle;const saved=d.saved;if(saved){this.setState({screen:'game',game:'daily',puzzle:p,cells:saved.cells||new Array(9).fill(null),mistakes:saved.mistakes||0,status:saved.status||'playing',result:saved.result||null,resultHidden:false,sel:-1,sheetOpen:false,query:'',sheetMsg:''});return;}
+    this.setState({screen:'game',game:'daily',puzzle:p,cells:new Array(9).fill(null),mistakes:0,status:'playing',result:null,resultHidden:false,sel:-1,sheetOpen:false,query:'',sheetMsg:''});}
+  startPractice(){const seed=(this.hashSeed('p'+Date.now()+':'+Math.random())>>>0);const puzzle=this.genPuzzle(seed);this.setState({screen:'game',game:'practice',puzzle,cells:new Array(9).fill(null),mistakes:0,status:'playing',result:null,resultHidden:false,sel:-1,sheetOpen:false,query:'',sheetMsg:''});}
+  saveDaily(resultOverride){const s=this.state;if(s.game!=='daily')return;const payload={cells:s.cells,mistakes:s.mistakes,status:s.status,result:resultOverride!==undefined?resultOverride:s.result};this.lsSet('tamdoku2:daily:'+this.todayStr(),payload);this.setState(st=>({daily:Object.assign({},st.daily,{saved:payload})}));}
+  openSheet(ci){if(this.state.status!=='playing')return;this.setState({sel:ci,sheetOpen:true,query:'',sheetMsg:'',sheetMsgCls:''},()=>{setTimeout(()=>{if(this._inp)try{this._inp.focus();}catch(e){}},60);});}
+  closeSheet(){this.setState({sheetOpen:false,sel:-1,query:'',sheetMsg:''});}
+  openInfo(c){this.setState({infoOpen:true,infoCrit:c});}
+  closeInfo(){this.setState({infoOpen:false,infoCrit:null});}
+  onQueryInput(e){this.setState({query:e.target.value,sheetMsg:''});}
+  onKeyDown(e){if(e.key==='Enter'){e.preventDefault();this.submit(this.state.query);}}
+  matchStation(text){const q=this.norm(text);if(q.length<2)return null;for(const s of this.stations)if(s._n.indexOf(q)>=0)return s;let hit=null;const ids={};for(const s of this.stations){if(s._n.some(nm=>nm.startsWith(q)||nm.indexOf(q)>=0)){ids[s.id]=1;hit=s;}}return Object.keys(ids).length===1?hit:null;}
+  suggest(q){const n=this.norm(q);if(n.length<1)return[];const used=this.state.cells;const pre=[],sub=[];for(const s of this.stations){if(used.indexOf(s.id)>=0)continue;const nm=s._n;if(nm.some(x=>x.startsWith(n)))pre.push(s);else if(nm.some(x=>x.indexOf(n)>=0))sub.push(s);}pre.sort((a,b)=>b.f-a.f);sub.sort((a,b)=>b.f-a.f);return pre.concat(sub).slice(0,6);}
+  submit(text){const s=this.state;if(s.status!=='playing'||s.sel<0)return;const st=this.matchStation(text);if(!st){this.setState({sheetMsg:'Station inconnue — vérifie l\u2019orthographe',sheetMsgCls:'warn'});return;}
+    if(s.cells.indexOf(st.id)>=0){this.registerMistake('« '+st.name+' » est déjà placée ailleurs');return;}
+    const ci=s.sel;const ok=this.sat(st,s.puzzle.rows[Math.floor(ci/3)])&&this.sat(st,s.puzzle.cols[ci%3]);
+    if(ok){const cells=s.cells.slice();cells[ci]=st.id;this.buzz(18);const won=cells.every(x=>x);this.setState({cells,sheetOpen:false,sel:-1,query:'',sheetMsg:''},()=>{if(won)this.finish(true);else this.saveDaily();});}
+    else{this.registerMistake('« '+st.name+' » ne coche pas les deux critères');}}
+  registerMistake(msg){const m=this.state.mistakes+1;const max=this.props.maxMistakes||3;this.buzz(70);this.setState({mistakes:m,sheetMsg:msg,sheetMsgCls:'bad',shakeCell:this.state.sel});setTimeout(()=>this.setState({shakeCell:-1}),380);if(m>=max){setTimeout(()=>{this.setState({sheetOpen:false,sel:-1});this.finish(false);},680);}else this.saveDaily();}
+  emojiGrid(cells){const map={1:'🟦',2:'🟧',3:'🟩',4:'🟨',5:'🟪'};const rows=[];for(let r=0;r<3;r++){let line='';for(let c=0;c<3;c++){const id=cells[r*3+c];line+=id?map[this.byId(id).l[0]]:'⬛';}rows.push(line);}return rows;}
+  finish(won){const s=this.state;const max=this.props.maxMistakes||3;let score=0,rare=null;for(let ci=0;ci<9;ci++){const id=s.cells[ci];if(!id)continue;const st=this.byId(id);score+=40+Math.round(60*(10-st.f)/9);if(!rare||st.f<rare.f)rare=st;}score=Math.max(0,score-s.mistakes*20);const solved=s.cells.filter(x=>x).length;const stars=won?(s.mistakes===0?3:(s.mistakes===1?2:1)):(solved>=6?1:0);
+    const result={won,score,solved,mistakes:s.mistakes,stars,rare:rare?rare.name:'—',emoji:this.emojiGrid(s.cells)};
+    const stats=Object.assign({},s.stats);stats.played++;if(won)stats.wins++;if(score>stats.bestScore)stats.bestScore=score;
+    let streak=s.streak;if(s.game==='daily'&&won){const t=this.todayStr();if(streak.last!==t){streak=Object.assign({},streak);streak.current=(streak.last===this.yStr())?(streak.current+1):1;streak.best=Math.max(streak.best||0,streak.current);streak.last=t;}}
+    this.lsSet('tamdoku2:stats',stats);this.lsSet('tamdoku2:streak',streak);this.buzz(won?[25,45,25]:200);
+    this.setState({status:won?'won':'lost',result,resultHidden:false,stats,streak},()=>{if(s.game==='daily')this.saveDaily(result);});}
+  goHome(){this.setState({screen:'home',status:this.state.status,sheetOpen:false,infoOpen:false});this.loadDaily();this.setState({screen:'home'});}
+  toastMsg(m){this.setState({toast:m});clearTimeout(this._tt);this._tt=setTimeout(()=>this.setState({toast:''}),1700);}
+  share(){const s=this.state;const r=s.result;if(!r)return;const line=s.game==='daily'?('Tamdoku '+this.prettyDate()):'Tamdoku · Entraînement';const emoji=r.emoji.join('\n');const txt='🚋 '+line+'\n'+r.score+'/900 · '+r.solved+'/9 cases · '+(r.mistakes)+' ❌\n'+emoji+'\nRare : '+r.rare+'\ntamdoku.fr';
+    const done=()=>this.toastMsg('Résultat copié !');try{if(navigator.share){navigator.share({text:txt}).then(()=>{}).catch(()=>this.copyTxt(txt,done));return;}}catch(e){}this.copyTxt(txt,done);}
+  copyTxt(txt,done){try{if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(txt).then(done).catch(()=>{if(!this.legacyCopy(txt))this.toastMsg('Copie indisponible');else done();});return;}}catch(e){}if(this.legacyCopy(txt))done();else this.toastMsg('Copie indisponible');}
+  legacyCopy(txt){try{const ta=document.createElement('textarea');ta.value=txt;ta.style.position='fixed';ta.style.left='-9999px';document.body.appendChild(ta);ta.focus();ta.select();const ok=document.execCommand('copy');document.body.removeChild(ta);return ok;}catch(e){return false;}}
+  chip(c){const i=this.CRIT[c];return{isLine:i.kind==='line',isAttr:i.kind==='attr',n:i.n,short:i.short,ico:i.ico,valClass:i.valClass,label:i.label,expl:i.expl};}
+  renderVals(){
+    const s=this.state;const dark=(this.props.theme==='Sombre');const appClass='app'+(dark?' dark':'');const screen=s.screen;
+    const base={appClass,isHome:screen==='home',isGame:screen==='game',isRules:screen==='rules',isStats:screen==='stats',isAbout:screen==='about',
+      toast:s.toast,toastShow:!!s.toast,onHome:()=>this.goHome(),onRules:()=>this.setState({screen:'rules'}),onStats:()=>this.setState({screen:'stats'}),onAbout:()=>this.setState({screen:'about'}),onHelp:()=>this.setState({screen:'rules'})};
+    const st=s.stats;base.statPlayed=st.played;base.statWins=st.wins;base.statBest=st.bestScore||0;base.streakCur=s.streak.current||0;base.streakBest=s.streak.best||0;
+    base.prettyToday=this.prettyDate();
+    // home daily
+    const d=s.daily;const done=!!(d&&d.saved&&(d.saved.status==='won'||d.saved.status==='lost'));
+    base.dailyChips=d?d.puzzle.rows.concat(d.puzzle.cols).map(c=>this.chip(c)):[];
+    base.dailyTitle=done?(d.saved.status==='won'?'Défi réussi ✓':'Défi terminé'):'La grille du jour';
+    base.dailySub=done?('Score : '+(d.saved.result?d.saved.result.score:0)+'/900 · '+(d.saved.result?d.saved.result.solved:0)+'/9 cases'):'Une nouvelle grille, la même pour tout le monde. Trouve les 9 stations.';
+    base.dailyBtnText=done?'Revoir mon résultat':'Jouer le défi';base.dailyBtnCls=done?'done':'';base.onDaily=()=>this.startDaily();
+    base.simpleCls=s.mode==='simple'?'on':'';base.expertCls=s.mode==='expert'?'on':'';base.onSimple=()=>this.setMode('simple');base.onExpert=()=>this.setMode('expert');
+    base.onPractice=()=>this.startPractice();
+    base.critList=this.pool.map(c=>{const i=this.CRIT[c];return{isLine:i.kind==='line',isAttr:i.kind==='attr',n:i.n,ico:i.ico,valClass:i.valClass,label:i.label,expl:i.expl};});
+    base.lines5=[1,2,3,4,5].map(n=>({n,valClass:'v'+n,name:this.CRIT['l'+n].label,term:['Mosson ↔ Odysseum','Jacou ↔ St-Jean-de-Védas','Juvignac ↔ Lattes / Pérols','Circulaire — l\u2019Écusson','Clapiers ↔ St-Jean-de-Védas'][n-1]}));
+    // game
+    if(s.puzzle&&screen==='game'){const p=s.puzzle;const max=this.props.maxMistakes||3;base.gLabel=s.game==='daily'?'Défi du jour':'Entraînement';base.gModeLabel=(s.mode==='simple'?'Mode simple':'Mode expert');
+      base.hearts=Array.from({length:max},(_,k)=>({ch:k<(max-s.mistakes)?'\u2665':'\u2661',cls:k<(max-s.mistakes)?'':'off'}));
+      const solved=s.cells.filter(x=>x).length;base.solvedTxt=solved+'/9 stations';base.legend='Chaque case = une station sur le critère de sa ligne ET de sa colonne.';
+      const board=[];board.push({key:'corner',cls:'gc corner',onClick:()=>{},isLine:false,isAttr:false,filled:false,empty:false,dots:[]});
+      for(let c=0;c<3;c++){const i=this.CRIT[p.cols[c]];board.push({key:'col'+c,cls:'gc head'+(i.kind==='attr'?' attr':''),isLine:i.kind==='line',isAttr:i.kind==='attr',n:i.n,short:i.short,ico:i.ico,valClass:i.valClass,filled:false,empty:false,dots:[],onClick:()=>this.openInfo(p.cols[c])});}
+      for(let r=0;r<3;r++){const ir=this.CRIT[p.rows[r]];board.push({key:'row'+r,cls:'gc head'+(ir.kind==='attr'?' attr':''),isLine:ir.kind==='line',isAttr:ir.kind==='attr',n:ir.n,short:ir.short,ico:ir.ico,valClass:ir.valClass,filled:false,empty:false,dots:[],onClick:()=>this.openInfo(p.rows[r])});
+        for(let c=0;c<3;c++){const ci=r*3+c;const id=s.cells[ci];if(id){const stn=this.byId(id);board.push({key:'a'+ci,cls:'gc ans filled',isLine:false,isAttr:false,filled:true,empty:false,sname:stn.name,dots:stn.l.map(n=>({valClass:'v'+n})),onClick:()=>this.toastMsg('Station verrouillée 🔒')});}
+          else{const sel=(s.sel===ci&&s.sheetOpen);const sh=(s.shakeCell===ci);board.push({key:'a'+ci,cls:'gc ans empty'+(sel?' sel':'')+(sh?' shake':''),isLine:false,isAttr:false,filled:false,empty:true,dots:[],onClick:()=>this.openSheet(ci)});}}}
+      base.board=board;
+      // sheet
+      base.sheetOpen=s.sheetOpen;base.query=s.query;base.onQuery=(e)=>this.onQueryInput(e);base.onKey=(e)=>this.onKeyDown(e);base.onValidate=()=>this.submit(s.query);base.onCloseSheet=()=>this.closeSheet();base.setInpRef=(el)=>{this._inp=el;};
+      base.inpPlaceholder=s.mode==='simple'?'Nom de la station…':'Station (de mémoire)…';
+      if(s.sel>=0){base.sRow=this.chip(p.rows[Math.floor(s.sel/3)]);base.sCol=this.chip(p.cols[s.sel%3]);const validSet=p.valid[s.sel]||[];const remaining=validSet.filter(id=>s.cells.indexOf(id)<0).length;base.possN=remaining;base.showPoss=(s.mode==='simple');}
+      else{base.sRow={isLine:true,n:1,valClass:'v1',isAttr:false,short:'',ico:''};base.sCol={isLine:true,n:1,valClass:'v1',isAttr:false,short:'',ico:''};base.showPoss=false;base.possN=0;}
+      const sugs=(s.mode==='simple'&&s.sheetOpen&&s.query)?this.suggest(s.query):[];base.sugs=sugs.map(x=>({name:x.name,dots:x.l.map(n=>({valClass:'v'+n})),onPick:()=>this.submit(x.name)}));base.showSug=base.sugs.length>0;
+      base.sheetMsg=s.sheetMsg;base.sheetMsgCls=s.sheetMsgCls;
+    } else {base.hearts=[];base.board=[];base.solvedTxt='';base.legend='';base.gLabel='';base.gModeLabel='';base.sheetOpen=false;base.showSug=false;base.showPoss=false;base.sheetMsg='';base.query='';base.sRow={isLine:true};base.sCol={isLine:true};base.sugs=[];base.possN=0;base.onCloseSheet=()=>{};base.setInpRef=()=>{};base.onQuery=()=>{};base.onKey=()=>{};base.onValidate=()=>{};base.inpPlaceholder='';}
+    base.onBack=()=>this.goHome();
+    // info overlay
+    base.infoOpen=s.infoOpen;if(s.infoCrit){const i=this.CRIT[s.infoCrit];base.infoIsLine=i.kind==='line';base.infoIsAttr=i.kind==='attr';base.infoN=i.n;base.infoIco=i.ico;base.infoValClass=i.valClass;base.infoLabel=i.label;base.infoText=i.expl;}else{base.infoIsLine=true;base.infoN=1;base.infoValClass='v1';base.infoLabel='';base.infoText='';base.infoIsAttr=false;base.infoIco='';}
+    base.onCloseInfo=()=>this.closeInfo();
+    // result overlay
+    const r=s.result;base.showResult=screen==='game'&&s.status!=='playing'&&s.status!=='idle'&&!s.resultHidden&&!!r;
+    base.showReopen=screen==='game'&&s.status!=='playing'&&s.status!=='idle'&&s.resultHidden&&!!r;
+    base.onReopen=()=>this.setState({resultHidden:false});base.onSeeGrid=()=>this.setState({resultHidden:true});
+    if(r){base.resWon=r.won;base.resKick=r.won?(s.game==='daily'?('Défi du '+this.prettyDate()):'Grille résolue'):'Plus de cœurs';base.resTitle=r.won?'Terminus !':'Rame déraillée';base.resScore=r.score;base.resSolved=r.solved+'/9';base.resMist=r.mistakes;base.resRare=r.rare;base.resStars=[0,1,2].map(k=>({cls:k<r.stars?'':'off'}));base.resEmoji=r.emoji.map(row=>({row}));base.resTopGap=r.won?'42px':'2px';
+      base.confetti=r.won?Array.from({length:26},(_,i)=>{const cols=['#0064B0','#F07D00','#009E3D','#F4B223','#C51A7F'];return React.createElement('div',{key:i,className:'conf',style:{left:(3+Math.random()*94)+'%',background:cols[i%cols.length],animationDuration:(1.5+Math.random()*1.3)+'s',animationDelay:(Math.random()*0.5)+'s'}});}):[];}
+    else{base.resWon=false;base.resKick='';base.resTitle='';base.resScore=0;base.resSolved='0/9';base.resMist=0;base.resRare='—';base.resStars=[];base.resEmoji=[];base.resTopGap='2px';base.confetti=[];}
+    base.onShare=()=>this.share();
+    return base;
+  }
+}
+</script>
+</body>
+</html>
