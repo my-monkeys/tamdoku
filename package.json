@@ -1,0 +1,24 @@
+{
+  "name": "tamdoku",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Tamdoku — le puzzle quotidien du tramway de Montpellier (données + moteur de grilles)",
+  "scripts": {
+    "fetch:osm": "tsx pipeline/fetch-osm.ts",
+    "fetch:gtfs": "tsx pipeline/fetch-gtfs.ts",
+    "fetch:communes": "tsx pipeline/fetch-communes.ts",
+    "build:network": "tsx pipeline/build-network.ts",
+    "build:data": "npm run fetch:osm && npm run fetch:gtfs && npm run fetch:communes && npm run build:network",
+    "stats": "tsx cli/stats.ts",
+    "gen": "tsx cli/gen.ts",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.8.0",
+    "vitest": "^3.1.0"
+  }
+}
