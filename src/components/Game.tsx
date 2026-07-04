@@ -3,7 +3,7 @@ import { byId, criterion } from "../data.ts";
 import { revealGrid } from "../../engine/matching.ts";
 import { MAX_MISTAKES, type useGame } from "../useGame.ts";
 import { prettyDate } from "../format.ts";
-import { LineDots } from "./tokens.tsx";
+import { LineDots, LineLegend } from "./tokens.tsx";
 import { CritGlyph, hasGlyph, Icon } from "./icons.tsx";
 
 export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
@@ -152,6 +152,7 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
 
       <div className="legend">
         Chaque case = une station sur le critère de sa ligne ET de sa colonne.
+        <LineLegend />
       </div>
     </div>
   );

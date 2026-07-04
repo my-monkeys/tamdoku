@@ -1,5 +1,7 @@
 import { prettyDate } from "../format.ts";
 import type { useGame } from "../useGame.ts";
+import { LineLegend } from "./tokens.tsx";
+import { Icon } from "./icons.tsx";
 
 const LINE_COLORS = ["#0064B0", "#F07D00", "#009E3D", "#F4B223", "#C51A7F"];
 
@@ -28,11 +30,11 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
   const r = g.result;
   if (g.screen !== "game" || g.status === "playing" || g.status === "idle" || !r) return null;
 
-  // Grille masquée : pastille flottante pour rouvrir le résultat.
+  // Grille masquée : pastille flottante pour revenir au résultat.
   if (g.resultHidden) {
     return (
       <button className="reopen" onClick={ctrl.reopenResult}>
-        Voir le résultat
+        <Icon name="back" size={17} /> Retour
       </button>
     );
   }
@@ -78,6 +80,9 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
             <div key={i}>{row}</div>
           ))}
         </div>
+        <div className="res-emocap">
+          <LineLegend />
+        </div>
 
         <div className="res-stats">
           <div className="res-stat">
@@ -95,7 +100,9 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
         </div>
 
         <div className="res-rare">
-          Station la plus rare : <b>{r.rare}</b>
+          Score d’originalité : plus une station est rare, plus elle rapporte.
+          <br />
+          Ta plus rare : <b>{r.rare}</b>
         </div>
 
         <div className="res-btns">

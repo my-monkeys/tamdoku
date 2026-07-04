@@ -24,8 +24,8 @@ import {
 } from "./storage.ts";
 
 export const MAX_MISTAKES = 3;
-/** Jour de lancement = grille nº 1 ; l'archive part de là. */
-export const LAUNCH_DATE = "2026-07-04";
+/** Première grille de l'archive (nº 1). */
+export const LAUNCH_DATE = "2026-07-01";
 export type Screen = "home" | "game" | "rules" | "stats" | "about" | "archive";
 export type Mode = "simple" | "expert";
 export type Status = "idle" | "playing" | "won" | "lost";

@@ -82,11 +82,13 @@ describe("app — partie complète du jour (jsdom)", () => {
     const streak = JSON.parse(localStorage.getItem("tamdoku:streak")!);
     expect(streak.current).toBe(1);
 
-    // « Voir la grille » masque le résultat, « Voir le résultat » le rouvre
+    // « Voir la grille » masque le résultat, la pastille « Retour » le rouvre
     await act(async () => fireEvent.click(screen.getByRole("button", { name: "Voir la grille" })));
     await flush();
     expect(screen.queryByText("Terminus !")).toBeNull();
-    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Voir le résultat" })));
+    const reopen = document.querySelector(".reopen") as HTMLElement;
+    expect(reopen).toBeTruthy();
+    await act(async () => fireEvent.click(reopen));
     await flush();
     expect(screen.getByText("Terminus !")).toBeTruthy();
   });
