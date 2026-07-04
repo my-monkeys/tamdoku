@@ -1,0 +1,7 @@
+# Forcer HTTPS. Le site est derrière Cloudflare : on teste le protocole d'origine
+# via X-Forwarded-Proto (tester %{HTTPS} boucle si Cloudflare parle HTTP à l'origine).
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteCond %{HTTP:X-Forwarded-Proto} =http
+  RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</IfModule>
