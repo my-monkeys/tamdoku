@@ -78,6 +78,9 @@ button{font-family:inherit}
 .ldots{display:flex;gap:3px;margin-top:1px}
 .ldot{width:7px;height:7px;border-radius:50%;box-shadow:none}
 .locki{position:absolute;top:5px;right:7px;font-size:9px;opacity:.4}
+.gc.ans.reveal{background:var(--soft);border-style:dashed;cursor:default}
+.gc.ans.reveal .sname{color:var(--muted)}
+.soli{position:absolute;top:5px;right:6px;font-size:8px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--muted);opacity:.75}
 .plus{font-size:24px;color:var(--muted);font-weight:300;line-height:1}
 .legend{text-align:center;font-size:11.5px;font-weight:600;color:var(--muted);padding:2px 24px 18px;line-height:1.4}
 .sheetback{position:fixed;inset:0;background:rgba(10,10,14,.45);z-index:50}
@@ -102,7 +105,7 @@ button{font-family:inherit}
 .smsg.warn{background:var(--soft);color:var(--muted)}
 .smsg.good{background:#DBF1E3;color:#1C7A46}
 .passer{margin-top:12px;width:100%;background:transparent;border:none;color:var(--muted);font-weight:700;font-size:13.5px;padding:8px;cursor:pointer}
-.ov{position:absolute;inset:0;background:rgba(12,12,16,.6);display:flex;justify-content:center;padding:24px;z-index:55;backdrop-filter:blur(3px);overflow-y:auto}
+.ov{position:fixed;inset:0;background:rgba(12,12,16,.6);display:flex;justify-content:center;padding:24px;z-index:55;backdrop-filter:blur(3px);overflow-y:auto}
 .rescard{background:var(--card);color:var(--ink);border-radius:26px;padding:0 22px 22px;width:100%;max-width:372px;margin:auto;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(23,24,28,.28);animation:rescard-in .32s cubic-bezier(.2,.9,.3,1) both}
 @keyframes rescard-in{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 .res-rail{display:flex;height:6px;margin:0 -22px 22px}

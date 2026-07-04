@@ -37,3 +37,28 @@ export function maxAssignment(cellCandidates: ReadonlySet<string>[]): number {
   }
   return matched;
 }
+
+/**
+ * Complète une grille pour l'affichage des réponses : garde les stations déjà
+ * placées, et pour chaque case vide prend la **première** station valide encore
+ * libre (candidats triés, jamais deux fois la même). Renvoie 9 ids (null si une
+ * case n'a pas pu être remplie — cas rare).
+ */
+export function revealGrid(
+  cellCandidates: ReadonlySet<string>[],
+  placed: (string | null)[],
+): (string | null)[] {
+  const used = new Set(placed.filter(Boolean) as string[]);
+  const result = placed.slice();
+  for (let cell = 0; cell < cellCandidates.length; cell++) {
+    if (result[cell]) continue;
+    for (const station of cellCandidates[cell]!) {
+      if (!used.has(station)) {
+        result[cell] = station;
+        used.add(station);
+        break;
+      }
+    }
+  }
+  return result;
+}

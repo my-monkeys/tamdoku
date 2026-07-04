@@ -1,4 +1,6 @@
+import { useMemo } from "react";
 import { byId, criterion } from "../data.ts";
+import { revealGrid } from "../../engine/matching.ts";
 import { MAX_MISTAKES, type useGame } from "../useGame.ts";
 import { prettyDate } from "../format.ts";
 import { LineDots } from "./tokens.tsx";
@@ -6,6 +8,12 @@ import { CritGlyph, hasGlyph, Icon } from "./icons.tsx";
 
 export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
+  const finished = g.status === "won" || g.status === "lost";
+  // Partie finie → on révèle une réponse dans les cases vides (la 1re valide libre).
+  const revealed = useMemo(
+    () => (g.puzzle && finished ? revealGrid(g.puzzle.valid.map((c) => new Set(c)), g.cells) : null),
+    [g.puzzle, finished, g.cells],
+  );
   if (!g.puzzle) return null;
   const puzzle = g.puzzle;
   const solved = g.cells.filter(Boolean).length;
@@ -111,6 +119,17 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                         <LineDots stationId={id} />
                         <span className="locki">🔒</span>
                       </button>
+                    );
+                  }
+                  const rev = revealed?.[ci];
+                  if (rev) {
+                    const station = byId.get(rev)!;
+                    return (
+                      <div key={ci} className="gc ans reveal">
+                        <span className="sname">{station.name}</span>
+                        <LineDots stationId={rev} />
+                        <span className="soli">réponse</span>
+                      </div>
                     );
                   }
                   const sel = g.sel === ci && g.sheetOpen;
