@@ -60,7 +60,7 @@ const LINE_RULE_WEIGHTS: [number, number][] = [
 const MAX_PER_SUBFAMILY = 2;
 const MAX_LETTER_RULES = 2;
 
-function pickLineRuleCount(rng: Rng): number {
+export function pickLineRuleCount(rng: Rng): number {
   const roll = rng();
   let acc = 0;
   for (const [count, weight] of LINE_RULE_WEIGHTS) {
@@ -81,7 +81,13 @@ interface DayState {
   signatures: Set<string>;
 }
 
-function drawRuleSet(
+/**
+ * Tire 6 règles **équilibrées** : ≥ 1 ligne (jusqu'à 3), au plus 2 règles par
+ * sous-famille et au plus 2 règles-lettres — pour qu'une grille ne soit jamais
+ * noyée sous les « contient un X » ni monotone. Retourne null si le pool ne
+ * permet pas d'en réunir 6.
+ */
+export function drawRuleSet(
   rng: Rng,
   candidates: CompiledRule[],
   lineRuleCount: number,

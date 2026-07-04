@@ -5,7 +5,7 @@
  */
 import rawNetwork from "../data/network.json";
 import { buildRules } from "../engine/rules.ts";
-import { buildCriteria, dailyPool, terminiPhrase, type Criterion } from "../engine/criteria.ts";
+import { buildCriteria, terminiPhrase, type Criterion } from "../engine/criteria.ts";
 import { fameByStation } from "../engine/fame.ts";
 import { stationById } from "../engine/select.ts";
 import type { CompiledRule, LineRef, Network, Station } from "../engine/types.ts";
@@ -14,12 +14,11 @@ export const network = rawNetwork as unknown as Network;
 export const stations: Station[] = network.stations;
 export const byId = stationById(network);
 
-const allRules = buildRules(network);
-const ruleMap = new Map<string, CompiledRule>(allRules.map((r) => [r.id, r]));
+/** L'ensemble du catalogue de règles alimente la grille du jour. */
+export const pool: CompiledRule[] = buildRules(network);
+const ruleMap = new Map<string, CompiledRule>(pool.map((r) => [r.id, r]));
 
-/** Les 9 critères évocateurs du jeu quotidien (règles compilées, ordre d'affichage). */
-export const pool: CompiledRule[] = dailyPool(allRules);
-export const criteria: Map<string, Criterion> = buildCriteria();
+export const criteria: Map<string, Criterion> = buildCriteria(pool);
 export const fame: Map<string, number> = fameByStation(network);
 
 export function rule(id: string): CompiledRule {
@@ -44,5 +43,5 @@ export const lineSummaries = (["1", "2", "3", "4", "5"] as LineRef[]).map((ref) 
   n: Number(ref),
   valClass: `v${ref}`,
   name: `Ligne ${ref}`,
-  term: ref === "4" ? "Circulaire — l’Écusson" : terminiPhrase(network, ref),
+  term: terminiPhrase(network, ref),
 }));

@@ -1,5 +1,14 @@
 import { criteria, pool } from "../data.ts";
+import type { RuleFamily } from "../../engine/types.ts";
 import type { useGame } from "../useGame.ts";
+
+const FAMILY_ORDER: { family: RuleFamily; label: string }[] = [
+  { family: "ligne", label: "Les lignes" },
+  { family: "reseau", label: "Le réseau" },
+  { family: "nom", label: "Le nom de la station" },
+  { family: "semantique", label: "Le thème" },
+  { family: "geo", label: "La géographie" },
+];
 
 const STEPS: { n: number; body: React.ReactNode }[] = [
   {
@@ -66,32 +75,41 @@ export function Rules({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           </div>
         ))}
 
-        <div className="card">
-          <div className="klabel" style={{ color: "var(--muted)", marginBottom: 4 }}>
-            Les critères possibles
-          </div>
-          {pool.map((r) => {
-            const c = criteria.get(r.id)!;
-            return (
-              <div className="critline" key={r.id}>
-                {c.kind === "line" ? (
-                  <span className={`rd mini ${c.valClass}`}>{c.n}</span>
-                ) : (
-                  <span
-                    className="rd mini"
-                    style={{ background: "var(--soft)", color: "var(--ink)", fontSize: 15 }}
-                  >
-                    {c.icon}
-                  </span>
-                )}
-                <div style={{ flex: 1 }}>
-                  <div className="critn">{c.label}</div>
-                  <div className="critd">{c.expl}</div>
-                </div>
-              </div>
-            );
-          })}
+        <div className="klabel" style={{ color: "var(--muted)" }}>
+          Tous les critères possibles
         </div>
+        {FAMILY_ORDER.map(({ family, label }) => {
+          const rules = pool.filter((r) => r.family === family);
+          if (rules.length === 0) return null;
+          return (
+            <div className="card" key={family}>
+              <div className="klabel" style={{ color: "var(--muted)", marginBottom: 6 }}>
+                {label}
+              </div>
+              {rules.map((r) => {
+                const c = criteria.get(r.id)!;
+                return (
+                  <div className="critline" key={r.id}>
+                    {c.kind === "line" ? (
+                      <span className={`rd mini ${c.valClass}`}>{c.n}</span>
+                    ) : (
+                      <span
+                        className="rd mini"
+                        style={{ background: "var(--soft)", color: "var(--ink)", fontSize: 15 }}
+                      >
+                        {c.icon}
+                      </span>
+                    )}
+                    <div style={{ flex: 1 }}>
+                      <div className="critn">{c.label}</div>
+                      <div className="critd">{c.expl}</div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          );
+        })}
 
         <button className="obtn" onClick={ctrl.goHome}>
           C'est parti

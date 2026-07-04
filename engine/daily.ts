@@ -2,13 +2,13 @@
  * Générateur de la grille du jour, indépendant par date (contrairement à
  * generator.ts qui produit une série anti-répétition sur le pool complet).
  *
- * Ce mode reprend l'approche du design : à partir d'une graine dérivée de la
- * date, on tire la meilleure grille parmi N essais sur un **petit pool de
- * critères évocateurs** (lignes, terminus, correspondance, hors Montpellier,
- * nom propre). Sur un pool réduit, l'anti-répétition stricte de generator.ts
- * épuiserait vite les combinaisons ; ici chaque jour est tiré isolément — c'est
- * ce qui garde la grille lisible et grand public, comme la maquette.
+ * À partir d'une graine dérivée de la date, on tire la meilleure grille parmi N
+ * essais sur **tout le catalogue de règles**, avec l'équilibrage de familles de
+ * `drawRuleSet` (≥ 1 ligne, ≤ 2 par sous-famille, ≤ 2 lettres) pour garder des
+ * grilles variées et lisibles. Chaque jour est tiré isolément — O(1) au
+ * chargement, quelle que soit la date, et déterministe.
  */
+import { drawRuleSet, pickLineRuleCount } from "./generator.ts";
 import { hasPerfectAssignment } from "./matching.ts";
 import { mulberry32, shuffle, type Rng } from "./rng.ts";
 import type { CompiledRule } from "./types.ts";
@@ -30,7 +30,7 @@ export interface DailyOptions {
 }
 
 export const DEFAULT_DAILY: DailyOptions = {
-  attempts: 400,
+  attempts: 800,
   looseCell: 16,
   targetAvgMin: 2,
   targetAvgMax: 8,
@@ -63,9 +63,9 @@ function quality(cells: string[][], rows: CompiledRule[], cols: CompiledRule[], 
   return q;
 }
 
-/** Grille pour une graine donnée (déterministe). */
+/** Grille pour une graine donnée (déterministe), sur l'ensemble des règles. */
 export function generateDaily(
-  pool: CompiledRule[],
+  rules: CompiledRule[],
   seed: number,
   options: Partial<DailyOptions> = {},
 ): DailyPuzzle {
@@ -74,9 +74,11 @@ export function generateDaily(
   let best: { rows: CompiledRule[]; cols: CompiledRule[]; cells: string[][]; q: number } | null = null;
 
   for (let attempt = 0; attempt < opts.attempts; attempt++) {
-    const shuffled = shuffle(rng, pool);
-    const rows = shuffled.slice(0, 3);
-    const cols = shuffled.slice(3, 6);
+    const chosen = drawRuleSet(rng, rules, pickLineRuleCount(rng));
+    if (!chosen) continue;
+    const arranged = shuffle(rng, chosen);
+    const rows = arranged.slice(0, 3);
+    const cols = arranged.slice(3, 6);
     const cells = cellsFor(rows, cols);
     if (cells.some((c) => c.length === 0)) continue;
     if (!hasPerfectAssignment(cells.map((c) => new Set(c)))) continue;
@@ -85,7 +87,7 @@ export function generateDaily(
     if (best.q >= 4 && attempt > 25) break;
   }
 
-  if (!best) throw new Error("Aucune grille valide : pool de critères trop pauvre");
+  if (!best) throw new Error("Aucune grille valide : catalogue de règles trop pauvre");
   return {
     rows: best.rows.map((r) => r.id) as [string, string, string],
     cols: best.cols.map((r) => r.id) as [string, string, string],

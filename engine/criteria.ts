@@ -1,12 +1,12 @@
 /**
- * Le pool de critères « grand public » du jeu quotidien, mappé sur les vraies
- * règles de l'engine, avec les libellés, icônes et explications de l'interface.
+ * Métadonnées d'affichage (icône, libellé court pour la grille, libellé long et
+ * explication pour le « ? ») pour **toutes** les règles du catalogue, pas juste
+ * un sous-ensemble : la maquette n'exposait que 9 critères à but démonstratif,
+ * le jeu utilise désormais l'ensemble.
  *
- * On garde le parti pris éditorial de la maquette : neuf critères évocateurs
- * (les cinq lignes + terminus, correspondance, hors Montpellier, nom propre),
- * plutôt que les ~40 règles mécaniques du catalogue complet. Les textes des
- * lignes sont générés depuis les terminus réels du réseau — pas de copie
- * périmée (la L1 va désormais à Gare Sud de France, plus à Odysseum).
+ * Règle d'écriture : **aucune explication ne cite de station en exemple** (ce
+ * serait donner des réponses). Les textes des lignes s'appuient sur l'habillage
+ * de la ligne, pas sur ses stations.
  */
 import { stationById } from "./select.ts";
 import type { CompiledRule, LineRef, Network } from "./types.ts";
@@ -14,113 +14,239 @@ import type { CompiledRule, LineRef, Network } from "./types.ts";
 export interface Criterion {
   ruleId: string;
   kind: "line" | "attr";
-  /** Numéro de ligne pour les pastilles colorées. */
+  /** Numéro de ligne (pastille colorée) pour les critères « ligne ». */
   n?: number;
   valClass: string;
   icon: string;
+  /** Libellé compact affiché dans la case d'en-tête de la grille. */
   short: string;
+  /** Libellé complet affiché en titre du « ? ». */
   label: string;
   expl: string;
 }
 
-/** Ids des règles de l'engine composant le pool quotidien, dans l'ordre d'affichage. */
-export const DAILY_POOL_IDS = [
-  "ligne-1",
-  "ligne-2",
-  "ligne-3",
-  "ligne-4",
-  "ligne-5",
-  "terminus",
-  "correspondance",
-  "geo-hors-montpellier",
-  "tag-personnalite",
-] as const;
-
-/** Habillage artistique de chaque ligne (identité TaM), complété par les terminus réels. */
+/** Habillage artistique de chaque ligne (identité TaM), sans nommer de station. */
 const LINE_FLAVOR: Record<LineRef, string> = {
   "1": "la ligne bleue aux hirondelles de Garouste & Bonetti",
-  "2": "la ligne des fleurs",
-  "3": "l’univers marin de Christian Lacroix",
+  "2": "la ligne orange, dite « des fleurs »",
+  "3": "la ligne verte, l’univers marin de Christian Lacroix",
   "4": "la circulaire dorée autour de l’Écusson",
-  "5": "la ligne des Parcs, la Feuille de Vie de Barthélémy Toguo",
+  "5": "la ligne magenta des Parcs, la Feuille de Vie de Barthélémy Toguo",
 };
 
-export function terminiPhrase(net: Network, ref: LineRef): string {
-  const byId = stationById(net);
-  const line = net.lines.find((l) => l.ref === ref);
-  if (!line || line.circular) return "circulaire";
-  const names = line.termini.map((id) => byId.get(id)?.name ?? id);
-  if (names.length <= 2) return names.join(" ↔ ");
-  return `${names[0]} ↔ ${names.slice(1).join(" / ")}`;
-}
+/** Métadonnées des règles fixes (hors lignes, lettres et communes, générées). */
+const META: Record<string, { icon: string; short: string; label: string; expl: string }> = {
+  // Réseau
+  correspondance: {
+    icon: "⇄",
+    short: "Corresp.",
+    label: "Correspondance",
+    expl: "Au moins deux lignes de tram s’arrêtent à cette station.",
+  },
+  terminus: {
+    icon: "⇥",
+    short: "Terminus",
+    label: "Terminus",
+    expl: "La station est le départ ou l’arrivée d’une ligne (la ligne 4, circulaire, part et revient à son terminus).",
+  },
+  "p-tram": {
+    icon: "Ⓟ",
+    short: "P+Tram",
+    label: "Parking-relais",
+    expl: "Un parking-relais P+Tram permet de garer sa voiture à cette station.",
+  },
+  // Nom — structure
+  "nom-commence-voyelle": {
+    icon: "A",
+    short: "Voyelle début",
+    label: "Commence par une voyelle",
+    expl: "La première lettre du nom est une voyelle (a, e, i, o, u, y).",
+  },
+  "nom-finit-voyelle": {
+    icon: "a",
+    short: "Voyelle fin",
+    label: "Se termine par une voyelle",
+    expl: "La dernière lettre du nom est une voyelle (a, e, i, o, u, y).",
+  },
+  "nom-saint": {
+    icon: "St",
+    short: "« Saint »",
+    label: "Contient « Saint »",
+    expl: "Le nom contient le mot « Saint ».",
+  },
+  "nom-accent": {
+    icon: "é",
+    short: "Un accent",
+    label: "Contient un accent",
+    expl: "Le nom contient au moins une lettre accentuée (é, è, ô, ï…).",
+  },
+  "nom-apostrophe": {
+    icon: "’",
+    short: "Apostrophe",
+    label: "Contient une apostrophe",
+    expl: "Le nom contient une apostrophe.",
+  },
+  "nom-double-lettre": {
+    icon: "aa",
+    short: "Lettre doublée",
+    label: "Contient une lettre doublée",
+    expl: "Deux lettres identiques se suivent dans le nom (espaces et tirets ignorés).",
+  },
+  "nom-chiffre": {
+    icon: "①",
+    short: "Un chiffre",
+    label: "Contient un chiffre",
+    expl: "Le nom contient un chiffre.",
+  },
+  "nom-long": {
+    icon: "18+",
+    short: "Nom long",
+    label: "Nom long",
+    expl: "Le nom compte au moins 18 lettres, hors espaces et ponctuation.",
+  },
+  "nom-court": {
+    icon: "≤8",
+    short: "Nom court",
+    label: "Nom court",
+    expl: "Le nom compte au plus 8 lettres, hors espaces et ponctuation.",
+  },
+  "nom-un-mot": {
+    icon: "1",
+    short: "Un seul mot",
+    label: "Nom d’un seul mot",
+    expl: "Le nom tient en un seul mot.",
+  },
+  "nom-trois-mots": {
+    icon: "3+",
+    short: "3 mots et +",
+    label: "Nom d’au moins 3 mots",
+    expl: "Le nom compte au moins trois mots.",
+  },
+  // Sémantique
+  "tag-personnalite": {
+    icon: "☺",
+    short: "Nom propre",
+    label: "Nom propre",
+    expl: "La station porte le nom d’une personnalité, pas d’un lieu ni d’un quartier. Les saints ne comptent pas.",
+  },
+  "tag-espace-vert": {
+    icon: "✿",
+    short: "Espace vert",
+    label: "Espace vert",
+    expl: "Le nom évoque un parc, un jardin, un zoo ou un domaine.",
+  },
+  "tag-enseignement": {
+    icon: "✎",
+    short: "Études",
+    label: "Études & recherche",
+    expl: "Le nom évoque l’enseignement supérieur ou la recherche.",
+  },
+  // Géographie
+  "geo-montpellier": {
+    icon: "⌂",
+    short: "Montpellier",
+    label: "Dans Montpellier",
+    expl: "La station se trouve sur la commune de Montpellier.",
+  },
+  "geo-hors-montpellier": {
+    icon: "⌖",
+    short: "Hors Mtp",
+    label: "Hors Montpellier",
+    expl: "La station se trouve hors de la ville de Montpellier, dans une autre commune de la métropole.",
+  },
+  "geo-nord-comedie": {
+    icon: "↑",
+    short: "Nord",
+    label: "Au nord du centre",
+    expl: "La station est située au nord du centre-ville.",
+  },
+  "geo-sud-comedie": {
+    icon: "↓",
+    short: "Sud",
+    label: "Au sud du centre",
+    expl: "La station est située au sud du centre-ville.",
+  },
+  "geo-est-comedie": {
+    icon: "→",
+    short: "Est",
+    label: "À l’est du centre",
+    expl: "La station est située à l’est du centre-ville.",
+  },
+  "geo-ouest-comedie": {
+    icon: "←",
+    short: "Ouest",
+    label: "À l’ouest du centre",
+    expl: "La station est située à l’ouest du centre-ville.",
+  },
+  "geo-proche-comedie": {
+    icon: "◉",
+    short: "Près du centre",
+    label: "Proche du centre",
+    expl: "La station est à moins de 1,5 km à vol d’oiseau du centre-ville.",
+  },
+  "geo-loin-comedie": {
+    icon: "◌",
+    short: "Loin du centre",
+    label: "Loin du centre",
+    expl: "La station est à plus de 5 km à vol d’oiseau du centre-ville.",
+  },
+};
 
-export function buildCriteria(): Map<string, Criterion> {
-  const map = new Map<string, Criterion>();
-
-  for (const ref of ["1", "2", "3", "4", "5"] as LineRef[]) {
-    map.set(`ligne-${ref}`, {
-      ruleId: `ligne-${ref}`,
+function criterionFor(rule: CompiledRule): Criterion {
+  if (rule.family === "ligne") {
+    const ref = rule.id.slice(-1) as LineRef;
+    return {
+      ruleId: rule.id,
       kind: "line",
       n: Number(ref),
       valClass: `v${ref}`,
       icon: "",
       short: `Ligne ${ref}`,
       label: `Ligne ${ref}`,
-      // Pas d'exemples de stations (les terminus sont des réponses valides) : on
-      // se contente d'identifier la ligne par son habillage.
       expl: `La station est desservie par la ligne ${ref}, ${LINE_FLAVOR[ref]}.`,
-    });
+    };
   }
-
-  const attrs: Criterion[] = [
-    {
-      ruleId: "terminus",
+  if (rule.subfamily === "contient-lettre") {
+    const letter = rule.id.slice("nom-lettre-".length).toUpperCase();
+    return {
+      ruleId: rule.id,
       kind: "attr",
       valClass: "",
-      icon: "⇥",
-      short: "Terminus",
-      label: "Terminus",
-      expl: "La station est le départ ou l’arrivée d’une ligne. La ligne 4, circulaire, n’en a pas.",
-    },
-    {
-      ruleId: "correspondance",
+      icon: letter,
+      short: "dans le nom",
+      label: `Contient un « ${letter} »`,
+      expl: `Le nom de la station contient la lettre ${letter}, accentuée ou non.`,
+    };
+  }
+  if (rule.id.startsWith("geo-commune-")) {
+    const commune = rule.label.replace(/^À\s+/, "");
+    return {
+      ruleId: rule.id,
       kind: "attr",
       valClass: "",
-      icon: "⇄",
-      short: "Corresp.",
-      label: "Correspondance",
-      expl: "Au moins deux lignes de tram s’arrêtent à cette station.",
-    },
-    {
-      ruleId: "geo-hors-montpellier",
-      kind: "attr",
-      valClass: "",
-      icon: "⌖",
-      short: "Hors Mtp",
-      label: "Hors Montpellier",
-      expl: "La station se trouve hors de la ville de Montpellier, dans une autre commune de la métropole.",
-    },
-    {
-      ruleId: "tag-personnalite",
-      kind: "attr",
-      valClass: "",
-      icon: "☺",
-      short: "Nom propre",
-      label: "Nom propre",
-      expl: "La station porte le nom d’une personnalité, pas d’un lieu ni d’un quartier. Les saints ne comptent pas.",
-    },
-  ];
-  for (const c of attrs) map.set(c.ruleId, c);
-
-  return map;
+      icon: "⚑",
+      short: commune,
+      label: `À ${commune}`,
+      expl: `La station se trouve sur la commune de ${commune}.`,
+    };
+  }
+  const m = META[rule.id];
+  if (!m) throw new Error(`Critère sans métadonnée d'affichage : ${rule.id}`);
+  return { ruleId: rule.id, kind: "attr", valClass: "", ...m };
 }
 
-/** Les règles compilées du pool quotidien, dans l'ordre d'affichage. */
-export function dailyPool(rules: CompiledRule[]): CompiledRule[] {
-  const byId = new Map(rules.map((r) => [r.id, r]));
-  return DAILY_POOL_IDS.map((id) => {
-    const rule = byId.get(id);
-    if (!rule) throw new Error(`Règle du pool quotidien absente du catalogue : ${id}`);
-    return rule;
-  });
+/** Métadonnées d'affichage pour toutes les règles fournies. */
+export function buildCriteria(rules: CompiledRule[]): Map<string, Criterion> {
+  return new Map(rules.map((r) => [r.id, criterionFor(r)]));
+}
+
+/** Terminus d'une ligne en texte, pour l'écran « À propos » (boucle pour la L4). */
+export function terminiPhrase(net: Network, ref: LineRef): string {
+  const byId = stationById(net);
+  const line = net.lines.find((l) => l.ref === ref);
+  if (!line) return "";
+  const names = line.termini.map((id) => byId.get(id)?.name ?? id);
+  if (line.circular) return names.length ? `boucle depuis ${names[0]}` : "circulaire";
+  if (names.length <= 2) return names.join(" ↔ ");
+  return `${names[0]} ↔ ${names.slice(1).join(" / ")}`;
 }
