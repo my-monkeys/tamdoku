@@ -58,11 +58,12 @@ export function shareText(
       : game === "archive"
         ? `Tamdoku · ${prettyDate(date)}`
         : "Tamdoku · Entraînement";
+  const url = game === "archive" && date ? `tamdoku.fr/archive/${date}` : "tamdoku.fr";
   return [
     `🚋 ${head}`,
     `${result.score}/900 · ${result.solved}/9 cases · ${result.mistakes} ❌`,
     result.emoji.join("\n"),
     `Rare : ${result.rare}`,
-    "tamdoku.fr",
+    url,
   ].join("\n");
 }

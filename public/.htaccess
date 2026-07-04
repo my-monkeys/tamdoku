@@ -1,7 +1,14 @@
-# Forcer HTTPS. Le site est derrière Cloudflare : on teste le protocole d'origine
-# via X-Forwarded-Proto (tester %{HTTPS} boucle si Cloudflare parle HTTP à l'origine).
 <IfModule mod_rewrite.c>
   RewriteEngine On
+
+  # Forcer HTTPS. Le site est derrière Cloudflare : on teste le protocole d'origine
+  # via X-Forwarded-Proto (tester %{HTTPS} boucle si Cloudflare parle HTTP à l'origine).
   RewriteCond %{HTTP:X-Forwarded-Proto} =http
   RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # SPA : routeur côté client. Toute route qui n'est pas un vrai fichier/dossier
+  # (/archive, /archive/2026-07-03, /regles…) sert index.html.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^ index.html [L]
 </IfModule>

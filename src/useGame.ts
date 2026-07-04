@@ -4,7 +4,8 @@
  * (answer.ts), génération quotidienne déterministe (daily.ts) et score
  * d'originalité par notoriété (fame.ts).
  */
-import { useCallback, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { parsePath, pathFor, type Route } from "./routes.ts";
 import { generateDaily, seedForDate, type DailyPuzzle } from "../engine/daily.ts";
 import { findStation, suggestStations } from "../engine/answer.ts";
 import { originalityPoints } from "../engine/fame.ts";
@@ -333,6 +334,34 @@ export function useGame() {
 
   const reopenResult = useCallback(() => patch({ resultHidden: false }), [patch]);
   const hideResult = useCallback(() => patch({ resultHidden: true }), [patch]);
+
+  // ── Routeur : URL ↔ écran ───────────────────────────────────────────────────
+  const applyRoute = useCallback(
+    (r: Route) => {
+      if (r.name === "grid") startArchive(r.date);
+      else if (r.name === "archive" || r.name === "rules" || r.name === "stats" || r.name === "about") {
+        patch({ screen: r.name });
+      } else goHome();
+    },
+    [patch, startArchive, goHome],
+  );
+
+  const didMount = useRef(false);
+  useEffect(() => {
+    applyRoute(parsePath(window.location.pathname));
+    const onPop = () => applyRoute(parsePath(window.location.pathname));
+    window.addEventListener("popstate", onPop);
+    return () => window.removeEventListener("popstate", onPop);
+  }, [applyRoute]);
+
+  useEffect(() => {
+    const path = pathFor(g.screen, g.game, g.puzzleDate);
+    if (!didMount.current) {
+      didMount.current = true;
+      return;
+    }
+    if (path !== window.location.pathname) window.history.pushState(null, "", path);
+  }, [g.screen, g.game, g.puzzleDate]);
 
   // Suggestions (mode simple)
   const suggestions = useMemo<Station[]>(() => {

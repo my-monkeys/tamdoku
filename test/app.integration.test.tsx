@@ -14,6 +14,7 @@ beforeEach(() => {
     }),
   );
   localStorage.clear();
+  window.history.replaceState(null, "", "/");
 });
 afterEach(() => {
   cleanup();
@@ -105,12 +106,14 @@ describe("app — partie complète du jour (jsdom)", () => {
       render(<App />);
       await act(async () => fireEvent.click(screen.getByRole("button", { name: "Archive" })));
       expect(screen.getByText("Archive")).toBeTruthy();
+      expect(window.location.pathname).toBe("/archive");
 
       const past = archiveDates()[1]!; // la veille = 2026-07-09
       const names = solve(generateDaily(pool, seedForDate(past)).valid).map((id) => byId.get(id)!.name);
 
       const rows = document.querySelectorAll(".arow");
       await act(async () => fireEvent.click(rows[1] as HTMLElement));
+      expect(window.location.pathname).toBe(`/archive/${past}`);
       for (let ci = 0; ci < 9; ci++) {
         await act(async () => fireEvent.click(screen.getAllByText("＋")[0]!));
         const input = screen.getByPlaceholderText(/station/i) as HTMLInputElement;
@@ -127,6 +130,14 @@ describe("app — partie complète du jour (jsdom)", () => {
     } finally {
       vi.useRealTimers();
     }
+  });
+
+  it("un lien direct /regles ouvre l'écran des règles", async () => {
+    window.history.replaceState(null, "", "/regles");
+    const App = (await import("../src/App.tsx")).default;
+    render(<App />);
+    await flush();
+    expect(screen.getByText("Comment jouer")).toBeTruthy();
   });
 
   it("une réponse hors critère coûte un cœur", async () => {
