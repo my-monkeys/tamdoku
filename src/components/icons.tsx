@@ -104,9 +104,9 @@ const PATHS: Record<string, ReactNode> = {
   back: <path d="m15 5-7 7 7 7" />,
   help: (
     <>
-      <circle cx="12" cy="12" r="9" />
-      <path d="M9.2 9.3a2.8 2.8 0 0 1 5.4 1c0 1.9-2.6 2.2-2.6 4" />
-      <path d="M12 17.5h.01" />
+      <circle cx="12" cy="12" r="10" />
+      <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+      <path d="M12 17h.01" />
     </>
   ),
 };

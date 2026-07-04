@@ -65,6 +65,7 @@ button{font-family:inherit}
 .rd{display:inline-flex;align-items:center;justify-content:center;border-radius:50%;font-family:'Archivo';font-weight:800;line-height:1;box-shadow:inset 0 -2px 0 rgba(0,0,0,.14),0 1px 2px rgba(0,0,0,.14)}
 .rd.mini{width:37px;height:37px;font-size:17px}
 .alab{font-size:10.5px;font-weight:800;text-transform:uppercase;letter-spacing:.01em;line-height:1.12;color:var(--ink)}
+.alab.solo{font-size:13.5px;line-height:1.18}
 .aico{font-size:17px;line-height:1}
 .qm{position:absolute;top:5px;right:7px;font-size:10px;font-weight:800;color:var(--muted);opacity:.7}
 .sname{font-size:11.5px;font-weight:700;line-height:1.13;text-wrap:balance}

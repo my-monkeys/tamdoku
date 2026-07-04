@@ -58,7 +58,7 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                         <CritGlyph crit={c} size={18} />
                       </span>
                     )}
-                    <span className="alab">{c.short}</span>
+                    <span className={`alab${hasGlyph(c) ? "" : " solo"}`}>{c.short}</span>
                     <span className="qm">?</span>
                   </>
                 )}
@@ -84,7 +84,7 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                           <CritGlyph crit={rc} size={18} />
                         </span>
                       )}
-                      <span className="alab">{rc.short}</span>
+                      <span className={`alab${hasGlyph(rc) ? "" : " solo"}`}>{rc.short}</span>
                       <span className="qm">?</span>
                     </>
                   )}
