@@ -1,0 +1,1953 @@
+{
+ "generatedAt": "2026-07-04T10:37:33.535Z",
+ "source": "OSM (Overpass, service nominal) + GTFS TaM (identité/alias) + geo.api.gouv.fr (communes)",
+ "stations": [
+  {
+   "id": "agropolis",
+   "name": "Agropolis",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.645993,
+   "lon": 3.868573,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "enseignement"
+   ]
+  },
+  {
+   "id": "aiguelongue",
+   "name": "Aiguelongue",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.626283,
+   "lon": 3.883202,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "albert-1er-jardin-des-plantes",
+   "name": "Albert 1er - Jardin des Plantes",
+   "aliases": [],
+   "lines": [
+    "4",
+    "5"
+   ],
+   "lat": 43.614821,
+   "lon": 3.873758,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite",
+    "espace-vert"
+   ]
+  },
+  {
+   "id": "albert-1er-saint-charles",
+   "name": "Albert 1er - Saint-Charles",
+   "aliases": [],
+   "lines": [
+    "1",
+    "5"
+   ],
+   "lat": 43.616503,
+   "lon": 3.874098,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "antigone",
+   "name": "Antigone",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.608555,
+   "lon": 3.886657,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "astruc",
+   "name": "Astruc",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.61026,
+   "lon": 3.854924,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "aube-rouge",
+   "name": "Aube Rouge",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.638564,
+   "lon": 3.924846,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "beaux-arts",
+   "name": "Beaux-Arts",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.616992,
+   "lon": 3.883516,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "boirargues",
+   "name": "Boirargues",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.585397,
+   "lon": 3.920181,
+   "commune": "Lattes",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "boutonnet-cite-des-arts",
+   "name": "Boutonnet - Cité des Arts",
+   "aliases": [
+    "Boutonnet"
+   ],
+   "lines": [
+    "1",
+    "5"
+   ],
+   "lat": 43.622588,
+   "lon": 3.868125,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "enseignement"
+   ]
+  },
+  {
+   "id": "celleneuve",
+   "name": "Celleneuve",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.61558,
+   "lon": 3.825879,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "centurions",
+   "name": "Centurions",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.632784,
+   "lon": 3.915713,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "chamberte-les-roses",
+   "name": "Chamberte - Les Roses",
+   "aliases": [
+    "Chamberte"
+   ],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.602651,
+   "lon": 3.854612,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "charles-de-gaulle",
+   "name": "Charles de Gaulle",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.628609,
+   "lon": 3.897761,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "chateau-d-o",
+   "name": "Château d'Ô",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.631619,
+   "lon": 3.843073,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "espace-vert"
+   ]
+  },
+  {
+   "id": "cite-creative-parc-montcalm",
+   "name": "Cité Créative - Parc Montcalm",
+   "aliases": [
+    "Cité Créative"
+   ],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.601627,
+   "lon": 3.86214,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "espace-vert"
+   ]
+  },
+  {
+   "id": "clairval",
+   "name": "Clairval",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.630165,
+   "lon": 3.902599,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "clapiers",
+   "name": "Clapiers",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.653622,
+   "lon": 3.872737,
+   "commune": "Clapiers",
+   "terminusOf": [
+    "5"
+   ],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "cnrs-zoo-de-lunaret",
+   "name": "CNRS - Zoo de Lunaret",
+   "aliases": [
+    "CNRS"
+   ],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.638212,
+   "lon": 3.865867,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "espace-vert",
+    "enseignement"
+   ]
+  },
+  {
+   "id": "comedie",
+   "name": "Comédie",
+   "aliases": [],
+   "lines": [
+    "1",
+    "2"
+   ],
+   "lat": 43.608393,
+   "lon": 3.879792,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "corum",
+   "name": "Corum",
+   "aliases": [],
+   "lines": [
+    "1",
+    "2",
+    "4"
+   ],
+   "lat": 43.614293,
+   "lon": 3.881865,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "cougourlude",
+   "name": "Cougourlude",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.571337,
+   "lon": 3.914058,
+   "commune": "Lattes",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "croix-d-argent",
+   "name": "Croix d'Argent",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.592422,
+   "lon": 3.866442,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "du-guesclin",
+   "name": "Du Guesclin",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.607122,
+   "lon": 3.883249,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "ecopole",
+   "name": "Écopôle",
+   "aliases": [
+    "EcoPôle"
+   ],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.578061,
+   "lon": 3.935159,
+   "commune": "Pérols",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "estanove",
+   "name": "Estanove",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.600705,
+   "lon": 3.849301,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "euromedecine",
+   "name": "Euromédecine",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.638993,
+   "lon": 3.827708,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "gambetta",
+   "name": "Gambetta",
+   "aliases": [
+    "Gambetta - Chaptal",
+    "Gambetta - Saint-Denis"
+   ],
+   "lines": [
+    "3",
+    "5"
+   ],
+   "lat": 43.605726,
+   "lon": 3.873651,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "garcia-lorca",
+   "name": "Garcia Lorca",
+   "aliases": [],
+   "lines": [
+    "4"
+   ],
+   "lat": 43.591181,
+   "lon": 3.891064,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "gare-saint-roch",
+   "name": "Gare Saint-Roch",
+   "aliases": [],
+   "lines": [
+    "1",
+    "2"
+   ],
+   "lat": 43.605661,
+   "lon": 3.880226,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "gare-saint-roch-republique",
+   "name": "Gare Saint-Roch - République",
+   "aliases": [],
+   "lines": [
+    "3",
+    "4"
+   ],
+   "lat": 43.605207,
+   "lon": 3.879755,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "gare-sud-de-france",
+   "name": "Gare Sud de France",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.596907,
+   "lon": 3.922245,
+   "commune": "Montpellier",
+   "terminusOf": [
+    "1"
+   ],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "georges-freche-hotel-de-ville",
+   "name": "Georges Frêche - Hôtel de ville",
+   "aliases": [
+    "Georges Frêche",
+    "Georges Frêche - Hôtel de Ville"
+   ],
+   "lines": [
+    "4"
+   ],
+   "lat": 43.599448,
+   "lon": 3.895007,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "georges-pompidou",
+   "name": "Georges Pompidou",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.64931,
+   "lon": 3.921021,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "gres-de-montpellier",
+   "name": "Grés de Montpellier",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.592944,
+   "lon": 3.823539,
+   "commune": "Saint-Jean-de-Védas",
+   "terminusOf": [
+    "5"
+   ],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "halles-de-la-paillade",
+   "name": "Halles de la Paillade",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.627596,
+   "lon": 3.817514,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "hauts-de-massane",
+   "name": "Hauts de Massane",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.636341,
+   "lon": 3.822688,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "hopital-lapeyronie",
+   "name": "Hôpital Lapeyronie",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.631685,
+   "lon": 3.852574,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "hotel-du-departement",
+   "name": "Hôtel du Département",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.621964,
+   "lon": 3.835039,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "jacou",
+   "name": "Jacou",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.654524,
+   "lon": 3.912804,
+   "commune": "Jacou",
+   "terminusOf": [
+    "2"
+   ],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "jeu-de-mail-des-abbes",
+   "name": "Jeu de Mail des Abbés",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.620411,
+   "lon": 3.884072,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "jules-guesde",
+   "name": "Jules Guesde",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.611386,
+   "lon": 3.846716,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "juvignac",
+   "name": "Juvignac",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.617466,
+   "lon": 3.810095,
+   "commune": "Juvignac",
+   "terminusOf": [
+    "3"
+   ],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "la-condamine",
+   "name": "La Condamine",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.571992,
+   "lon": 3.844436,
+   "commune": "Saint-Jean-de-Védas",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "la-galine",
+   "name": "La Galine",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.631447,
+   "lon": 3.909013,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "la-rauze",
+   "name": "La Rauze",
+   "aliases": [],
+   "lines": [
+    "4"
+   ],
+   "lat": 43.593528,
+   "lon": 3.895945,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "lattes-centre",
+   "name": "Lattes Centre",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.570697,
+   "lon": 3.905196,
+   "commune": "Lattes",
+   "terminusOf": [
+    "3"
+   ],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "lemasson",
+   "name": "Lemasson",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.593639,
+   "lon": 3.873126,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "leon-blum",
+   "name": "Léon Blum",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.608924,
+   "lon": 3.890197,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "les-arceaux",
+   "name": "Les Arceaux",
+   "aliases": [
+    "Arceaux"
+   ],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.609943,
+   "lon": 3.86199,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "les-aubes",
+   "name": "Les Aubes",
+   "aliases": [],
+   "lines": [
+    "4"
+   ],
+   "lat": 43.61397,
+   "lon": 3.888218,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "louis-blanc-agora-de-la-danse",
+   "name": "Louis Blanc - Agora de la Danse",
+   "aliases": [
+    "Louis Blanc"
+   ],
+   "lines": [
+    "1",
+    "4"
+   ],
+   "lat": 43.614748,
+   "lon": 3.87811,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "malbosc-domaine-d-o",
+   "name": "Malbosc - Domaine d'Ô",
+   "aliases": [
+    "Malbosc"
+   ],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.634585,
+   "lon": 3.833256,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "espace-vert"
+   ]
+  },
+  {
+   "id": "mas-drevon",
+   "name": "Mas Drevon",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.595509,
+   "lon": 3.867878,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "millenaire",
+   "name": "Millénaire",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.603366,
+   "lon": 3.909941,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "mondial-98",
+   "name": "Mondial 98",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.602762,
+   "lon": 3.904043,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "sport"
+   ]
+  },
+  {
+   "id": "montferrier-sur-lez",
+   "name": "Montferrier-sur-Lez",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.651392,
+   "lon": 3.867325,
+   "commune": "Montferrier-sur-Lez",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "mosson",
+   "name": "Mosson",
+   "aliases": [],
+   "lines": [
+    "1",
+    "3"
+   ],
+   "lat": 43.616254,
+   "lon": 3.819699,
+   "commune": "Montpellier",
+   "terminusOf": [
+    "1"
+   ],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "moulares-hotel-de-ville",
+   "name": "Moularès (Hôtel de Ville)",
+   "aliases": [
+    "Moularès"
+   ],
+   "lines": [
+    "1",
+    "3"
+   ],
+   "lat": 43.60061,
+   "lon": 3.89554,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "notre-dame-de-sablassou",
+   "name": "Notre-Dame de Sablassou",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.634234,
+   "lon": 3.922265,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "nouveau-saint-roch",
+   "name": "Nouveau Saint-Roch",
+   "aliases": [],
+   "lines": [
+    "2",
+    "4"
+   ],
+   "lat": 43.599356,
+   "lon": 3.875661,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "observatoire",
+   "name": "Observatoire",
+   "aliases": [],
+   "lines": [
+    "3",
+    "4"
+   ],
+   "lat": 43.606385,
+   "lon": 3.876752,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "occitanie-hopitaux-facultes",
+   "name": "Occitanie - Hôpitaux-Facultés",
+   "aliases": [
+    "Occitanie",
+    "Occitanie Hôpitaux - Facultés"
+   ],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.634712,
+   "lon": 3.848439,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": [
+    "enseignement"
+   ]
+  },
+  {
+   "id": "odysseum",
+   "name": "Odysseum",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.603815,
+   "lon": 3.9204,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "ovalie",
+   "name": "Ovalie",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.591407,
+   "lon": 3.847623,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "sport"
+   ]
+  },
+  {
+   "id": "pablo-picasso",
+   "name": "Pablo Picasso",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.597773,
+   "lon": 3.903545,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "parc-bagatelle",
+   "name": "Parc Bagatelle",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.593627,
+   "lon": 3.842317,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "espace-vert"
+   ]
+  },
+  {
+   "id": "parc-clemenceau",
+   "name": "Parc Clemenceau",
+   "aliases": [
+    "Parc Clémenceau"
+   ],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.60327,
+   "lon": 3.871949,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite",
+    "espace-vert"
+   ]
+  },
+  {
+   "id": "parc-des-bouisses",
+   "name": "Parc des Bouisses",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.593032,
+   "lon": 3.829531,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "espace-vert"
+   ]
+  },
+  {
+   "id": "parc-expo",
+   "name": "Parc Expo",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.572895,
+   "lon": 3.945726,
+   "commune": "Pérols",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "parc-font-colombe",
+   "name": "Parc Font-Colombe",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.595332,
+   "lon": 3.837334,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "espace-vert"
+   ]
+  },
+  {
+   "id": "pergola",
+   "name": "Pergola",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.617831,
+   "lon": 3.83945,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "perols-centre",
+   "name": "Pérols - Centre",
+   "aliases": [
+    "Pérols Centre"
+   ],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.565417,
+   "lon": 3.957354,
+   "commune": "Pérols",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "perols-etang-de-l-or",
+   "name": "Pérols Étang de l'Or",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.557949,
+   "lon": 3.963627,
+   "commune": "Pérols",
+   "terminusOf": [
+    "3"
+   ],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "peyrou-arc-de-triomphe",
+   "name": "Peyrou - Arc de Triomphe",
+   "aliases": [
+    "Peyrou"
+   ],
+   "lines": [
+    "4",
+    "5"
+   ],
+   "lat": 43.611607,
+   "lon": 3.872303,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "pilory",
+   "name": "Pilory",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.619554,
+   "lon": 3.832056,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "place-carnot",
+   "name": "Place Carnot",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.603698,
+   "lon": 3.884264,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "place-de-france",
+   "name": "Place de France",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.603744,
+   "lon": 3.915748,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "place-de-l-europe",
+   "name": "Place de l'Europe",
+   "aliases": [],
+   "lines": [
+    "1",
+    "4"
+   ],
+   "lat": 43.607345,
+   "lon": 3.89394,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "place-du-8-mai-1945",
+   "name": "Place du 8 Mai 1945",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.601312,
+   "lon": 3.868078,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "plan-cabanes",
+   "name": "Plan Cabanes",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.608556,
+   "lon": 3.868103,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "plan-des-4-seigneurs",
+   "name": "Plan des 4 Seigneurs",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.644289,
+   "lon": 3.861191,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "pole-chimie-balard",
+   "name": "Pôle Chimie Balard",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.633999,
+   "lon": 3.867943,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "enseignement"
+   ]
+  },
+  {
+   "id": "pompignane",
+   "name": "Pompignane",
+   "aliases": [],
+   "lines": [
+    "4"
+   ],
+   "lat": 43.612584,
+   "lon": 3.894948,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "port-marianne",
+   "name": "Port Marianne",
+   "aliases": [],
+   "lines": [
+    "1",
+    "3"
+   ],
+   "lat": 43.601597,
+   "lon": 3.899616,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "restanque",
+   "name": "Restanque",
+   "aliases": [],
+   "lines": [
+    "4"
+   ],
+   "lat": 43.590359,
+   "lon": 3.88511,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "rives-du-lez",
+   "name": "Rives du Lez",
+   "aliases": [],
+   "lines": [
+    "1",
+    "4"
+   ],
+   "lat": 43.604212,
+   "lon": 3.894898,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "rives-du-lez-consuls-de-mer",
+   "name": "Rives du Lez - Consuls de Mer",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.604007,
+   "lon": 3.893932,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "rondelet",
+   "name": "Rondelet",
+   "aliases": [],
+   "lines": [
+    "2",
+    "4"
+   ],
+   "lat": 43.6031,
+   "lon": 3.876054,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "sabines",
+   "name": "Sabines",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.583792,
+   "lon": 3.860156,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "saint-cleophas",
+   "name": "Saint-Cléophas",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.5949,
+   "lon": 3.87595,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "saint-eloi",
+   "name": "Saint-Éloi",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.627074,
+   "lon": 3.865617,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "saint-eloi-docteur-pezet",
+   "name": "Saint-Éloi - Docteur Pezet",
+   "aliases": [
+    "Saint-Eloi - Docteur Pezet"
+   ],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.62707,
+   "lon": 3.866683,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "saint-guilhem-courreau",
+   "name": "Saint-Guilhem - Courreau",
+   "aliases": [
+    "Saint-Guilhem"
+   ],
+   "lines": [
+    "4",
+    "5"
+   ],
+   "lat": 43.608121,
+   "lon": 3.873525,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "saint-jean-de-vedas-centre",
+   "name": "Saint-Jean-de-Védas Centre",
+   "aliases": [
+    "Saint-Jean de Védas Centre"
+   ],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.574901,
+   "lon": 3.830686,
+   "commune": "Saint-Jean-de-Védas",
+   "terminusOf": [
+    "2"
+   ],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "saint-jean-le-sec",
+   "name": "Saint-Jean-le-Sec",
+   "aliases": [
+    "Saint-Jean le Sec"
+   ],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.570863,
+   "lon": 3.837912,
+   "commune": "Saint-Jean-de-Védas",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "saint-lazare",
+   "name": "Saint-Lazare",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.626765,
+   "lon": 3.888675,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "saint-martin-le-jam",
+   "name": "Saint-Martin - Le Jam",
+   "aliases": [
+    "Saint-Martin"
+   ],
+   "lines": [
+    "4"
+   ],
+   "lat": 43.592174,
+   "lon": 3.880355,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "saint-paul",
+   "name": "Saint-Paul",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.630673,
+   "lon": 3.82111,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "soriech",
+   "name": "Soriech",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.582675,
+   "lon": 3.925698,
+   "commune": "Lattes",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "stade-de-la-mosson",
+   "name": "Stade de la Mosson",
+   "aliases": [],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.621234,
+   "lon": 3.81738,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "sport"
+   ]
+  },
+  {
+   "id": "stade-philippides",
+   "name": "Stade Philippidès",
+   "aliases": [],
+   "lines": [
+    "1",
+    "5"
+   ],
+   "lat": 43.618993,
+   "lon": 3.869503,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "sport"
+   ]
+  },
+  {
+   "id": "tonnelles",
+   "name": "Tonnelles",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.613503,
+   "lon": 3.839658,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "universite-montpellier-triolet",
+   "name": "Université Montpellier - Triolet",
+   "aliases": [
+    "Université Montpellier"
+   ],
+   "lines": [
+    "1"
+   ],
+   "lat": 43.629136,
+   "lon": 3.861565,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "enseignement"
+   ]
+  },
+  {
+   "id": "universite-paul-valery",
+   "name": "Université Paul Valéry",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.629958,
+   "lon": 3.869623,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "enseignement"
+   ]
+  },
+  {
+   "id": "via-domitia",
+   "name": "Via Domitia",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.64672,
+   "lon": 3.929469,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": true,
+   "tags": []
+  },
+  {
+   "id": "victoire-2",
+   "name": "Victoire 2",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.575189,
+   "lon": 3.849866,
+   "commune": "Saint-Jean-de-Védas",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "villeneuve-d-angouleme",
+   "name": "Villeneuve d'Angoulême",
+   "aliases": [],
+   "lines": [
+    "2"
+   ],
+   "lat": 43.58879,
+   "lon": 3.865676,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "voltaire",
+   "name": "Voltaire",
+   "aliases": [],
+   "lines": [
+    "3"
+   ],
+   "lat": 43.603712,
+   "lon": 3.889097,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite"
+   ]
+  },
+  {
+   "id": "yves-du-manoir",
+   "name": "Yves du Manoir",
+   "aliases": [],
+   "lines": [
+    "5"
+   ],
+   "lat": 43.595018,
+   "lon": 3.849922,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": [
+    "personnalite",
+    "sport"
+   ]
+  }
+ ],
+ "lines": [
+  {
+   "ref": "1",
+   "name": "Mosson - Gare Sud de France",
+   "color": "#005CA9",
+   "circular": false,
+   "termini": [
+    "gare-sud-de-france",
+    "mosson"
+   ],
+   "branches": [
+    [
+     "mosson",
+     "stade-de-la-mosson",
+     "halles-de-la-paillade",
+     "saint-paul",
+     "hauts-de-massane",
+     "euromedecine",
+     "malbosc-domaine-d-o",
+     "chateau-d-o",
+     "occitanie-hopitaux-facultes",
+     "hopital-lapeyronie",
+     "universite-montpellier-triolet",
+     "saint-eloi",
+     "boutonnet-cite-des-arts",
+     "stade-philippides",
+     "albert-1er-saint-charles",
+     "louis-blanc-agora-de-la-danse",
+     "corum",
+     "comedie",
+     "gare-saint-roch",
+     "du-guesclin",
+     "antigone",
+     "leon-blum",
+     "place-de-l-europe",
+     "rives-du-lez",
+     "moulares-hotel-de-ville",
+     "port-marianne",
+     "mondial-98",
+     "millenaire",
+     "place-de-france",
+     "odysseum",
+     "gare-sud-de-france"
+    ]
+   ]
+  },
+  {
+   "ref": "2",
+   "name": "SAINT-JEAN DE VÉDAS Centre - Notre-Dame de Sablassou / Jacou",
+   "color": "#EF7D00",
+   "circular": false,
+   "termini": [
+    "jacou",
+    "saint-jean-de-vedas-centre"
+   ],
+   "branches": [
+    [
+     "jacou",
+     "georges-pompidou",
+     "via-domitia",
+     "aube-rouge",
+     "notre-dame-de-sablassou",
+     "centurions",
+     "la-galine",
+     "clairval",
+     "charles-de-gaulle",
+     "saint-lazare",
+     "aiguelongue",
+     "jeu-de-mail-des-abbes",
+     "beaux-arts",
+     "corum",
+     "comedie",
+     "gare-saint-roch",
+     "rondelet",
+     "nouveau-saint-roch",
+     "saint-cleophas",
+     "lemasson",
+     "mas-drevon",
+     "croix-d-argent",
+     "villeneuve-d-angouleme",
+     "sabines",
+     "victoire-2",
+     "la-condamine",
+     "saint-jean-le-sec",
+     "saint-jean-de-vedas-centre"
+    ]
+   ]
+  },
+  {
+   "ref": "3",
+   "name": "Juvignac - Lattes Centre / Pérols Étang de l'Or",
+   "color": "#C8D400",
+   "circular": false,
+   "termini": [
+    "juvignac",
+    "lattes-centre",
+    "perols-etang-de-l-or"
+   ],
+   "branches": [
+    [
+     "juvignac",
+     "mosson",
+     "celleneuve",
+     "pilory",
+     "hotel-du-departement",
+     "pergola",
+     "tonnelles",
+     "jules-guesde",
+     "astruc",
+     "les-arceaux",
+     "plan-cabanes",
+     "gambetta",
+     "observatoire",
+     "gare-saint-roch-republique",
+     "place-carnot",
+     "voltaire",
+     "rives-du-lez-consuls-de-mer",
+     "moulares-hotel-de-ville",
+     "port-marianne",
+     "pablo-picasso",
+     "boirargues",
+     "soriech",
+     "cougourlude",
+     "lattes-centre"
+    ],
+    [
+     "juvignac",
+     "mosson",
+     "celleneuve",
+     "pilory",
+     "hotel-du-departement",
+     "pergola",
+     "tonnelles",
+     "jules-guesde",
+     "astruc",
+     "les-arceaux",
+     "plan-cabanes",
+     "gambetta",
+     "observatoire",
+     "gare-saint-roch-republique",
+     "place-carnot",
+     "voltaire",
+     "rives-du-lez-consuls-de-mer",
+     "moulares-hotel-de-ville",
+     "port-marianne",
+     "pablo-picasso",
+     "boirargues",
+     "soriech",
+     "ecopole",
+     "parc-expo",
+     "perols-centre",
+     "perols-etang-de-l-or"
+    ]
+   ]
+  },
+  {
+   "ref": "4",
+   "name": "MONTPELLIER - Garcia Lorca",
+   "color": "#4B2A0E",
+   "circular": true,
+   "termini": [],
+   "branches": [
+    [
+     "garcia-lorca",
+     "restanque",
+     "saint-martin-le-jam",
+     "nouveau-saint-roch",
+     "rondelet",
+     "gare-saint-roch-republique",
+     "observatoire",
+     "saint-guilhem-courreau",
+     "peyrou-arc-de-triomphe",
+     "albert-1er-jardin-des-plantes",
+     "louis-blanc-agora-de-la-danse",
+     "corum",
+     "les-aubes",
+     "pompignane",
+     "place-de-l-europe",
+     "rives-du-lez",
+     "georges-freche-hotel-de-ville",
+     "la-rauze",
+     "garcia-lorca"
+    ]
+   ]
+  },
+  {
+   "ref": "5",
+   "name": "Lavérune - Clapiers",
+   "color": "#",
+   "circular": false,
+   "termini": [
+    "clapiers",
+    "gres-de-montpellier"
+   ],
+   "branches": [
+    [
+     "gres-de-montpellier",
+     "parc-des-bouisses",
+     "parc-font-colombe",
+     "parc-bagatelle",
+     "ovalie",
+     "yves-du-manoir",
+     "estanove",
+     "chamberte-les-roses",
+     "cite-creative-parc-montcalm",
+     "place-du-8-mai-1945",
+     "parc-clemenceau",
+     "gambetta",
+     "saint-guilhem-courreau",
+     "peyrou-arc-de-triomphe",
+     "albert-1er-jardin-des-plantes",
+     "stade-philippides",
+     "boutonnet-cite-des-arts",
+     "saint-eloi-docteur-pezet",
+     "universite-paul-valery",
+     "pole-chimie-balard",
+     "cnrs-zoo-de-lunaret",
+     "plan-des-4-seigneurs",
+     "agropolis",
+     "montferrier-sur-lez",
+     "clapiers"
+    ],
+    [
+     "gres-de-montpellier",
+     "parc-des-bouisses",
+     "parc-font-colombe",
+     "parc-bagatelle",
+     "ovalie",
+     "yves-du-manoir",
+     "estanove",
+     "chamberte-les-roses",
+     "cite-creative-parc-montcalm",
+     "place-du-8-mai-1945",
+     "parc-clemenceau",
+     "gambetta",
+     "saint-guilhem-courreau",
+     "peyrou-arc-de-triomphe",
+     "albert-1er-jardin-des-plantes",
+     "albert-1er-saint-charles",
+     "stade-philippides",
+     "boutonnet-cite-des-arts",
+     "saint-eloi-docteur-pezet",
+     "universite-paul-valery",
+     "pole-chimie-balard",
+     "cnrs-zoo-de-lunaret",
+     "plan-des-4-seigneurs",
+     "agropolis",
+     "montferrier-sur-lez",
+     "clapiers"
+    ]
+   ]
+  }
+ ]
+}

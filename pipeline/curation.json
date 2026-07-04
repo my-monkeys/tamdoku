@@ -1,0 +1,77 @@
+{
+  "_doc": "Curation manuelle appliquée par build-network.ts. Les clés de 'merges'/'renames' sont des noms d'arrêts OSM (espaces normalisés) ; les listes de 'tags' et 'parkRideOverrides' utilisent les slugs canoniques du network.json final.",
+
+  "merges": {
+    "_doc": "Quais directionnels que le GTFS officiel considère comme une seule station.",
+    "Gambetta - Chaptal": "Gambetta",
+    "Gambetta - Saint-Denis": "Gambetta"
+  },
+
+  "renames": {
+    "_doc": "Nom canonique quand la signalétique officielle diffère du tag OSM.",
+    "Arceaux": "Les Arceaux"
+  },
+
+  "gtfsAliases": {
+    "_doc": "Nom GTFS → nom canonique, quand le rapprochement automatique par clé pliée échoue.",
+    "Saint-Martin": "Saint-Martin - Le Jam"
+  },
+
+  "parkRideOverrides": {
+    "_doc": "slug → bool, prime sur la détection par proximité OSM."
+  },
+
+  "tags": {
+    "personnalite": [
+      "albert-1er-saint-charles",
+      "albert-1er-jardin-des-plantes",
+      "leon-blum",
+      "charles-de-gaulle",
+      "georges-pompidou",
+      "georges-freche-hotel-de-ville",
+      "pablo-picasso",
+      "garcia-lorca",
+      "jules-guesde",
+      "voltaire",
+      "gambetta",
+      "rondelet",
+      "du-guesclin",
+      "louis-blanc-agora-de-la-danse",
+      "yves-du-manoir",
+      "parc-clemenceau"
+    ],
+    "espace-vert": [
+      "parc-bagatelle",
+      "parc-clemenceau",
+      "parc-des-bouisses",
+      "parc-font-colombe",
+      "cite-creative-parc-montcalm",
+      "albert-1er-jardin-des-plantes",
+      "cnrs-zoo-de-lunaret",
+      "malbosc-domaine-d-o",
+      "chateau-d-o"
+    ],
+    "sport": [
+      "stade-de-la-mosson",
+      "stade-philippides",
+      "mondial-98",
+      "yves-du-manoir",
+      "ovalie"
+    ],
+    "enseignement": [
+      "universite-montpellier-triolet",
+      "universite-paul-valery",
+      "pole-chimie-balard",
+      "cnrs-zoo-de-lunaret",
+      "agropolis",
+      "occitanie-hopitaux-facultes",
+      "boutonnet-cite-des-arts"
+    ]
+  },
+
+  "_notes": {
+    "personnalite": "Saints exclus volontairement (règle « Saint » séparée). Astruc et Victoire 2 exclus (référence trop indirecte). Parc Expo exclu d'espace-vert (parc des expositions).",
+    "sport": "Ovalie inclus : quartier nommé pour le rugby (stades de l'Ovalie).",
+    "enseignement": "Cité des Arts = conservatoire à rayonnement régional de Montpellier."
+  }
+}

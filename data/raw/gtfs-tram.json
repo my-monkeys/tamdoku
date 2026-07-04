@@ -1,0 +1,405 @@
+{
+ "fetchedAt": "2026-07-04T10:30:05.972Z",
+ "routes": {
+  "1": {
+   "ref": "1",
+   "longName": "Mosson - Gare Sud de France",
+   "color": "005CA9"
+  },
+  "2": {
+   "ref": "2",
+   "longName": "SAINT-JEAN DE VÉDAS Centre - Notre-Dame de Sablassou / Jacou",
+   "color": "EF7D00"
+  },
+  "3": {
+   "ref": "3",
+   "longName": "Juvignac - Lattes Centre / Pérols Étang de l'Or",
+   "color": "C8D400"
+  },
+  "4": {
+   "ref": "4",
+   "longName": "MONTPELLIER - Garcia Lorca",
+   "color": "4B2A0E"
+  },
+  "5": {
+   "ref": "5",
+   "longName": "Lavérune - Clapiers",
+   "color": ""
+  }
+ },
+ "lineTripTotals": {
+  "1": 4605,
+  "2": 4478,
+  "3": 2194,
+  "4": 2753,
+  "5": 2363
+ },
+ "stations": {
+  "Garcia Lorca": {
+   "4": 5385
+  },
+  "Restanque": {
+   "4": 2699
+  },
+  "Saint-Martin": {
+   "4": 2699
+  },
+  "Nouveau Saint-Roch": {
+   "2": 3787,
+   "4": 2728
+  },
+  "Rondelet": {
+   "2": 3787,
+   "4": 2728
+  },
+  "Gare Saint-Roch - République": {
+   "1": 2724,
+   "3": 2194,
+   "4": 1496
+  },
+  "Observatoire": {
+   "1": 2724,
+   "3": 2194,
+   "4": 1487
+  },
+  "Saint-Guilhem - Courreau": {
+   "1": 2705,
+   "4": 1438,
+   "5": 1624
+  },
+  "Peyrou - Arc de Triomphe": {
+   "1": 3167,
+   "4": 1438,
+   "5": 1624
+  },
+  "Albert 1er - Jardin des Plantes": {
+   "1": 2721,
+   "4": 1438,
+   "5": 1624
+  },
+  "Louis Blanc - Agora de la Danse": {
+   "1": 1792,
+   "4": 1438
+  },
+  "Corum": {
+   "1": 1792,
+   "2": 3077,
+   "4": 1438
+  },
+  "Les Aubes": {
+   "2": 1382,
+   "4": 1438
+  },
+  "Pompignane": {
+   "2": 1382,
+   "4": 1438
+  },
+  "Place de l'Europe": {
+   "1": 4516,
+   "2": 1382,
+   "4": 2686
+  },
+  "Rives du Lez": {
+   "1": 4516,
+   "4": 2686
+  },
+  "Georges Frêche - Hôtel de Ville": {
+   "4": 2686
+  },
+  "La Rauze": {
+   "4": 2686
+  },
+  "Sabines": {
+   "2": 3787
+  },
+  "Villeneuve d'Angoulême": {
+   "2": 3787
+  },
+  "Croix d'Argent": {
+   "2": 3787
+  },
+  "Mas Drevon": {
+   "2": 3787
+  },
+  "Lemasson": {
+   "2": 3787
+  },
+  "Saint-Cléophas": {
+   "2": 3787
+  },
+  "Gare Saint-Roch": {
+   "1": 1792,
+   "2": 3787,
+   "4": 1257
+  },
+  "Comédie": {
+   "1": 1792,
+   "2": 2405
+  },
+  "Beaux-Arts": {
+   "2": 3768
+  },
+  "Jeu de Mail des Abbés": {
+   "2": 3768
+  },
+  "Aiguelongue": {
+   "2": 3768
+  },
+  "Saint-Lazare": {
+   "2": 3768
+  },
+  "Charles de Gaulle": {
+   "2": 3768
+  },
+  "Clairval": {
+   "2": 3768
+  },
+  "La Galine": {
+   "2": 3768
+  },
+  "Centurions": {
+   "2": 3768
+  },
+  "Notre-Dame de Sablassou": {
+   "2": 3768
+  },
+  "Aube Rouge": {
+   "2": 2066
+  },
+  "Via Domitia": {
+   "2": 2066
+  },
+  "Georges Pompidou": {
+   "2": 2066
+  },
+  "Jacou": {
+   "2": 2066
+  },
+  "Saint-Jean de Védas Centre": {
+   "2": 2051
+  },
+  "Saint-Jean le Sec": {
+   "2": 2051
+  },
+  "La Condamine": {
+   "2": 2051
+  },
+  "Victoire 2": {
+   "2": 2051
+  },
+  "Mosson": {
+   "1": 3574,
+   "3": 2024
+  },
+  "Celleneuve": {
+   "3": 2024
+  },
+  "Pilory": {
+   "3": 2024
+  },
+  "Hôtel du Département": {
+   "3": 2024
+  },
+  "Pergola": {
+   "3": 2024
+  },
+  "Tonnelles": {
+   "3": 2024
+  },
+  "Jules Guesde": {
+   "3": 2024
+  },
+  "Astruc": {
+   "3": 2024
+  },
+  "Les Arceaux": {
+   "3": 2024
+  },
+  "Plan Cabanes": {
+   "3": 2024
+  },
+  "Gambetta": {
+   "3": 2194,
+   "5": 2685
+  },
+  "Place Carnot": {
+   "2": 1382,
+   "3": 2194
+  },
+  "Voltaire": {
+   "2": 1382,
+   "3": 2194
+  },
+  "Rives du Lez - Consuls de Mer": {
+   "2": 1382,
+   "3": 2194
+  },
+  "Moularès (Hôtel de Ville)": {
+   "1": 4516,
+   "3": 2194
+  },
+  "Port Marianne": {
+   "1": 4516,
+   "3": 2194
+  },
+  "Pablo Picasso": {
+   "3": 2194
+  },
+  "Boirargues": {
+   "3": 2194
+  },
+  "Soriech": {
+   "3": 2194
+  },
+  "Juvignac": {
+   "3": 1031
+  },
+  "Cougourlude": {
+   "3": 978
+  },
+  "Lattes Centre": {
+   "3": 978
+  },
+  "EcoPôle": {
+   "3": 1206
+  },
+  "Parc Expo": {
+   "3": 1206
+  },
+  "Pérols Centre": {
+   "3": 1206
+  },
+  "Pérols Étang de l'Or": {
+   "3": 1206
+  },
+  "Léon Blum": {
+   "1": 4516,
+   "4": 1248
+  },
+  "Antigone": {
+   "1": 4516,
+   "4": 1248
+  },
+  "Du Guesclin": {
+   "1": 4516,
+   "4": 1248
+  },
+  "Saint-Paul": {
+   "1": 3574
+  },
+  "Halles de la Paillade": {
+   "1": 3574
+  },
+  "Stade de la Mosson": {
+   "1": 3574
+  },
+  "Hauts de Massane": {
+   "1": 3549
+  },
+  "Euromédecine": {
+   "1": 3549
+  },
+  "Malbosc - Domaine d'Ô": {
+   "1": 3549
+  },
+  "Château d'Ô": {
+   "1": 3549
+  },
+  "Occitanie Hôpitaux - Facultés": {
+   "1": 3589
+  },
+  "Hôpital Lapeyronie": {
+   "1": 3589
+  },
+  "Université Montpellier - Triolet": {
+   "1": 3589
+  },
+  "Saint-Éloi": {
+   "1": 3589
+  },
+  "Boutonnet - Cité des Arts": {
+   "1": 3589,
+   "5": 1624
+  },
+  "Stade Philippidès": {
+   "1": 3589,
+   "5": 1624
+  },
+  "Albert 1er - Saint-Charles": {
+   "1": 3589,
+   "5": 1624
+  },
+  "Mondial 98": {
+   "1": 4516
+  },
+  "Millénaire": {
+   "1": 4516
+  },
+  "Place de France": {
+   "1": 4516
+  },
+  "Odysseum": {
+   "1": 4516
+  },
+  "Gare Sud de France": {
+   "1": 4516
+  },
+  "Clapiers": {
+   "5": 1625
+  },
+  "Montferrier-sur-Lez": {
+   "5": 1625
+  },
+  "Agropolis": {
+   "5": 1625
+  },
+  "Plan des 4 Seigneurs": {
+   "5": 1625
+  },
+  "CNRS - Zoo de Lunaret": {
+   "5": 1625
+  },
+  "Pôle Chimie Balard": {
+   "5": 1625
+  },
+  "Université Paul Valéry": {
+   "5": 1625
+  },
+  "Saint-Eloi - Docteur Pezet": {
+   "5": 1625
+  },
+  "Parc Clémenceau": {
+   "5": 2349
+  },
+  "Place du 8 Mai 1945": {
+   "5": 2349
+  },
+  "Cité Créative - Parc Montcalm": {
+   "5": 2349
+  },
+  "Chamberte - Les Roses": {
+   "5": 2349
+  },
+  "Estanove": {
+   "5": 2349
+  },
+  "Yves du Manoir": {
+   "5": 2349
+  },
+  "Ovalie": {
+   "5": 2349
+  },
+  "Parc Bagatelle": {
+   "5": 2349
+  },
+  "Parc Font-Colombe": {
+   "5": 2349
+  },
+  "Parc des Bouisses": {
+   "5": 2349
+  },
+  "Grés de Montpellier": {
+   "5": 2349
+  }
+ }
+}

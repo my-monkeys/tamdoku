@@ -1,0 +1,415 @@
+{
+ "version": 0.6,
+ "generator": "Overpass API 0.7.62.11 87bfad18",
+ "osm3s": {
+  "timestamp_osm_base": "2026-07-04T10:29:00Z",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+ },
+ "elements": [
+  {
+   "type": "node",
+   "id": 3350326125,
+   "lat": 43.5904627,
+   "lon": 3.8910847,
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "400",
+    "layer": "-1",
+    "name": "Garcia Lorca",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "park_ride": "yes",
+    "parking": "underground"
+   }
+  },
+  {
+   "type": "node",
+   "id": 11891277596,
+   "lat": 43.5905695,
+   "lon": 3.8908123,
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 58093484,
+   "center": {
+    "lat": 43.6381798,
+    "lon": 3.8277458
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "350",
+    "fee": "yes",
+    "name": "Euromédecine",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 76214593,
+   "center": {
+    "lat": 43.6355406,
+    "lon": 3.8481442
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "building": "yes",
+    "capacity": "650",
+    "elevator": "yes",
+    "fee": "yes",
+    "height": "8",
+    "name": "Occitanie",
+    "operator": "Transports de l'Agglomération de Montpellier",
+    "operator:type": "public",
+    "park_ride": "yes",
+    "parking": "multi-storey",
+    "source": "cadastre-dgi-fr source : Direction Générale des Impôts - Cadastre. Mise à jour : 2010"
+   }
+  },
+  {
+   "type": "way",
+   "id": 93863152,
+   "center": {
+    "lat": 43.584104,
+    "lon": 3.8606163
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "capacity": "330",
+    "capacity:disabled": "20",
+    "check_date:fee": "2026-05-23",
+    "fee": "yes",
+    "hgv": "no",
+    "maxheight": "2.00",
+    "name": "P+Tram - Sabines",
+    "opening_hours": "24/7",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "park_ride": "tram",
+    "parking": "surface",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 104301860,
+   "center": {
+    "lat": 43.6336204,
+    "lon": 3.9228885
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "258",
+    "capacity:disabled": "8",
+    "fee": "yes",
+    "name": "Notre-Dame de Sablassou (P + Tram)",
+    "note": "258 places dont 8 pour handicapés",
+    "operator": "TaM",
+    "park_ride": "yes",
+    "parking": "surface",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 105576927,
+   "center": {
+    "lat": 43.6495443,
+    "lon": 3.9214597
+   },
+   "tags": {
+    "access": "customers",
+    "amenity": "parking",
+    "capacity": "260",
+    "capacity:disabled": "10",
+    "fee": "no",
+    "name": "Georges Pompidou (parking de proximité)",
+    "operator": "Transports de l'Agglomération de Montpellier",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 121802497,
+   "center": {
+    "lat": 43.5712614,
+    "lon": 3.8387696
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "280",
+    "name": "P+Tram Saint-Jean le Sec",
+    "opening_hours": "24/7",
+    "operator": "Transports de l'Agglomération de Montpellier",
+    "park_ride": "yes",
+    "parking": "surface",
+    "surface": "ground"
+   }
+  },
+  {
+   "type": "way",
+   "id": 243487815,
+   "center": {
+    "lat": 43.5653303,
+    "lon": 3.9570106
+   },
+   "tags": {
+    "amenity": "parking",
+    "capacity": "70",
+    "capacity:carpool": "5",
+    "capacity:disabled": "1",
+    "carpool": "designated",
+    "fee": "no",
+    "name": "Pérols - Centre",
+    "park_ride": "tram;bicycle",
+    "wheelchair": "yes"
+   }
+  },
+  {
+   "type": "way",
+   "id": 249856372,
+   "center": {
+    "lat": 43.6165299,
+    "lon": 3.8184424
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "450",
+    "fee": "no",
+    "name": "Mosson",
+    "network": "P+Tram",
+    "operator": "TAM",
+    "park_ride": "tram;bus",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 249942669,
+   "center": {
+    "lat": 43.5709097,
+    "lon": 3.9050197
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "63",
+    "capacity:disabled": "5",
+    "fee": "no",
+    "name": "Lattes Centre",
+    "operator": "Transports de l'Agglomération de Montpellier",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 332133218,
+   "center": {
+    "lat": 43.7665889,
+    "lon": 3.8674546
+   },
+   "tags": {
+    "access": "yes",
+    "addr:city": "SAINT MATHIEU DE TREVIERS",
+    "addr:housenumber": "5",
+    "addr:postcode": "34270",
+    "addr:street": "Allée Terra Via",
+    "amenity": "parking",
+    "fee": "no",
+    "name": "Centre Médical Terrivias",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 332959108,
+   "center": {
+    "lat": 43.646827,
+    "lon": 3.9305826
+   },
+   "tags": {
+    "addr:city": "Le Crès",
+    "addr:postcode": "34920",
+    "addr:street": "Rue Olympie",
+    "alt_name": "Parking Halle des Sports",
+    "amenity": "parking",
+    "capacity": "79",
+    "capacity:disabled": "2",
+    "fee": "no",
+    "name": "Via Domitia (parking de proximité)",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 373649719,
+   "center": {
+    "lat": 43.6047726,
+    "lon": 3.9179356
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "building": "no",
+    "capacity": "1200",
+    "fee": "yes",
+    "hgv": "no",
+    "layer": "-1",
+    "location": "surface",
+    "lpg": "no",
+    "maxheight": "1.9 m",
+    "name": "Circé",
+    "operator": "TAM",
+    "park_ride": "yes",
+    "parking": "multi-storey",
+    "short_name": "P+tram Circé"
+   }
+  },
+  {
+   "type": "way",
+   "id": 378673990,
+   "center": {
+    "lat": 43.5706077,
+    "lon": 3.8379091
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "30",
+    "capacity:disabled": "no",
+    "fee": "no",
+    "hgv": "no",
+    "lit": "no",
+    "opening_hours": "24/7",
+    "park_ride": "tram;bus",
+    "parking": "surface",
+    "smoothness": "bad",
+    "supervised": "no",
+    "surface": "ground"
+   }
+  },
+  {
+   "type": "way",
+   "id": 398512680,
+   "center": {
+    "lat": 43.6169035,
+    "lon": 3.8092863
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "capacity": "120",
+    "capacity:disabled": "3",
+    "fee": "no",
+    "name": "Juvignac (parking de proximité)",
+    "operator": "Transports de l'Agglomération de Montpellier",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 399659109,
+   "center": {
+    "lat": 43.6730022,
+    "lon": 3.9826216
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "carpool": "designated",
+    "fee": "no",
+    "name": "Parking co voiturage",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 417608211,
+   "center": {
+    "lat": 43.6544482,
+    "lon": 4.0082525
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "park_ride": "yes",
+    "parking": "surface",
+    "surface": "sett"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1330920806,
+   "center": {
+    "lat": 43.7448924,
+    "lon": 3.9996063
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "carpool": "designated",
+    "fee": "no",
+    "name": "Aire de covoiturage",
+    "park_ride": "yes",
+    "parking": "surface"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1454908826,
+   "center": {
+    "lat": 43.5922735,
+    "lon": 3.8237362
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "name": "P+Tram Grés de Montpellier",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "operator:type": "public",
+    "park_ride": "yes",
+    "parking": "surface",
+    "surface": "asphalt"
+   }
+  },
+  {
+   "type": "way",
+   "id": 1454908827,
+   "center": {
+    "lat": 43.6542553,
+    "lon": 3.8724114
+   },
+   "tags": {
+    "access": "yes",
+    "amenity": "parking",
+    "fee": "no",
+    "name": "P+Tram Clapiers",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "operator:type": "public",
+    "park_ride": "yes",
+    "parking": "surface",
+    "surface": "asphalt"
+   }
+  }
+ ]
+}
