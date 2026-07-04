@@ -10,9 +10,11 @@ Puzzle quotidien du tram de Montpellier (clone d'ubahndoku.de). **App jouable de
 
 ### Câblage app ↔ engine (décision clé)
 
-La maquette embarquait son propre prototype de données (~53 stations, quelques erreurs) et son générateur. L'app **remplace ça par le vrai engine** : `data/network.json` (110 stations OSM/GTFS), `engine/daily.ts` (grille du jour déterministe), `engine/criteria.ts` (les **9 mêmes critères évocateurs** que la maquette, mappés aux vraies règles, copie corrigée sur les terminus réels), `engine/fame.ts` (notoriété → score d'originalité + tri des suggestions), `engine/answer.ts` (résolution de saisie). On garde donc le rendu de la maquette mais des données exactes.
+La maquette embarquait son propre prototype de données (~53 stations, quelques erreurs) et son générateur, et n'exposait que **9 critères à but démonstratif**. L'app **remplace ça par le vrai engine** : `data/network.json` (110 stations OSM/GTFS), `engine/daily.ts` (grille du jour déterministe), `engine/criteria.ts` (métadonnées d'affichage — icône/libellé/explication **sans exemple de station** — pour **les 43 règles** du catalogue, plus juste les 9), `engine/fame.ts` (notoriété → score d'originalité + tri des suggestions), `engine/answer.ts` (résolution de saisie). On garde le rendu de la maquette mais des données exactes et tout le catalogue.
 
-- Deux générateurs coexistent : `engine/daily.ts` (date-seedé, indépendant, petit pool — **utilisé par l'app**) et `engine/generator.ts` (série anti-répétition sur le pool complet — pour une future archive). Ne pas confondre.
+- Le générateur du jour tire parmi **tout le catalogue** avec équilibrage des familles (`drawRuleSet` partagé depuis `generator.ts` : ≥ 1 ligne, ≤ 2 par sous-famille, ≤ 2 règles-lettres), sinon les grilles seraient noyées sous les « contient un X ».
+- Deux générateurs coexistent : `engine/daily.ts` (date-seedé, indépendant, O(1) au chargement — **utilisé par l'app**) et `engine/generator.ts` (série anti-répétition — pour une future archive + le CLI `gen`). Ne pas confondre.
+- **Toute nouvelle règle dans `rules.ts` doit recevoir ses métadonnées dans `criteria.ts`** (sinon `buildCriteria` throw). Les lettres et communes sont générées automatiquement, le reste via la table `META`. Explications **sans nom de station** (règle absolue).
 - Deux tsconfig : racine (Node, `engine/pipeline/cli/test/*.ts`) + `tsconfig.app.json` (DOM+JSX, `src` + `test/**/*.tsx`). `npm run typecheck` lance les deux.
 
 ## Invariants à ne pas casser
@@ -20,6 +22,7 @@ La maquette embarquait son propre prototype de données (~53 stations, quelques 
 - **La grille du jour est déterministe par date** (`engine/daily.ts` + `seedForDate`) : même date → même grille pour tout le monde, calculée côté client. Ne pas changer la façon de dériver la graine après le lancement, sinon les grilles passées changent. (`engine/generator.ts` garde en plus un `EPOCH = "2026-07-06"` figé pour la future série d'archive.)
 - La desserte vient d'**OSM (réseau nominal)**, jamais de l'union des trips GTFS : le GTFS contient les déviations travaux (été 2026 : L1 via Peyrou, L2 via Les Aubes, L4 via Antigone). Le GTFS ne sert qu'à l'identité/alias/couleurs.
 - Stations distinctes comme sur le plan officiel (les deux Gare Saint-Roch, les deux Albert 1er, les deux Saint-Éloi) ; seuls les quais directionnels fusionnent (Gambetta ×3 → 1), via `pipeline/curation.json`.
+- **Garcia Lorca est le terminus de la L4** : la ligne est circulaire (`circular: true`) *et* a un terminus (l'origine de la boucle). Ne pas re-sauter la L4 dans le calcul des terminus.
 - Toute règle du catalogue doit couvrir 6–88 stations (12–66 pour les lettres) — garde automatique dans `buildRules`.
 
 ## Rafraîchir les données
