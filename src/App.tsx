@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { shareText } from "./format.ts";
 import { useGame } from "./useGame.ts";
 import { Home } from "./components/Home.tsx";
@@ -10,29 +10,13 @@ import { InputSheet } from "./components/InputSheet.tsx";
 import { InfoOverlay } from "./components/InfoOverlay.tsx";
 import { ResultOverlay } from "./components/ResultOverlay.tsx";
 
-function usePrefersDark(): boolean {
-  const query = "(prefers-color-scheme: dark)";
-  const [dark, setDark] = useState(() =>
-    typeof matchMedia === "function" ? matchMedia(query).matches : false,
-  );
-  useEffect(() => {
-    const mql = matchMedia(query);
-    const on = () => setDark(mql.matches);
-    mql.addEventListener("change", on);
-    return () => mql.removeEventListener("change", on);
-  }, []);
-  return dark;
-}
-
 export default function App() {
   const ctrl = useGame();
   const { g } = ctrl;
-  const dark = usePrefersDark();
 
   useEffect(() => {
-    document.documentElement.dataset.theme = dark ? "dark" : "light";
-    document.body.classList.toggle("dark-page", dark);
-  }, [dark]);
+    document.documentElement.dataset.theme = "light";
+  }, []);
 
   const doShare = () => {
     if (!g.result) return;
@@ -46,7 +30,7 @@ export default function App() {
   };
 
   return (
-    <div className={`app${dark ? " dark" : ""}`}>
+    <div className="app">
       {g.screen === "home" && <Home ctrl={ctrl} />}
       {g.screen === "game" && <Game ctrl={ctrl} />}
       {g.screen === "rules" && <Rules ctrl={ctrl} />}

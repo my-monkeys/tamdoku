@@ -42,7 +42,7 @@ Puis **lire le rapport de croisement OSM↔GTFS** affiché par le build : chaque
 
 - Le CSS de `src/styles.css` est **verbatim de la maquette** — pour un changement visuel, éditer `src/` (pas `design/Tamdoku.dc.html`, qui n'est que la référence).
 - La grille CSS `.grid3` est plate (16 cellules en flux) : la ligne d'en-tête + ses 3 cases sont émises sans wrapper (`RowFragment`), sinon la grille casse.
-- Thème clair/sombre suivi de `prefers-color-scheme` (classe `dark` sur `.app`, `dark-page` sur `body`).
+- **Thème clair uniquement** (choix de Maxim) : le sombre de la maquette a été retiré (CSS `.app.dark`/`body.dark-page` supprimé, `data-theme=light` figé). Ne pas réintroduire le suivi `prefers-color-scheme`.
 - Vérif sans navigateur : `test/app.integration.test.tsx` (jsdom) monte l'app et joue une grille complète jusqu'à la victoire — c'est le filet de sécurité du portage. **Encore à faire : une passe visuelle en vrai navigateur** (l'extension Chrome n'était pas connectée au moment du build).
 
 ## Déploiement
