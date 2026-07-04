@@ -30,10 +30,8 @@ button{font-family:inherit}
 .segb{flex:1;border:none;background:transparent;color:rgba(255,255,255,.75);font-weight:800;font-size:13px;padding:9px;border-radius:9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
 .segb .sst{font-size:9.5px;font-weight:700;opacity:.7;text-transform:none;letter-spacing:0}
 .segb.on{background:var(--paper);color:var(--ink)}
-.bigbtn{width:100%;margin-top:14px;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;color:#fff;background:linear-gradient(90deg,#0064B0,#009E3D 28%,#F07D00 52%,#F4B223 74%,#C51A7F);background-size:160% 100%;text-shadow:0 1px 3px rgba(0,0,0,.32);box-shadow:0 8px 22px rgba(0,0,0,.24);transition:transform .12s,background-position .5s}
-.bigbtn:hover{background-position:100% 0}
-.bigbtn:active{transform:scale(.985)}
-.bigbtn.done{background:transparent;color:var(--paper);border:1.5px solid rgba(255,255,255,.28);text-shadow:none;box-shadow:none}
+.bigbtn{width:100%;margin-top:14px;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--paper);color:var(--ink)}
+.bigbtn.done{background:transparent;color:var(--paper);border:1.5px solid rgba(255,255,255,.28)}
 .teaser{display:flex;gap:10px}
 .tcell{flex:1;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px 8px;text-align:center}
 .tnum{font-family:'Archivo';font-weight:800;font-size:22px;line-height:1}
@@ -172,7 +170,7 @@ button{font-family:inherit}
 .adate{flex:1;font-weight:700;font-size:14.5px;text-transform:capitalize}
 .astatus{font-size:11px;font-weight:800;padding:4px 10px;border-radius:9px;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
 .astatus.todo{background:var(--soft);color:var(--muted)}
-.astatus.today{background:var(--ink);color:var(--paper)}
+.astatus.play{color:#fff;background:linear-gradient(90deg,#0064B0,#009E3D 30%,#F07D00 55%,#F4B223 76%,#C51A7F);text-shadow:0 1px 2px rgba(0,0,0,.28)}
 .astatus.won{background:#DBF1E3;color:#1C7A46}
 .astatus.lost{background:var(--soft);color:var(--muted)}
 

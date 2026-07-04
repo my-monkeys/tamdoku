@@ -3,8 +3,8 @@ import { prettyDateLong, todayStr } from "../format.ts";
 import type { DailySave } from "../storage.ts";
 import { Icon } from "./icons.tsx";
 
-function Status({ save, isToday }: { save: DailySave | null; isToday: boolean }) {
-  if (!save) return <span className={`astatus ${isToday ? "today" : "todo"}`}>À jouer</span>;
+function Status({ save }: { save: DailySave | null }) {
+  if (!save) return <span className="astatus play">Jouer ▸</span>;
   if (save.status === "playing") return <span className="astatus todo">En cours</span>;
   if (save.status === "won") return <span className="astatus won">✓ {save.result?.score ?? 0}</span>;
   return <span className="astatus lost">Terminé</span>;
@@ -35,7 +35,7 @@ export function Archive({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
               <button key={date} className="arow" onClick={() => ctrl.startArchive(date)}>
                 <span className="anum">#{puzzleNumber(date)}</span>
                 <span className="adate">{isToday ? "Aujourd’hui" : prettyDateLong(date)}</span>
-                <Status save={save} isToday={isToday} />
+                <Status save={save} />
               </button>
             );
           })}
