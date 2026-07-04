@@ -95,6 +95,19 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           À propos
         </button>
       </div>
+
+      <div className="sitefoot">
+        <div className="sitefoot-brand">Un projet My-Monkey 🍌</div>
+        <div className="sitefoot-links">
+          <a href="https://my-monkey.fr/?utm_source=tamdoku" target="_blank" rel="noopener noreferrer">
+            my-monkey.fr
+          </a>
+          <span className="sitefoot-sep">·</span>
+          <a href="https://games.my-monkey.fr/?utm_source=tamdoku" target="_blank" rel="noopener noreferrer">
+            games.my-monkey.fr
+          </a>
+        </div>
+      </div>
     </div>
   );
 }

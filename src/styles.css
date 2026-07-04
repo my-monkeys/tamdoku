@@ -39,8 +39,14 @@ button{font-family:inherit}
 .rowbtns{display:flex;gap:10px}
 .sbtn{flex:1;background:var(--card);border:1px solid var(--line);border-radius:15px;padding:14px;font-weight:800;font-size:14px;cursor:pointer;color:var(--ink);display:flex;align-items:center;justify-content:center;gap:7px}
 .sbtn:active{transform:scale(.98)}
-.footlinks{display:flex;justify-content:center;gap:4px;padding:4px 0 20px;flex-wrap:wrap}
+.footlinks{display:flex;justify-content:center;gap:4px;padding:4px 0 8px;flex-wrap:wrap}
 .flink{background:transparent;border:none;color:var(--muted);font-weight:700;font-size:13px;cursor:pointer;padding:8px 12px;border-radius:10px}
+.sitefoot{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:2px 20px calc(18px + env(safe-area-inset-bottom))}
+.sitefoot-brand{font-family:'Archivo';font-weight:800;font-size:12.5px;letter-spacing:.02em;color:var(--ink);opacity:.78}
+.sitefoot-links{font-size:12px;font-weight:700}
+.sitefoot-links a{color:var(--muted);text-decoration:none}
+.sitefoot-links a:hover{color:var(--ink);text-decoration:underline}
+.sitefoot-sep{margin:0 7px;color:var(--muted);opacity:.5}
 .gbar{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 4px;gap:10px}
 .icbtn{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:19px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;flex:none}
 .gtitle{display:flex;flex-direction:column;align-items:center;gap:1px}
@@ -154,5 +160,5 @@ button{font-family:inherit}
    milieu (Tamdoku au-dessus), liens Règles/Stats/À propos ancrés en bas ── */
 @media (min-width:640px){
   .screen.home .pad.stack{flex:1;justify-content:center}
-  .screen.home .footlinks{padding-bottom:28px}
+  .screen.home .sitefoot{padding-bottom:32px}
 }
