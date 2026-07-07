@@ -6,6 +6,12 @@
 #
 # Le backend est joint par Caddy via le nom `tamdoku-convex-backend` sur le
 # réseau caddy-net ; les HTTP actions (port 3211) sont exposées publiquement.
+#
+# `name:` fige le projet Compose → volume tamdoku_data isolé. SANS ça, le nom de
+# projet vaut le dossier (« infra ») et entre en collision avec ultra-note/monkey
+# (mêmes services backend/dashboard, MÊME volume infra_data). Ne pas retirer.
+
+name: tamdoku
 
 services:
   backend:
