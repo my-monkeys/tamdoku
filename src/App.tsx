@@ -1,4 +1,6 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { track } from "./analytics.ts";
 import { shareText } from "./format.ts";
 import { useGame } from "./useGame.ts";
@@ -20,6 +22,17 @@ export default function App() {
     document.documentElement.dataset.theme = "light";
   }, []);
 
+  // Transition d'écran : fondu-glissé (l'accueil a sa propre cascade).
+  const appRef = useRef<HTMLDivElement>(null);
+  useGSAP(
+    () => {
+      if (g.screen !== "home") {
+        gsap.from(".screen", { opacity: 0, y: 10, duration: 0.32, ease: "power2.out" });
+      }
+    },
+    { scope: appRef, dependencies: [g.screen] },
+  );
+
   const doShare = () => {
     if (!g.result) return;
     track("share", { game: g.game, won: g.result.won });
@@ -33,7 +46,7 @@ export default function App() {
   };
 
   return (
-    <div className="app">
+    <div className="app" ref={appRef}>
       {g.screen === "home" && <Home ctrl={ctrl} />}
       {g.screen === "game" && <Game ctrl={ctrl} />}
       {g.screen === "rules" && <Rules ctrl={ctrl} />}

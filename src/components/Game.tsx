@@ -1,4 +1,6 @@
-import { useMemo } from "react";
+import { useMemo, useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { byId, criterion } from "../data.ts";
 import { revealGrid } from "../../engine/matching.ts";
 import { MAX_MISTAKES, type useGame } from "../useGame.ts";
@@ -14,9 +16,36 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
     () => (g.puzzle && finished ? revealGrid(g.puzzle.valid.map((c) => new Set(c)), g.cells) : null),
     [g.puzzle, finished, g.cells],
   );
+  const solved = g.cells.filter(Boolean).length;
+
+  // Pop de la case qui vient d'être remplie (fast-start / slow-end, comme Statiodle).
+  const gridRef = useRef<HTMLDivElement>(null);
+  const prevCells = useRef(g.cells);
+  useGSAP(
+    () => {
+      const prev = prevCells.current;
+      let placed = -1;
+      for (let i = 0; i < 9; i++) if (!prev[i] && g.cells[i]) placed = i;
+      prevCells.current = g.cells;
+      if (placed >= 0) {
+        const cells = gridRef.current?.querySelectorAll(".gc.ans");
+        const el = cells?.[placed];
+        if (el)
+          gsap.from(el, {
+            scale: 0.35,
+            opacity: 0,
+            duration: 0.62,
+            ease: "back.out(1.5)",
+            // Nettoie les styles inline laissés par le tween.
+            clearProps: "transform,opacity",
+          });
+      }
+    },
+    { scope: gridRef, dependencies: [solved] },
+  );
+
   if (!g.puzzle) return null;
   const puzzle = g.puzzle;
-  const solved = g.cells.filter(Boolean).length;
 
   return (
     <div className="screen">
@@ -55,7 +84,7 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
       </div>
 
       <div className="gridwrap">
-        <div className="grid3">
+        <div className="grid3" ref={gridRef}>
           <button className="gc corner" />
           {puzzle.cols.map((id) => {
             const c = criterion(id);

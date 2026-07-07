@@ -1,9 +1,40 @@
+import { useRef } from "react";
+import { useGSAP } from "@gsap/react";
+import gsap from "gsap";
 import { criterion } from "../data.ts";
 import { prettyDate } from "../format.ts";
 import type { useGame } from "../useGame.ts";
 
 export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
+  const root = useRef<HTMLDivElement>(null);
+  useGSAP(
+    () => {
+      gsap.from(".stack > *", { y: 18, opacity: 0, duration: 0.5, ease: "power3.out", stagger: 0.08 });
+      gsap.from(".brand", { scale: 0.8, duration: 0.6, ease: "back.out(1.7)", delay: 0.05 });
+    },
+    { scope: root },
+  );
+
+  // Curseur glissant du sélecteur Simple / Expert.
+  const seg = useRef<HTMLDivElement>(null);
+  const segFirst = useRef(true);
+  useGSAP(
+    () => {
+      const btns = seg.current?.querySelectorAll<HTMLElement>(".segb");
+      const thumb = seg.current?.querySelector<HTMLElement>(".seg-thumb");
+      if (!btns || !thumb) return;
+      const active = btns[g.mode === "expert" ? 1 : 0]!;
+      const to = { x: active.offsetLeft, width: active.offsetWidth };
+      if (segFirst.current) {
+        segFirst.current = false;
+        gsap.set(thumb, to);
+      } else {
+        gsap.to(thumb, { ...to, duration: 0.42, ease: "back.out(1.7)" });
+      }
+    },
+    { scope: seg, dependencies: [g.mode] },
+  );
   const done = g.dailySave?.status === "won" || g.dailySave?.status === "lost";
   const chips = [...g.dailyPuzzle.rows, ...g.dailyPuzzle.cols].map(criterion);
   const title = done
@@ -16,7 +47,7 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
     : "Une nouvelle grille, la même pour tout le monde. Trouve les 9 stations.";
 
   return (
-    <div className="screen home">
+    <div className="screen home" ref={root}>
       <div className="pad stack">
         <div className="brandrow">
           <div className="tagpill">Montpellier · TaM</div>
@@ -49,7 +80,8 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
               </span>
             ))}
           </div>
-          <div className="seg">
+          <div className="seg" ref={seg}>
+            <span className="seg-thumb" />
             <button
               className={`segb ${g.mode === "simple" ? "on" : ""}`}
               onClick={() => ctrl.setMode("simple")}
@@ -82,6 +114,25 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
             <div className="tlab">Série</div>
           </div>
         </div>
+
+        <a
+          className="xgame"
+          href="https://dle.tamdoku.fr/?utm_source=tamdoku"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="xic">
+            <i className="v1" />
+            <i className="v3" />
+            <i className="v2" />
+            <i className="v4" />
+          </span>
+          <span className="xtxt">
+            <span className="xname">Statiodle</span>
+            <span className="xsub">Devine la station mystère du jour</span>
+          </span>
+          <span className="xgo">›</span>
+        </a>
       </div>
 
       <div className="footlinks">

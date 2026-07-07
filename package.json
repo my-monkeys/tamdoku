@@ -1,6 +1,6 @@
 {
   "name": "tamdoku",
-  "version": "0.1.12",
+  "version": "0.2.0",
   "private": true,
   "type": "module",
   "description": "Tamdoku — le puzzle quotidien du tramway de Montpellier",
@@ -19,6 +19,8 @@
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json"
   },
   "dependencies": {
+    "@gsap/react": "^2.1.2",
+    "gsap": "^3.15.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },

@@ -26,10 +26,11 @@ button{font-family:inherit}
 .chiprow{display:flex;flex-wrap:wrap;gap:6px;margin-top:13px}
 .chip{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:800;padding:5px 9px;border-radius:9px;background:rgba(255,255,255,.11);text-transform:uppercase;letter-spacing:.02em}
 .chip .rd{width:19px;height:19px;font-size:11px}
-.seg{display:flex;background:rgba(255,255,255,.1);border-radius:12px;padding:4px;margin-top:15px;gap:4px}
-.segb{flex:1;border:none;background:transparent;color:rgba(255,255,255,.75);font-weight:800;font-size:13px;padding:9px;border-radius:9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px}
+.seg{position:relative;display:flex;background:rgba(255,255,255,.1);border-radius:12px;padding:4px;margin-top:15px;gap:4px}
+.seg-thumb{position:absolute;top:4px;bottom:4px;left:0;border-radius:9px;background:var(--paper);z-index:0;will-change:transform,width}
+.segb{position:relative;z-index:1;flex:1;border:none;background:transparent;color:rgba(255,255,255,.7);font-weight:800;font-size:13px;padding:9px;border-radius:9px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;transition:color .3s ease}
 .segb .sst{font-size:9.5px;font-weight:700;opacity:.7;text-transform:none;letter-spacing:0}
-.segb.on{background:var(--paper);color:var(--ink)}
+.segb.on{color:var(--ink)}
 .bigbtn{width:100%;margin-top:14px;border:none;border-radius:14px;padding:15px;font-weight:800;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;background:var(--paper);color:var(--ink)}
 .bigbtn.done{background:transparent;color:var(--paper);border:1.5px solid rgba(255,255,255,.28)}
 .teaser{display:flex;gap:10px}
@@ -109,7 +110,8 @@ button{font-family:inherit}
 .smsg.warn{background:var(--soft);color:var(--muted)}
 .smsg.good{background:#DBF1E3;color:#1C7A46}
 .passer{margin-top:12px;width:100%;background:transparent;border:none;color:var(--muted);font-weight:700;font-size:13.5px;padding:8px;cursor:pointer}
-.ov{position:fixed;inset:0;background:rgba(12,12,16,.6);display:flex;justify-content:center;padding:24px;z-index:55;backdrop-filter:blur(3px);overflow-y:auto}
+.ov{position:fixed;inset:0;background:rgba(12,12,16,.6);display:flex;justify-content:center;padding:24px;z-index:55;backdrop-filter:blur(3px);overflow-y:auto;animation:ovfade .2s ease}
+@keyframes ovfade{from{opacity:0}to{opacity:1}}
 .rescard{background:var(--card);color:var(--ink);border-radius:26px;padding:0 22px 22px;width:100%;max-width:372px;margin:auto;text-align:center;position:relative;overflow:hidden;box-shadow:0 24px 60px rgba(23,24,28,.28);animation:rescard-in .32s cubic-bezier(.2,.9,.3,1) both}
 @keyframes rescard-in{from{opacity:0;transform:translateY(14px) scale(.97)}to{opacity:1;transform:none}}
 .res-rail{display:flex;height:6px;margin:0 -22px 22px}
@@ -179,4 +181,27 @@ button{font-family:inherit}
 @media (min-width:640px){
   .screen.home .pad.stack{flex:1;justify-content:center}
   .screen.home .sitefoot{padding-bottom:32px}
+}
+
+/* Carte d'accès au jeu frère (Statiodle). */
+.xgame{display:flex;align-items:center;gap:13px;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:12px 15px;text-decoration:none;color:var(--ink)}
+.xgame .xic{display:grid;grid-template-columns:1fr 1fr;gap:3px;width:44px;height:44px;padding:8px;border-radius:13px;background:var(--soft);flex:none}
+.xgame .xic i{border-radius:50%}
+.xtxt{flex:1}
+.xname{font-family:'Archivo';font-weight:800;font-size:16px;display:block;line-height:1.05}
+.xsub{font-size:12.5px;font-weight:600;color:var(--muted)}
+.xgo{font-size:22px;color:var(--muted);font-weight:700}
+
+/* Effets de survol (ordinateur uniquement). */
+@media (hover:hover){
+  .bigbtn,.obtn,.sbtn,.vbtn,.icbtn,.flink,.sugitem,.tcell,.arow,.segb,.xgame,.gc.ans.empty,.gc.head{transition:transform .18s ease,box-shadow .18s ease,filter .18s ease,background .18s ease,border-color .18s ease,color .18s ease}
+  .bigbtn:hover,.obtn:hover,.vbtn:hover{transform:translateY(-2px);filter:brightness(1.07);box-shadow:0 8px 20px rgba(0,0,0,.22)}
+  .obtn.sec:hover{filter:none;background:var(--soft);box-shadow:0 6px 16px rgba(0,0,0,.08)}
+  .sbtn:hover,.tcell:hover,.arow:hover,.xgame:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(0,0,0,.1);border-color:var(--muted)}
+  .sugitem:hover{background:var(--soft)}
+  .icbtn:hover{background:var(--soft);border-color:var(--muted)}
+  .flink:hover{color:var(--ink)}
+  .gc.ans.empty:hover{transform:translateY(-2px);border-color:var(--muted);box-shadow:0 8px 18px rgba(0,0,0,.12)}
+  .gc.head:hover{filter:brightness(.97)}
+  .segb:hover:not(.on){color:#fff}
 }

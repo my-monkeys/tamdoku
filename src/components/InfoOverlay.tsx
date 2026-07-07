@@ -1,15 +1,17 @@
 import { criterion } from "../data.ts";
 import type { useGame } from "../useGame.ts";
 import { CritGlyph, hasGlyph } from "./icons.tsx";
+import { usePopIn } from "../usePopIn.ts";
 
 export function InfoOverlay({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
+  const card = usePopIn<HTMLDivElement>([g.infoCrit]);
   if (!g.infoCrit) return null;
   const c = criterion(g.infoCrit);
 
   return (
     <div className="ov" onClick={ctrl.closeInfo}>
-      <div className="infocard" onClick={(e) => e.stopPropagation()}>
+      <div className="infocard" ref={card} onClick={(e) => e.stopPropagation()}>
         {(c.kind === "line" || hasGlyph(c)) && (
           <div className="infochip">
             {c.kind === "line" ? (

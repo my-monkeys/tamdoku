@@ -2,6 +2,7 @@ import { prettyDate } from "../format.ts";
 import type { useGame } from "../useGame.ts";
 import { LineLegend } from "./tokens.tsx";
 import { Icon } from "./icons.tsx";
+import { usePopIn } from "../usePopIn.ts";
 
 const LINE_COLORS = ["#0064B0", "#F07D00", "#009E3D", "#F4B223", "#C51A7F"];
 
@@ -28,6 +29,7 @@ function Confetti() {
 export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGame>; onShare: () => void }) {
   const { g } = ctrl;
   const r = g.result;
+  const card = usePopIn<HTMLDivElement>([g.status, g.resultHidden]);
   if (g.screen !== "game" || g.status === "playing" || g.status === "idle" || !r) return null;
 
   // Grille masquée : pastille flottante pour revenir au résultat.
@@ -49,7 +51,7 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
 
   return (
     <div className="ov">
-      <div className="rescard">
+      <div className="rescard" ref={card}>
         <div className="res-rail">
           {[1, 2, 3, 4, 5].map((n) => (
             <i key={n} className={`v${n}`} />
