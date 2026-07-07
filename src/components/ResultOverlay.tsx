@@ -1,4 +1,5 @@
 import { prettyDate } from "../format.ts";
+import { FIRST_BONUS } from "../useGame.ts";
 import type { useGame } from "../useGame.ts";
 import { LineLegend } from "./tokens.tsx";
 import { Icon } from "./icons.tsx";
@@ -76,6 +77,21 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
             ))}
           </div>
         </div>
+
+        {r.firsts ? (
+          <div
+            style={{
+              textAlign: "center",
+              margin: "-6px 0 14px",
+              fontSize: 13,
+              fontWeight: 600,
+              color: "var(--ink)",
+            }}
+          >
+            🏅 {r.firsts} station{r.firsts > 1 ? "s" : ""} tentée{r.firsts > 1 ? "s" : ""} en premier · +
+            {r.firsts * FIRST_BONUS} pts
+          </div>
+        ) : null}
 
         <div className="res-emoji">
           {r.emoji.map((row, i) => (

@@ -28,6 +28,9 @@ export const submit = mutation({
     await ctx.db.insert("submissions", { date, anon });
 
     const seen = new Set<number>();
+    // Stations dont ce joueur est le tout premier à les donner sur cette case
+    // (compteur inexistant avant) → bonus « pionnier » côté client.
+    const firsts: { cell: number; station: string }[] = [];
     for (const { cell, station } of cells.slice(0, 9)) {
       if (!Number.isInteger(cell) || cell < 0 || cell > 8 || seen.has(cell)) continue;
       if (!station || station.length > 64) continue;
@@ -36,9 +39,13 @@ export const submit = mutation({
         .query("counts")
         .withIndex("by_key", (q) => q.eq("date", date).eq("cell", cell).eq("station", station))
         .unique();
-      if (row) await ctx.db.patch(row._id, { n: row.n + 1 });
-      else await ctx.db.insert("counts", { date, cell, station, n: 1 });
+      if (row) {
+        await ctx.db.patch(row._id, { n: row.n + 1 });
+      } else {
+        await ctx.db.insert("counts", { date, cell, station, n: 1 });
+        firsts.push({ cell, station });
+      }
     }
-    return { ok: true as const };
+    return { ok: true as const, firsts };
   },
 });

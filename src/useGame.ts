@@ -25,6 +25,8 @@ import {
 } from "./storage.ts";
 
 export const MAX_MISTAKES = 3;
+/** Bonus par station dont le joueur est le tout premier à la donner (pionnier). */
+export const FIRST_BONUS = 15;
 /** Première grille de l'archive (nº 1). */
 export const LAUNCH_DATE = "2026-07-01";
 export type Screen = "home" | "game" | "rules" | "stats" | "about" | "archive";
@@ -297,7 +299,23 @@ export function useGame() {
     });
     if (game === "daily" || game === "archive") {
       savePlay({ cells: finalCells, mistakes, status: won ? "won" : "lost", forResult: result });
-      submitResults(date, finalCells);
+      // Bonus pionnier : à la réponse du submit, +FIRST_BONUS par station dont le
+      // joueur est le premier à l'avoir donnée. Non bloquant : le résultat est
+      // déjà affiché, on met à jour le score si un bonus arrive.
+      void submitResults(date, finalCells).then((outcome) => {
+        const firsts = outcome?.ok && outcome.firsts ? outcome.firsts.length : 0;
+        if (firsts === 0) return;
+        const bonused: GameResult = { ...result, score: result.score + firsts * FIRST_BONUS, firsts };
+        setG((prev) => {
+          if (prev.result !== result) return prev; // le joueur est passé à autre chose
+          const stats: Stats = { ...prev.stats };
+          if (bonused.score > stats.bestScore) stats.bestScore = bonused.score;
+          lsSet("stats", stats);
+          return { ...prev, result: bonused, stats };
+        });
+        const saved = lsGet<DailySave | null>(saveKey(date), null);
+        if (saved?.result) lsSet(saveKey(date), { ...saved, result: bonused });
+      });
     }
     },
     [savePlay],

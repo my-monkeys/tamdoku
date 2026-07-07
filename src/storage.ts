@@ -20,6 +20,8 @@ export interface GameResult {
   stars: number;
   rare: string;
   emoji: string[];
+  /** Nb de stations dont le joueur est le premier à les donner (bonus pionnier). */
+  firsts?: number;
 }
 
 export interface DailySave {

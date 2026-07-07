@@ -37,21 +37,34 @@ function anonId(): string {
   }
 }
 
-/** Envoie les cases correctement remplies (fire-and-forget, dédup côté serveur). */
-export function submitResults(date: string, cells: (string | null)[]): void {
-  if (!ENABLED || !date) return;
+export interface SubmitOutcome {
+  ok: boolean;
+  /** Stations dont ce joueur est le premier à les donner (bonus pionnier). */
+  firsts?: { cell: number; station: string }[];
+}
+
+/**
+ * Envoie les cases correctement remplies et renvoie le résultat serveur (dédup +
+ * stations « premières »). Best-effort : null si désactivé, hors-ligne ou lent
+ * (timeout) — le jeu ne dépend pas de la réponse, seul le bonus pionnier en profite.
+ */
+export async function submitResults(date: string, cells: (string | null)[]): Promise<SubmitOutcome | null> {
+  if (!ENABLED || !date) return null;
   const payload = cells
     .map((station, cell) => (station ? { cell, station } : null))
     .filter((c): c is { cell: number; station: string } => c !== null);
-  if (payload.length === 0) return;
-  void fetch(`${STATS_API}/submit`, {
-    method: "POST",
-    keepalive: true,
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ date, anon: anonId(), cells: payload }),
-  }).catch(() => {
-    /* best-effort : le jeu n'en dépend pas */
-  });
+  if (payload.length === 0) return null;
+  try {
+    const req = fetch(`${STATS_API}/submit`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ date, anon: anonId(), cells: payload }),
+    }).then((r) => (r.ok ? (r.json() as Promise<SubmitOutcome>) : null));
+    const timeout = new Promise<null>((resolve) => setTimeout(() => resolve(null), 2500));
+    return await Promise.race([req, timeout]);
+  } catch {
+    return null;
+  }
 }
 
 const dayCache = new Map<string, CellDist[] | null>();
