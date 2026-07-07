@@ -3,10 +3,11 @@ import { httpAction } from "./_generated/server";
 import { api } from "./_generated/api";
 
 // La SPA (tamdoku.fr) appelle cet endpoint cross-origin → CORS explicite.
-const ALLOWED = new Set(["https://tamdoku.fr", "http://localhost:5173"]);
+// Autorise tamdoku.fr (+ sous-domaines) et n'importe quel port localhost (dev).
+const ALLOWED = /^https:\/\/([a-z0-9-]+\.)?tamdoku\.fr$|^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/;
 
 function cors(origin: string | null): Record<string, string> {
-  const allow = origin && ALLOWED.has(origin) ? origin : "https://tamdoku.fr";
+  const allow = origin && ALLOWED.test(origin) ? origin : "https://tamdoku.fr";
   return {
     "Access-Control-Allow-Origin": allow,
     "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
