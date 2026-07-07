@@ -15,6 +15,8 @@
     "build:data": "npm run fetch:osm && npm run fetch:gtfs && npm run fetch:communes && npm run build:network",
     "stats": "tsx cli/stats.ts",
     "gen": "tsx cli/gen.ts",
+    "convex:dev": "convex dev",
+    "convex:deploy": "convex deploy",
     "test": "vitest run",
     "typecheck": "tsc --noEmit && tsc --noEmit -p tsconfig.app.json"
   },
@@ -32,6 +34,7 @@
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
+    "convex": "^1.42.1",
     "jsdom": "^29.1.1",
     "tsx": "^4.19.0",
     "typescript": "^5.8.0",

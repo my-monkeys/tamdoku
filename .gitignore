@@ -4,3 +4,5 @@ dist/
 .DS_Store
 data/raw/gtfs/
 data/raw/tam-gtfs.zip
+convex/_generated/
+infra/.env

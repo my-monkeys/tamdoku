@@ -8,10 +8,10 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { parsePath, pathFor, type Route } from "./routes.ts";
 import { generateDaily, seedForDate, type DailyPuzzle } from "../engine/daily.ts";
 import { findStation, suggestStations } from "../engine/answer.ts";
-import { originalityPoints } from "../engine/fame.ts";
 import type { Station } from "../engine/types.ts";
 import { track } from "./analytics.ts";
 import { fame, pool, satisfies, stations } from "./data.ts";
+import { cachedDay, cellScore, submitResults, warmPopularity } from "./stats.ts";
 import { emojiGrid, todayStr, yesterdayStr } from "./format.ts";
 import {
   DEFAULT_STATS,
@@ -174,6 +174,7 @@ export function useGame() {
   }, []);
 
   const startDaily = useCallback(() => {
+    warmPopularity(todayStr());
     const saved = lsGet<DailySave | null>(dailyKey(), null);
     if (saved) {
       patch({
@@ -198,6 +199,7 @@ export function useGame() {
         startDaily();
         return;
       }
+      warmPopularity(date);
       const puzzle = generateDaily(pool, seedForDate(date));
       const saved = loadDaySave(date);
       const common = {
@@ -247,14 +249,22 @@ export function useGame() {
     [patch],
   );
 
-  const finish = useCallback((won: boolean, finalCells: (string | null)[], mistakes: number, game: GameType) => {
+  const finish = useCallback(
+    (won: boolean, finalCells: (string | null)[], mistakes: number, game: GameType, date: string) => {
+    // Distribution réelle du jour si consolidée, sinon fallback fame par case.
+    const dist = date ? cachedDay(date) : null;
     let score = 0;
     let rare: Station | null = null;
-    for (const id of finalCells) {
+    let rarest = -1;
+    for (let ci = 0; ci < finalCells.length; ci++) {
+      const id = finalCells[ci];
       if (!id) continue;
-      const f = fame.get(id) ?? 5;
-      score += originalityPoints(f);
-      if (!rare || f < (fame.get(rare.id) ?? 5)) rare = stations.find((s) => s.id === id) ?? rare;
+      const { points, rarity } = cellScore(id, dist?.[ci], fame.get(id) ?? 5);
+      score += points;
+      if (rarity > rarest) {
+        rarest = rarity;
+        rare = stations.find((s) => s.id === id) ?? rare;
+      }
     }
     score = Math.max(0, score - mistakes * 20);
     const solved = finalCells.filter(Boolean).length;
@@ -287,8 +297,11 @@ export function useGame() {
     });
     if (game === "daily" || game === "archive") {
       savePlay({ cells: finalCells, mistakes, status: won ? "won" : "lost", forResult: result });
+      submitResults(date, finalCells);
     }
-  }, [savePlay]);
+    },
+    [savePlay],
+  );
 
   const registerMistake = useCallback((msg: string) => {
     buzz(70);
@@ -297,7 +310,7 @@ export function useGame() {
       if (mistakes >= MAX_MISTAKES) {
         window.setTimeout(() => {
           setG((p) => ({ ...p, sheetOpen: false, sel: -1 }));
-          finish(false, prev.cells, mistakes, prev.game);
+          finish(false, prev.cells, mistakes, prev.game, prev.puzzleDate);
         }, 680);
       } else if (prev.game === "daily" || prev.game === "archive") {
         savePlay({ mistakes });
@@ -326,7 +339,7 @@ export function useGame() {
       cells[ci] = station.id;
       buzz(18);
       const won = cells.every(Boolean);
-      if (won) queueMicrotask(() => finish(true, cells, prev.mistakes, prev.game));
+      if (won) queueMicrotask(() => finish(true, cells, prev.mistakes, prev.game, prev.puzzleDate));
       else if (prev.game === "daily" || prev.game === "archive") queueMicrotask(() => savePlay({ cells }));
       return { ...prev, cells, sheetOpen: false, sel: -1, query: "", sheetMsg: "" };
     });
@@ -345,6 +358,11 @@ export function useGame() {
     },
     [patch, startArchive, goHome],
   );
+
+  // Précharge la distribution du jour dès l'accueil (le scoring de fin est synchrone).
+  useEffect(() => {
+    warmPopularity(todayStr());
+  }, []);
 
   const didMount = useRef(false);
   useEffect(() => {
