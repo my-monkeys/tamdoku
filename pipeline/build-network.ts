@@ -22,6 +22,7 @@ interface Curation {
   gtfsAliases: Record<string, string>;
   parkRideOverrides: Record<string, boolean>;
   tags: Record<string, string[]>;
+  terminusExtra: Record<string, string[]>;
 }
 const curation = readJson(join(ROOT, "pipeline", "curation.json")) as Curation;
 const osm = readJson(join(rawDir, "osm-tram.json"));
@@ -196,7 +197,14 @@ const stationList: Station[] = [...stations.values()]
       lat: Number(lat.toFixed(6)),
       lon: Number(lon.toFixed(6)),
       commune,
-      terminusOf: [...(terminusOf.get(acc.name) ?? [])].sort() as LineRef[],
+      // Terminus nominaux (extrémités OSM) + demi-terminus permanents de curation
+      // (short-turns réguliers validés GTFS, cf. curation.terminusExtra).
+      terminusOf: [
+        ...new Set([
+          ...(terminusOf.get(acc.name) ?? []),
+          ...((curation.terminusExtra[id] ?? []) as LineRef[]),
+        ]),
+      ].sort() as LineRef[],
       parkRide: curation.parkRideOverrides[id] ?? nearParkRide,
       tags: tagsBySlug.get(id) ?? [],
     };
@@ -230,6 +238,14 @@ for (const slug of tagsBySlug.keys()) {
 for (const slug of Object.keys(curation.parkRideOverrides)) {
   if (slug.startsWith("_")) continue;
   if (!stationList.some((s) => s.id === slug)) throw new Error(`Override P+R inconnu : ${slug}`);
+}
+for (const [slug, refs] of Object.entries(curation.terminusExtra)) {
+  if (slug.startsWith("_")) continue;
+  const st = stationList.find((s) => s.id === slug);
+  if (!st) throw new Error(`Terminus extra sur slug inconnu : ${slug}`);
+  for (const ref of refs)
+    if (!st.lines.includes(ref as LineRef))
+      throw new Error(`Terminus extra L${ref} sur ${slug} qui ne dessert pas cette ligne`);
 }
 if (lineList.length !== 5) throw new Error(`5 lignes attendues, ${lineList.length} trouvées`);
 if (stationList.length < 95 || stationList.length > 125)

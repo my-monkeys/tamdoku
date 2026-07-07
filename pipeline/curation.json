@@ -21,6 +21,13 @@
     "_doc": "slug → bool, prime sur la détection par proximité OSM."
   },
 
+  "terminusExtra": {
+    "_doc": "Demi-terminus permanents (short-turns réguliers où ~1 tram sur 2 fait demi-tour), validés sur les destinations réelles du GTFS TaM — PAS des déviations travaux. slug → lignes qui y terminent régulièrement. S'ajoutent aux terminus nominaux OSM sur la station (critère « terminus »), sans toucher Line.termini (extrémités nominales de ligne).",
+    "notre-dame-de-sablassou": ["2"],
+    "sabines": ["2"],
+    "mosson": ["3"]
+  },
+
   "tags": {
     "personnalite": [
       "albert-1er-saint-charles",
