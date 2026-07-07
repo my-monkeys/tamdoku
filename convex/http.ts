@@ -70,4 +70,21 @@ http.route({
   }),
 });
 
+// Agrégats pour le dashboard ops (monkey /outils/data).
+http.route({
+  path: "/overview",
+  method: "GET",
+  handler: httpAction(async (ctx, req) => {
+    const res = await ctx.runQuery(api.overview.overview, {});
+    return new Response(JSON.stringify(res), {
+      status: 200,
+      headers: {
+        ...cors(req.headers.get("Origin")),
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=60",
+      },
+    });
+  }),
+});
+
 export default http;
