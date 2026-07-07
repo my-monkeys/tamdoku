@@ -23,6 +23,30 @@ export interface CellDist {
   counts: Record<string, number>;
 }
 
+/** Réponses classées d'une case (endpoint /answers, live). */
+export interface CellAnswers {
+  total: number;
+  answers: { station: string; n: number }[];
+}
+
+const answersCache = new Map<string, CellAnswers[]>();
+
+/** Distribution live des réponses par case d'un jour (grille terminée uniquement). */
+export async function fetchAnswers(date: string): Promise<CellAnswers[] | null> {
+  if (!ENABLED || !date) return null;
+  const cached = answersCache.get(date);
+  if (cached) return cached;
+  try {
+    const r = await fetch(`${STATS_API}/answers?date=${date}`);
+    if (!r.ok) return null;
+    const j = (await r.json()) as { cells?: CellAnswers[] };
+    if (j.cells) answersCache.set(date, j.cells);
+    return j.cells ?? null;
+  } catch {
+    return null;
+  }
+}
+
 function anonId(): string {
   const KEY = "tamdoku:anon";
   try {

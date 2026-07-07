@@ -11,6 +11,7 @@ import { Stats } from "./components/Stats.tsx";
 import { About } from "./components/About.tsx";
 import { Archive } from "./components/Archive.tsx";
 import { InputSheet } from "./components/InputSheet.tsx";
+import { StatsSheet } from "./components/StatsSheet.tsx";
 import { InfoOverlay } from "./components/InfoOverlay.tsx";
 import { ResultOverlay } from "./components/ResultOverlay.tsx";
 
@@ -55,6 +56,7 @@ export default function App() {
       {g.screen === "archive" && <Archive ctrl={ctrl} />}
 
       <InputSheet ctrl={ctrl} />
+      <StatsSheet ctrl={ctrl} />
       <InfoOverlay ctrl={ctrl} />
       <ResultOverlay ctrl={ctrl} onShare={doShare} />
 

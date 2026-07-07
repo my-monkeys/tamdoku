@@ -11,7 +11,7 @@ import { findStation, suggestStations } from "../engine/answer.ts";
 import type { Station } from "../engine/types.ts";
 import { track } from "./analytics.ts";
 import { fame, pool, satisfies, stations } from "./data.ts";
-import { cachedDay, cellScore, submitResults, warmPopularity } from "./stats.ts";
+import { cachedDay, cellScore, fetchAnswers, submitResults, warmPopularity, type CellAnswers } from "./stats.ts";
 import { emojiGrid, todayStr, yesterdayStr } from "./format.ts";
 import {
   DEFAULT_STATS,
@@ -53,6 +53,9 @@ export interface Game {
   status: Status;
   result: GameResult | null;
   resultHidden: boolean;
+  /** Case dont on affiche les stats de réponses (grille finie) ; -1 = fermé. */
+  statsCell: number;
+  cellStats: CellAnswers[] | null;
   toast: string;
   stats: Stats;
   streak: Streak;
@@ -125,6 +128,8 @@ export function useGame() {
     status: "idle",
     result: null,
     resultHidden: false,
+    statsCell: -1,
+    cellStats: null,
     toast: "",
     stats: lsGet<Stats>("stats", DEFAULT_STATS),
     streak: lsGet<Streak>("streak", DEFAULT_STREAK),
@@ -295,7 +300,7 @@ export function useGame() {
       lsSet("stats", stats);
       lsSet("streak", streak);
       buzz(won ? [25, 45, 25] : 200);
-      return { ...prev, status: won ? "won" : "lost", result, resultHidden: false, stats, streak };
+      return { ...prev, status: won ? "won" : "lost", result, resultHidden: false, statsCell: -1, stats, streak };
     });
     if (game === "daily" || game === "archive") {
       savePlay({ cells: finalCells, mistakes, status: won ? "won" : "lost", forResult: result });
@@ -366,6 +371,17 @@ export function useGame() {
   const reopenResult = useCallback(() => patch({ resultHidden: false }), [patch]);
   const hideResult = useCallback(() => patch({ resultHidden: true }), [patch]);
 
+  // Stats de réponses d'une case, uniquement grille finie (sinon = indice/triche).
+  const openCellStats = useCallback(
+    (ci: number) =>
+      setG((prev) => {
+        const finished = prev.status === "won" || prev.status === "lost";
+        return finished && prev.puzzleDate ? { ...prev, statsCell: ci } : prev;
+      }),
+    [],
+  );
+  const closeCellStats = useCallback(() => patch({ statsCell: -1 }), [patch]);
+
   // ── Routeur : URL ↔ écran ───────────────────────────────────────────────────
   const applyRoute = useCallback(
     (r: Route) => {
@@ -381,6 +397,19 @@ export function useGame() {
   useEffect(() => {
     warmPopularity(todayStr());
   }, []);
+
+  // Grille finie & datée → charge la distribution live des réponses par case.
+  useEffect(() => {
+    const finished = g.status === "won" || g.status === "lost";
+    if (!finished || !g.puzzleDate) return;
+    let cancelled = false;
+    void fetchAnswers(g.puzzleDate).then((cells) => {
+      if (!cancelled && cells) setG((p) => ({ ...p, cellStats: cells }));
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [g.status, g.puzzleDate]);
 
   const didMount = useRef(false);
   useEffect(() => {
@@ -425,6 +454,6 @@ export function useGame() {
     g, inputRef, suggestions, remainingForSel,
     goScreen, goHome, setMode, startDaily, startPractice, startArchive,
     openSheet, closeSheet, openInfo, closeInfo, setQuery, submit,
-    toast, reopenResult, hideResult,
+    toast, reopenResult, hideResult, openCellStats, closeCellStats,
   };
 }

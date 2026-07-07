@@ -80,7 +80,9 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           })}
         </div>
         <div className="solved">{solved}/9 stations</div>
-        <div className="hint">Tape une case</div>
+        <div className="hint">
+          {finished ? (g.puzzleDate ? "Clique une case pour les stats" : "") : "Tape une case"}
+        </div>
       </div>
 
       <div className="gridwrap">
@@ -142,7 +144,7 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                       <button
                         key={ci}
                         className="gc ans filled"
-                        onClick={() => ctrl.toast("Station verrouillée 🔒")}
+                        onClick={() => (finished ? ctrl.openCellStats(ci) : ctrl.toast("Station verrouillée 🔒"))}
                       >
                         <span className="sname">{station.name}</span>
                         <LineDots stationId={id} />
@@ -154,11 +156,11 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                   if (rev) {
                     const station = byId.get(rev)!;
                     return (
-                      <div key={ci} className="gc ans reveal">
+                      <button key={ci} className="gc ans reveal" onClick={() => ctrl.openCellStats(ci)}>
                         <span className="sname">{station.name}</span>
                         <LineDots stationId={rev} />
                         <span className="soli">réponse</span>
-                      </div>
+                      </button>
                     );
                   }
                   const sel = g.sel === ci && g.sheetOpen;
