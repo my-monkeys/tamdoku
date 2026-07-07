@@ -102,8 +102,93 @@
       href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700;800;900&family=Hanken+Grotesk:wght@400;500;600;700;800&display=swap"
       rel="stylesheet"
     />
+
+    <style>
+      /* Écran de chargement instantané (peint avant le bundle JS), dissous au démarrage.
+         Pastilles aux couleurs des 5 lignes TaM : sans dépendance aux polices web. */
+      html,
+      body {
+        background: #f4f1e9;
+      }
+      #preloader {
+        position: fixed;
+        inset: 0;
+        z-index: 9999;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #f4f1e9;
+        transition: opacity 0.5s ease;
+      }
+      html.app-ready #preloader {
+        opacity: 0;
+        pointer-events: none;
+      }
+      #preloader .pl {
+        display: flex;
+        gap: 10px;
+      }
+      #preloader .pl i {
+        width: 13px;
+        height: 13px;
+        border-radius: 50%;
+        animation: plb 1s ease-in-out infinite;
+      }
+      #preloader .pl i:nth-child(1) {
+        background: #0064b0;
+      }
+      #preloader .pl i:nth-child(2) {
+        background: #f07d00;
+        animation-delay: 0.12s;
+      }
+      #preloader .pl i:nth-child(3) {
+        background: #009e3d;
+        animation-delay: 0.24s;
+      }
+      #preloader .pl i:nth-child(4) {
+        background: #f4b223;
+        animation-delay: 0.36s;
+      }
+      #preloader .pl i:nth-child(5) {
+        background: #c51a7f;
+        animation-delay: 0.48s;
+      }
+      @keyframes plb {
+        0%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.5;
+        }
+        50% {
+          transform: translateY(-12px);
+          opacity: 1;
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #preloader .pl i {
+          animation: plp 1.2s ease-in-out infinite;
+        }
+        @keyframes plp {
+          0%,
+          100% {
+            opacity: 0.4;
+          }
+          50% {
+            opacity: 1;
+          }
+        }
+      }
+    </style>
+    <noscript><style>
+        #preloader {
+          display: none !important;
+        }
+      </style></noscript>
   </head>
   <body>
+    <div id="preloader" aria-hidden="true">
+      <div class="pl"><i></i><i></i><i></i><i></i><i></i></div>
+    </div>
     <div id="root">
       <noscript>
         <h1>Tamdoku — le puzzle quotidien du tram de Montpellier</h1>
