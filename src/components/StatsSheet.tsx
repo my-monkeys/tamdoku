@@ -12,8 +12,8 @@ function CritHeader({ crit }: { crit: Criterion }) {
   );
 }
 
-/** Vert TaM (L3) pour distinguer la réponse du joueur. */
-const MINE = "#009E3D";
+/** Vert TaM (L5) pour distinguer la réponse du joueur. */
+const MINE = "#287530";
 
 export function StatsSheet({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;

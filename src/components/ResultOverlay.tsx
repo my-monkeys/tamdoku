@@ -5,7 +5,7 @@ import { LineLegend } from "./tokens.tsx";
 import { Icon } from "./icons.tsx";
 import { usePopIn } from "../usePopIn.ts";
 
-const LINE_COLORS = ["#0064B0", "#F07D00", "#009E3D", "#F4B223", "#C51A7F"];
+const LINE_COLORS = ["#0059A2", "#EF7D00", "#C6D302", "#4C2B0E", "#287530"];
 
 /** Confetti sobre aux couleurs des lignes, uniquement à la victoire. */
 function Confetti() {

@@ -4,12 +4,12 @@
 *{box-sizing:border-box}html,body{margin:0;padding:0}body{background:#F4F1E9;font-family:'Hanken Grotesk',system-ui,sans-serif;color:#17181c;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 button{font-family:inherit}
 .app{--paper:#F4F1E9;--card:#FFFFFF;--ink:#17181C;--muted:#7E7C72;--line:#E4DFD2;--soft:#EDE9DD;max-width:468px;margin:0 auto;min-height:100dvh;background:var(--paper);color:var(--ink);position:relative;overflow-x:hidden;display:flex;flex-direction:column}
-.v1{background:#0064B0;color:#fff}.v2{background:#F07D00;color:#fff}.v3{background:#009E3D;color:#fff}.v4{background:#F4B223;color:#17181C}.v5{background:#C51A7F;color:#fff}
+.v1{background:#0059A2;color:#fff}.v2{background:#EF7D00;color:#fff}.v3{background:#C6D302;color:#17181C}.v4{background:#4C2B0E;color:#fff}.v5{background:#287530;color:#fff}
 .screen{flex:1;display:flex;flex-direction:column}
 .pad{padding:20px}
 .brandrow{display:flex;flex-direction:column;gap:9px;align-items:center;text-align:center;padding-top:12px}
 .tagpill{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);background:var(--soft);padding:5px 11px;border-radius:999px}
-.brand{font-family:'Archivo';font-weight:900;letter-spacing:-.03em;font-size:44px;line-height:.9;text-transform:uppercase;background:linear-gradient(95deg,#0064B0 4%,#009E3D 30%,#F07D00 52%,#F4B223 70%,#C51A7F 96%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 1px rgba(23,24,28,.12))}
+.brand{font-family:'Archivo';font-weight:900;letter-spacing:-.03em;font-size:44px;line-height:.9;text-transform:uppercase;background:linear-gradient(95deg,#0059A2 4%,#EF7D00 27%,#C6D302 50%,#4C2B0E 73%,#287530 96%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 1px 1px rgba(23,24,28,.12))}
 .dots{display:flex;gap:7px}
 .dot{width:14px;height:14px;border-radius:50%}
 .brandsub{font-size:13.5px;font-weight:600;color:var(--muted);max-width:250px;line-height:1.35}
@@ -172,7 +172,7 @@ button{font-family:inherit}
 .adate{flex:1;font-weight:700;font-size:14.5px;text-transform:capitalize}
 .astatus{font-size:11px;font-weight:800;padding:4px 10px;border-radius:9px;text-transform:uppercase;letter-spacing:.02em;white-space:nowrap}
 .astatus.todo{background:var(--soft);color:var(--muted)}
-.astatus.play{color:#fff;background:linear-gradient(90deg,#0064B0,#009E3D 30%,#F07D00 55%,#F4B223 76%,#C51A7F);text-shadow:0 1px 2px rgba(0,0,0,.28)}
+.astatus.play{color:#fff;background:linear-gradient(90deg,#0059A2,#EF7D00 25%,#C6D302 50%,#4C2B0E 75%,#287530);text-shadow:0 1px 2px rgba(0,0,0,.28)}
 .astatus.won{background:#DBF1E3;color:#1C7A46}
 .astatus.lost{background:var(--soft);color:var(--muted)}
 
