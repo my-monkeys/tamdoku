@@ -388,8 +388,13 @@ export function useGame() {
 
   // Suggestions (mode simple)
   const suggestions = useMemo<Station[]>(() => {
-    if (g.mode !== "simple" || !g.sheetOpen || !g.query) return [];
-    return suggestStations(g.query, stations, { fame, exclude: new Set(g.cells.filter(Boolean) as string[]) });
+    // Au moins 3 lettres tapées : évite de "chercher" en tapant une seule lettre.
+    if (g.mode !== "simple" || !g.sheetOpen || g.query.trim().length < 3) return [];
+    return suggestStations(g.query, stations, {
+      fame,
+      exclude: new Set(g.cells.filter(Boolean) as string[]),
+      limit: 4,
+    });
   }, [g.mode, g.sheetOpen, g.query, g.cells]);
 
   // Nombre de réponses restantes pour la case sélectionnée

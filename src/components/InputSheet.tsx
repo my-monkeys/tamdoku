@@ -59,6 +59,12 @@ export function InputSheet({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           </button>
         </div>
 
+        {g.mode === "simple" && g.query.trim().length > 0 && g.query.trim().length < 3 && (
+          <div style={{ fontSize: 12.5, color: "var(--muted)", textAlign: "center", marginTop: 10 }}>
+            Tape au moins 3 lettres…
+          </div>
+        )}
+
         {suggestions.length > 0 && (
           <div className="sugs">
             {suggestions.map((s) => (
