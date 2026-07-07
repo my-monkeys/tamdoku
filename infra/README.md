@@ -51,8 +51,10 @@ checkout minimal vit dans `/home/maxim/tamdoku-stats/deploy/` (convex/ +
 package.json + convex CLI). Pour re-pousser après modif des functions :
 
 ```bash
-# 1. sync le convex/ à jour vers le serveur (depuis le repo local)
+# 1. sync le convex/ + le moteur + les données (grid.ts embarque l'engine)
 rsync -az --exclude='_generated' convex cookie-server.tailscale:/home/maxim/tamdoku-stats/deploy/
+rsync -az engine cookie-server.tailscale:/home/maxim/tamdoku-stats/deploy/
+rsync -az data/network.json cookie-server.tailscale:/home/maxim/tamdoku-stats/deploy/data/
 # 2. deploy depuis le serveur
 ssh cookie-server.tailscale '
   cd /home/maxim/tamdoku-stats/deploy

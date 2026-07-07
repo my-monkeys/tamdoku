@@ -105,4 +105,22 @@ http.route({
   }),
 });
 
+// Critères (règles) de chaque ligne/colonne de la grille d'une date.
+http.route({
+  path: "/grid",
+  method: "GET",
+  handler: httpAction(async (ctx, req) => {
+    const date = new URL(req.url).searchParams.get("date") ?? "";
+    const res = await ctx.runQuery(api.grid.grid, { date });
+    return new Response(JSON.stringify(res), {
+      status: 200,
+      headers: {
+        ...cors(req.headers.get("Origin")),
+        "Content-Type": "application/json",
+        "Cache-Control": "public, max-age=3600",
+      },
+    });
+  }),
+});
+
 export default http;
