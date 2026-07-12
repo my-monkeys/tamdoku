@@ -14,6 +14,7 @@ import { InputSheet } from "./components/InputSheet.tsx";
 import { HintMap } from "./components/HintMap.tsx";
 import { StatsSheet } from "./components/StatsSheet.tsx";
 import { InfoOverlay } from "./components/InfoOverlay.tsx";
+import { FeedbackModal } from "./components/FeedbackModal.tsx";
 import { ResultOverlay } from "./components/ResultOverlay.tsx";
 
 export default function App() {
@@ -60,7 +61,28 @@ export default function App() {
       <HintMap ctrl={ctrl} />
       <StatsSheet ctrl={ctrl} />
       <InfoOverlay ctrl={ctrl} />
+      <FeedbackModal ctrl={ctrl} />
       <ResultOverlay ctrl={ctrl} onShare={doShare} />
+
+      {!g.feedbackOpen && (
+        <button className="fab" onClick={ctrl.openFeedback} aria-label="Donner un retour" title="Un retour ?">
+          <svg
+            width="22"
+            height="22"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
+            <path d="M9 18h6" />
+            <path d="M10 22h4" />
+          </svg>
+        </button>
+      )}
 
       {g.toast && <div className="toast">{g.toast}</div>}
     </div>

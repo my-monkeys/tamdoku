@@ -60,6 +60,8 @@ export interface Game {
   sheetMsgCls: "" | "bad" | "warn" | "good";
   shakeCell: number;
   infoCrit: string | null;
+  /** Modale de retour utilisateur ouverte. */
+  feedbackOpen: boolean;
   status: Status;
   result: GameResult | null;
   resultHidden: boolean;
@@ -137,6 +139,7 @@ export function useGame() {
     sheetMsgCls: "",
     shakeCell: -1,
     infoCrit: null,
+    feedbackOpen: false,
     status: "idle",
     result: null,
     resultHidden: false,
@@ -267,6 +270,12 @@ export function useGame() {
   const closeSheet = useCallback(() => patch({ sheetOpen: false, sel: -1, query: "", sheetMsg: "" }), [patch]);
   const openInfo = useCallback((critId: string) => patch({ infoCrit: critId }), [patch]);
   const closeInfo = useCallback(() => patch({ infoCrit: null }), [patch]);
+
+  const openFeedback = useCallback(() => {
+    track("feedback_open");
+    patch({ feedbackOpen: true });
+  }, [patch]);
+  const closeFeedback = useCallback(() => patch({ feedbackOpen: false }), [patch]);
 
   /** Demande l'indice-plan pour la case sélectionnée (0 pt d'originalité sur cette case). */
   const useHint = useCallback(() => {
@@ -489,7 +498,7 @@ export function useGame() {
   return {
     g, inputRef, suggestions, remainingForSel,
     goScreen, goHome, setMode, startDaily, startPractice, startArchive,
-    openSheet, closeSheet, openInfo, closeInfo, setQuery, submit,
+    openSheet, closeSheet, openInfo, closeInfo, openFeedback, closeFeedback, setQuery, submit,
     toast, reopenResult, hideResult, openCellStats, closeCellStats,
     useHint, closeHintMap,
   };

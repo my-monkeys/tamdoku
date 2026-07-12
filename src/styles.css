@@ -223,3 +223,19 @@ button{font-family:inherit}
 .hintmap-zoom{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:6px}
 .hintmap-zoom button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:19px;font-weight:800;cursor:pointer;line-height:1;box-shadow:0 3px 8px rgba(0,0,0,.12)}
 .hintmap-done{margin:12px 14px 16px;border:none;border-radius:13px;padding:13px;font-weight:800;font-size:14.5px;font-family:inherit;background:var(--ink);color:var(--paper);cursor:pointer}
+
+/* Modale de retour utilisateur */
+.fbcard{background:var(--card);color:var(--ink);border-radius:24px;padding:24px 22px;width:100%;max-width:360px;margin:auto;box-shadow:0 30px 70px rgba(0,0,0,.35)}
+.fbtitle{font-family:'Archivo';font-weight:800;font-size:21px;margin-bottom:6px}
+.fbtext{font-size:13.5px;line-height:1.45;color:var(--muted);margin-bottom:14px}
+.fbinput{width:100%;border:2px solid var(--line);border-radius:13px;padding:12px 13px;font-size:15px;font-family:inherit;background:var(--paper);color:var(--ink);outline:none}
+.fbinput:focus{border-color:var(--muted)}
+.fbmsg{resize:vertical;min-height:96px;margin-bottom:10px}
+.fberr{color:#dc2626;font-size:13px;font-weight:600;margin-top:10px;text-align:center}
+.fbrow{display:flex;gap:10px;margin-top:16px}
+.fbrow .obtn{flex:1}
+
+/* FAB retour (flottant, aligné sur le bord droit de la colonne) */
+.fab{position:fixed;bottom:18px;right:max(16px, calc(50% - 234px + 16px));z-index:45;width:52px;height:52px;border-radius:50%;border:none;background:#ef7d00;color:#fff;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 8px 22px rgba(239,125,0,.42);transition:transform .16s ease,box-shadow .16s ease,filter .16s ease}
+.fab:hover{transform:translateY(-2px);filter:brightness(1.06);box-shadow:0 12px 30px rgba(239,125,0,.5)}
+.fab:active{transform:scale(.95)}
