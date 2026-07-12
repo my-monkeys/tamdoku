@@ -219,7 +219,7 @@ button{font-family:inherit}
 .hm-red{color:#e5352b;font-weight:800}
 .hintmap-x{margin-left:auto;flex:none;border:none;background:var(--soft);color:var(--ink);width:32px;height:32px;border-radius:50%;font-size:15px;cursor:pointer;font-weight:700}
 .hintmap-view{position:relative;margin:0 14px;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--paper);touch-action:none;aspect-ratio:1/1;max-height:56dvh}
-.hintmap-canvas{position:absolute;top:0;left:0;width:100%;transform-origin:0 0;will-change:transform}
+.hintmap-canvas{position:absolute;top:0;left:0;width:100%;transform-origin:0 0}
 .hintmap-zoom{position:absolute;right:10px;bottom:10px;display:flex;flex-direction:column;gap:6px}
 .hintmap-zoom button{width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--ink);font-size:19px;font-weight:800;cursor:pointer;line-height:1;box-shadow:0 3px 8px rgba(0,0,0,.12)}
 .hintmap-done{margin:12px 14px 16px;border:none;border-radius:13px;padding:13px;font-weight:800;font-size:14.5px;font-family:inherit;background:var(--ink);color:var(--paper);cursor:pointer}

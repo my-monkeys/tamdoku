@@ -26,6 +26,9 @@ export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
 
   if (g.hintMapCell < 0 || !g.puzzle) return null;
   const valid = new Set(g.puzzle.valid[g.hintMapCell]);
+  // Marqueurs & traits à taille d'écran ~constante : on contre-scale par 1/zoom
+  // pour qu'en zoomant la géographie s'écarte sans que les cercles restent collés.
+  const iz = 1 / t.k;
 
   const fit = (nt: { k: number; x: number; y: number }) => {
     const r = vp.current?.getBoundingClientRect();
@@ -115,7 +118,7 @@ export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                   d={t.d}
                   fill="none"
                   stroke={t.color}
-                  strokeWidth={4.5}
+                  strokeWidth={4.5 * iz}
                   strokeOpacity={0.82}
                   strokeLinejoin="round"
                   strokeLinecap="round"
@@ -124,15 +127,15 @@ export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
               {mapGeo.points
                 .filter((p) => !valid.has(p.id))
                 .map((p) => (
-                  <circle key={p.id} cx={p.x} cy={p.y} r={4.5} fill="#b7b2a3" />
+                  <circle key={p.id} cx={p.x} cy={p.y} r={6.5 * iz} fill="#b7b2a3" />
                 ))}
               {mapGeo.points
                 .filter((p) => valid.has(p.id))
                 .map((p) => (
                   <g key={p.id}>
-                    <circle cx={p.x} cy={p.y} r={15} fill="#e5352b" fillOpacity={0.14} />
-                    <circle cx={p.x} cy={p.y} r={15} fill="none" stroke="#e5352b" strokeWidth={3.5} />
-                    <circle cx={p.x} cy={p.y} r={6.5} fill="#e5352b" />
+                    <circle cx={p.x} cy={p.y} r={20 * iz} fill="#e5352b" fillOpacity={0.14} />
+                    <circle cx={p.x} cy={p.y} r={20 * iz} fill="none" stroke="#e5352b" strokeWidth={4.5 * iz} />
+                    <circle cx={p.x} cy={p.y} r={9.5 * iz} fill="#e5352b" />
                   </g>
                 ))}
             </svg>
