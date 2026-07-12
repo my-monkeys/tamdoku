@@ -59,12 +59,6 @@ export function InputSheet({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           </button>
         </div>
 
-        {g.mode === "simple" && g.query.trim().length > 0 && g.query.trim().length < 3 && (
-          <div style={{ fontSize: 12.5, color: "var(--muted)", textAlign: "center", marginTop: 10 }}>
-            Tape au moins 3 lettres…
-          </div>
-        )}
-
         {suggestions.length > 0 && (
           <div className="sugs">
             {suggestions.map((s) => (
@@ -77,6 +71,11 @@ export function InputSheet({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
         )}
 
         {g.sheetMsg && <div className={`smsg ${g.sheetMsgCls}`}>{g.sheetMsg}</div>}
+
+        <button className="hintbtn" onClick={ctrl.useHint}>
+          <span className="hintbtn-ic">🗺️</span>
+          {g.hinted[g.sel] ? "Revoir l’indice sur le plan" : "Bloqué ? Voir un indice sur le plan"}
+        </button>
 
         <button className="passer" onClick={ctrl.closeSheet}>
           Fermer

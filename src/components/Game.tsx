@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { byId, criterion } from "../data.ts";
 import { revealGrid } from "../../engine/matching.ts";
-import { MAX_MISTAKES, type useGame } from "../useGame.ts";
+import { maxMistakesFor, type useGame } from "../useGame.ts";
 import { prettyDate } from "../format.ts";
 import { LineDots, LineLegend } from "./tokens.tsx";
 import { CritGlyph, hasGlyph, Icon } from "./icons.tsx";
@@ -70,8 +70,8 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
 
       <div className="statusbar">
         <div className="hearts">
-          {Array.from({ length: MAX_MISTAKES }, (_, k) => {
-            const alive = k < MAX_MISTAKES - g.mistakes;
+          {Array.from({ length: maxMistakesFor(g.mode) }, (_, k) => {
+            const alive = k < maxMistakesFor(g.mode) - g.mistakes;
             return (
               <span key={k} className={`heart ${alive ? "" : "off"}`}>
                 {alive ? "♥" : "♡"}

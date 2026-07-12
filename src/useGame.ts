@@ -6,6 +6,7 @@
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { parsePath, pathFor, type Route } from "./routes.ts";
+import { applyRouteMeta } from "./seo.ts";
 import { generateDaily, seedForDate, type DailyPuzzle } from "../engine/daily.ts";
 import { findStation, suggestStations } from "../engine/answer.ts";
 import type { Station } from "../engine/types.ts";
@@ -24,7 +25,12 @@ import {
   type Streak,
 } from "./storage.ts";
 
-export const MAX_MISTAKES = 3;
+/** Fautes autorisées selon le mode : Expert garde la tension, Simple pardonne
+ * davantage (la donnée montre une falaise « perdu à 8/9 » sur la limite à 3). */
+export const MISTAKES_EXPERT = 3;
+export const MISTAKES_SIMPLE = 5;
+export const maxMistakesFor = (mode: Mode): number =>
+  mode === "expert" ? MISTAKES_EXPERT : MISTAKES_SIMPLE;
 /** Bonus par station dont le joueur est le tout premier à la donner (pionnier). */
 export const FIRST_BONUS = 15;
 /** Première grille de l'archive (nº 1). */
@@ -43,6 +49,10 @@ export interface Game {
   puzzle: DailyPuzzle | null;
   cells: (string | null)[];
   mistakes: number;
+  /** Cases indicées (plan) : n'entrent pas dans le score d'originalité. */
+  hinted: boolean[];
+  /** Case dont on affiche le plan-indice ; -1 = fermé. */
+  hintMapCell: number;
   sel: number;
   query: string;
   sheetOpen: boolean;
@@ -118,6 +128,8 @@ export function useGame() {
     puzzle: null,
     cells: new Array(9).fill(null),
     mistakes: 0,
+    hinted: new Array(9).fill(false),
+    hintMapCell: -1,
     sel: -1,
     query: "",
     sheetOpen: false,
@@ -173,6 +185,7 @@ export function useGame() {
         mistakes: next.mistakes ?? prev.mistakes,
         status: (next.status ?? prev.status) as DailySave["status"],
         result: next.forResult !== undefined ? next.forResult : prev.result,
+        hinted: next.hinted ?? prev.hinted,
       };
       lsSet(saveKey(prev.puzzleDate), save);
       // dailySave (carte d'accueil) ne reflète QUE la grille du jour.
@@ -187,6 +200,7 @@ export function useGame() {
       patch({
         screen: "game", game: "daily", puzzleDate: todayStr(), puzzle: dailyPuzzle,
         cells: saved.cells, mistakes: saved.mistakes, status: saved.status,
+        hinted: saved.hinted ?? new Array(9).fill(false), hintMapCell: -1,
         result: saved.result, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
       });
       return;
@@ -195,6 +209,7 @@ export function useGame() {
     patch({
       screen: "game", game: "daily", puzzleDate: todayStr(), puzzle: dailyPuzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
+      hinted: new Array(9).fill(false), hintMapCell: -1,
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
     });
   }, [dailyPuzzle, patch]);
@@ -211,14 +226,20 @@ export function useGame() {
       const saved = loadDaySave(date);
       const common = {
         screen: "game" as const, game: "archive" as const, puzzleDate: date, puzzle,
-        resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
+        hintMapCell: -1, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
       };
       if (saved) {
-        patch({ ...common, cells: saved.cells, mistakes: saved.mistakes, status: saved.status, result: saved.result });
+        patch({
+          ...common, cells: saved.cells, mistakes: saved.mistakes, status: saved.status,
+          hinted: saved.hinted ?? new Array(9).fill(false), result: saved.result,
+        });
         return;
       }
       track("play", { mode: lsGet<Mode>("mode", "simple"), game: "archive" });
-      patch({ ...common, cells: new Array(9).fill(null), mistakes: 0, status: "playing", result: null });
+      patch({
+        ...common, cells: new Array(9).fill(null), mistakes: 0, status: "playing",
+        hinted: new Array(9).fill(false), result: null,
+      });
     },
     [patch, startDaily],
   );
@@ -230,6 +251,7 @@ export function useGame() {
     patch({
       screen: "game", game: "practice", puzzleDate: "", puzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
+      hinted: new Array(9).fill(false), hintMapCell: -1,
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
     });
   }, [patch]);
@@ -245,6 +267,21 @@ export function useGame() {
   const closeSheet = useCallback(() => patch({ sheetOpen: false, sel: -1, query: "", sheetMsg: "" }), [patch]);
   const openInfo = useCallback((critId: string) => patch({ infoCrit: critId }), [patch]);
   const closeInfo = useCallback(() => patch({ infoCrit: null }), [patch]);
+
+  /** Demande l'indice-plan pour la case sélectionnée (0 pt d'originalité sur cette case). */
+  const useHint = useCallback(() => {
+    setG((prev) => {
+      if (prev.status !== "playing" || prev.sel < 0) return prev;
+      const ci = prev.sel;
+      if (prev.hinted[ci]) return { ...prev, hintMapCell: ci }; // déjà indicée : on rouvre juste le plan
+      const hinted = prev.hinted.slice();
+      hinted[ci] = true;
+      track("hint", { game: prev.game, mode: prev.mode });
+      if (prev.game === "daily" || prev.game === "archive") queueMicrotask(() => savePlay({ hinted }));
+      return { ...prev, hinted, hintMapCell: ci };
+    });
+  }, [savePlay]);
+  const closeHintMap = useCallback(() => patch({ hintMapCell: -1 }), [patch]);
   const setQuery = useCallback((query: string) => patch({ query, sheetMsg: "" }), [patch]);
 
   const toast = useCallback(
@@ -257,7 +294,7 @@ export function useGame() {
   );
 
   const finish = useCallback(
-    (won: boolean, finalCells: (string | null)[], mistakes: number, game: GameType, date: string) => {
+    (won: boolean, finalCells: (string | null)[], mistakes: number, game: GameType, date: string, hinted: boolean[]) => {
     // Distribution réelle du jour si consolidée, sinon fallback fame par case.
     const dist = date ? cachedDay(date) : null;
     let score = 0;
@@ -266,6 +303,8 @@ export function useGame() {
     for (let ci = 0; ci < finalCells.length; ci++) {
       const id = finalCells[ci];
       if (!id) continue;
+      // Case indicée (plan) : 0 pt d'originalité, et non éligible au "coup rare".
+      if (hinted[ci]) continue;
       const { points, rarity } = cellScore(id, dist?.[ci], fame.get(id) ?? 5);
       score += points;
       if (rarity > rarest) {
@@ -303,7 +342,7 @@ export function useGame() {
       return { ...prev, status: won ? "won" : "lost", result, resultHidden: false, statsCell: -1, stats, streak };
     });
     if (game === "daily" || game === "archive") {
-      savePlay({ cells: finalCells, mistakes, status: won ? "won" : "lost", forResult: result });
+      savePlay({ cells: finalCells, mistakes, status: won ? "won" : "lost", forResult: result, hinted });
       // Bonus pionnier : à la réponse du submit, +FIRST_BONUS par station dont le
       // joueur est le premier à l'avoir donnée. Non bloquant : le résultat est
       // déjà affiché, on met à jour le score si un bonus arrive.
@@ -330,10 +369,10 @@ export function useGame() {
     buzz(70);
     setG((prev) => {
       const mistakes = prev.mistakes + 1;
-      if (mistakes >= MAX_MISTAKES) {
+      if (mistakes >= maxMistakesFor(prev.mode)) {
         window.setTimeout(() => {
           setG((p) => ({ ...p, sheetOpen: false, sel: -1 }));
-          finish(false, prev.cells, mistakes, prev.game, prev.puzzleDate);
+          finish(false, prev.cells, mistakes, prev.game, prev.puzzleDate, prev.hinted);
         }, 680);
       } else if (prev.game === "daily" || prev.game === "archive") {
         savePlay({ mistakes });
@@ -349,8 +388,8 @@ export function useGame() {
       const station = findStation(text, stations);
       if (!station) return { ...prev, sheetMsg: "Station inconnue — vérifie l’orthographe", sheetMsgCls: "warn" };
       if (prev.cells.includes(station.id)) {
-        queueMicrotask(() => registerMistake(`« ${station.name} » est déjà placée ailleurs`));
-        return prev;
+        // Doublon = trou de mémoire, pas une erreur de raisonnement : on avertit sans pénaliser.
+        return { ...prev, sheetMsg: `« ${station.name} » est déjà placée ailleurs`, sheetMsgCls: "warn" };
       }
       const ci = prev.sel;
       const ok = satisfies(station, prev.puzzle!.rows[Math.floor(ci / 3)]!) && satisfies(station, prev.puzzle!.cols[ci % 3]!);
@@ -362,7 +401,7 @@ export function useGame() {
       cells[ci] = station.id;
       buzz(18);
       const won = cells.every(Boolean);
-      if (won) queueMicrotask(() => finish(true, cells, prev.mistakes, prev.game, prev.puzzleDate));
+      if (won) queueMicrotask(() => finish(true, cells, prev.mistakes, prev.game, prev.puzzleDate, prev.hinted));
       else if (prev.game === "daily" || prev.game === "archive") queueMicrotask(() => savePlay({ cells }));
       return { ...prev, cells, sheetOpen: false, sel: -1, query: "", sheetMsg: "" };
     });
@@ -426,21 +465,18 @@ export function useGame() {
     } else if (path !== window.location.pathname) {
       window.history.pushState(null, "", path);
     }
-    // Les grilles passées (/archive/<date>) ne doivent pas être indexées.
-    const onArchiveDate = g.screen === "game" && g.game === "archive";
-    document
-      .querySelector('meta[name="robots"]')
-      ?.setAttribute("content", onArchiveDate ? "noindex, follow" : "index, follow, max-image-preview:large");
+    // Title, description, canonical, robots et OG par écran (les routes SPA
+    // partagent le même HTML brut : sans ça, Google les voit comme des doublons).
+    applyRouteMeta(g.screen, g.game, g.puzzleDate);
   }, [g.screen, g.game, g.puzzleDate]);
 
-  // Suggestions (mode simple)
+  // Suggestions (mode simple) : dès le 1er caractère, jusqu'à 6 propositions.
   const suggestions = useMemo<Station[]>(() => {
-    // Au moins 3 lettres tapées : évite de "chercher" en tapant une seule lettre.
-    if (g.mode !== "simple" || !g.sheetOpen || g.query.trim().length < 3) return [];
+    if (g.mode !== "simple" || !g.sheetOpen || g.query.trim().length < 1) return [];
     return suggestStations(g.query, stations, {
       fame,
       exclude: new Set(g.cells.filter(Boolean) as string[]),
-      limit: 4,
+      limit: 6,
     });
   }, [g.mode, g.sheetOpen, g.query, g.cells]);
 
@@ -455,5 +491,6 @@ export function useGame() {
     goScreen, goHome, setMode, startDaily, startPractice, startArchive,
     openSheet, closeSheet, openInfo, closeInfo, setQuery, submit,
     toast, reopenResult, hideResult, openCellStats, closeCellStats,
+    useHint, closeHintMap,
   };
 }

@@ -96,6 +96,39 @@
       }
     </script>
 
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Tamdoku est-il gratuit ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Oui, Tamdoku est entièrement gratuit et ne demande aucun compte ni installation."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Y a-t-il une nouvelle grille chaque jour ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Oui : une seule grille quotidienne, identique pour tous les joueurs, renouvelée chaque nuit."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Tamdoku est-il officiel ou lié à la TaM ?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Non. Tamdoku est un projet indépendant et non officiel, sans lien avec Transports de l'agglomération de Montpellier (TaM). Le réseau provient des données ouvertes OpenStreetMap et du GTFS TaM."
+            }
+          }
+        ]
+      }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -178,6 +211,78 @@
           }
         }
       }
+
+      /* Contenu éditorial crawlable (statique, hors #root, sous le jeu).
+         Présent dans le HTML brut pour tous les robots, même sans exécuter le JS. */
+      #seo-content {
+        background: #f4f1e9;
+        color: #17181c;
+        border-top: 1px solid #e4dfd2;
+        font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
+      }
+      #seo-content .seo-wrap {
+        max-width: 468px;
+        margin: 0 auto;
+        padding: 30px 20px 44px;
+        font-size: 14px;
+        line-height: 1.62;
+      }
+      #seo-content h2 {
+        font-family: "Archivo", system-ui, sans-serif;
+        font-weight: 800;
+        font-size: 19px;
+        line-height: 1.25;
+        margin: 0 0 12px;
+      }
+      #seo-content h3 {
+        font-family: "Archivo", system-ui, sans-serif;
+        font-weight: 700;
+        font-size: 15px;
+        margin: 24px 0 7px;
+      }
+      #seo-content p,
+      #seo-content li,
+      #seo-content dd {
+        color: #45443d;
+      }
+      #seo-content p {
+        margin: 0 0 12px;
+      }
+      #seo-content ul {
+        margin: 0 0 12px;
+        padding-left: 18px;
+      }
+      #seo-content li {
+        margin: 0 0 5px;
+      }
+      #seo-content dt {
+        font-weight: 700;
+        margin-top: 12px;
+      }
+      #seo-content dd {
+        margin: 2px 0 0;
+      }
+      #seo-content b {
+        color: #17181c;
+      }
+      #seo-content .seo-nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px 16px;
+        margin-top: 24px;
+        padding-top: 16px;
+        border-top: 1px solid #e4dfd2;
+      }
+      #seo-content .seo-nav a {
+        color: #7e7c72;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      #seo-content .seo-nav a:hover {
+        color: #17181c;
+        text-decoration: underline;
+      }
     </style>
     <noscript><style>
         #preloader {
@@ -205,6 +310,59 @@
         </p>
       </noscript>
     </div>
+    <footer id="seo-content" aria-label="À propos de Tamdoku">
+      <div class="seo-wrap">
+        <h2>Tamdoku, le sudoku quotidien du tram de Montpellier</h2>
+        <p>
+          <b>Tamdoku</b> est un jeu de réflexion gratuit inspiré d'UbahnDoku, adapté au réseau de
+          tramway de Montpellier exploité par la <b>TaM</b>. Chaque jour, une nouvelle grille
+          <b>3×3</b> : chaque ligne et chaque colonne impose un critère — une ligne de tram, un
+          terminus, une correspondance, une commune desservie ou une lettre du nom de la station. Le
+          but est de remplir les 9 cases avec des <b>stations du tram de Montpellier</b> qui
+          satisfont à la fois le critère de leur ligne et celui de leur colonne, sans jamais
+          réutiliser une station.
+        </p>
+
+        <h3>Comment jouer</h3>
+        <p>
+          Touchez une case, cherchez une station du réseau TaM qui coche les deux critères, validez.
+          Une station ne sert qu'une seule fois et seules les lignes qui s'arrêtent vraiment à la
+          station comptent. Vous avez droit à 3 erreurs, et plus une station est rare et inattendue,
+          plus elle rapporte de points d'originalité. La grille du jour est la même pour tout le
+          monde et se renouvelle chaque nuit — aucun compte n'est requis.
+        </p>
+
+        <h3>Les 5 lignes du tram de Montpellier</h3>
+        <ul>
+          <li><b>Ligne 1</b> — Mosson ↔ Gare Sud de France, les hirondelles de Garouste &amp; Bonetti.</li>
+          <li><b>Ligne 2</b> — Saint-Jean-de-Védas Centre ↔ Jacou, la ligne fleurie.</li>
+          <li><b>Ligne 3</b> — Juvignac ↔ Lattes Centre / Pérols Étang de l'Or, habillage Christian Lacroix.</li>
+          <li><b>Ligne 4</b> — la circulaire du centre-ville depuis Garcia Lorca, signée Christian Lacroix.</li>
+          <li><b>Ligne 5</b> — Clapiers ↔ Grés de Montpellier, la Feuille de Vie de Barthélémy Toguo.</li>
+        </ul>
+
+        <h3>Questions fréquentes</h3>
+        <dl>
+          <dt>Tamdoku est-il gratuit ?</dt>
+          <dd>Oui, Tamdoku est entièrement gratuit et ne demande aucun compte ni installation.</dd>
+          <dt>Y a-t-il une nouvelle grille chaque jour ?</dt>
+          <dd>Oui : une seule grille quotidienne, identique pour tous les joueurs, renouvelée chaque nuit.</dd>
+          <dt>Tamdoku est-il officiel ou lié à la TaM ?</dt>
+          <dd>
+            Non. Tamdoku est un projet indépendant et non officiel, sans lien avec Transports de
+            l'agglomération de Montpellier. Le réseau provient des données ouvertes OpenStreetMap et
+            du GTFS TaM.
+          </dd>
+        </dl>
+
+        <nav class="seo-nav" aria-label="Pages du site">
+          <a href="/regles">Règles du jeu</a>
+          <a href="/a-propos">À propos</a>
+          <a href="/archive">Archive des grilles</a>
+          <a href="https://dle.tamdoku.fr/?utm_source=tamdoku">Statiodle</a>
+        </nav>
+      </div>
+    </footer>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

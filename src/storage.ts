@@ -29,6 +29,8 @@ export interface DailySave {
   mistakes: number;
   status: "playing" | "won" | "lost";
   result: GameResult | null;
+  /** Cases pour lesquelles le joueur a demandé l'indice (plan) : 0 pt d'originalité. */
+  hinted?: boolean[];
 }
 
 const NS = "tamdoku:";
