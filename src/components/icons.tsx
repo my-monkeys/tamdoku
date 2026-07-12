@@ -102,6 +102,16 @@ const PATHS: Record<string, ReactNode> = {
     </>
   ),
   back: <path d="m15 5-7 7 7 7" />,
+  map: (
+    <>
+      <path d="M9 4 3 6.5v13.5l6-2.5 6 2.5 6-2.5V3l-6 2.5z" />
+      <path d="M9 4v13.5" />
+      <path d="M15 6.5V20" />
+    </>
+  ),
+  message: (
+    <path d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z" />
+  ),
   help: (
     <>
       <circle cx="12" cy="12" r="10" />

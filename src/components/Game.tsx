@@ -63,9 +63,14 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           </span>
           <span className="gmode">{g.mode === "simple" ? "Mode simple" : "Mode expert"}</span>
         </div>
-        <button className="icbtn" onClick={() => ctrl.goScreen("rules")} aria-label="Aide">
-          <Icon name="help" size={21} />
-        </button>
+        <div className="gbar-actions">
+          <button className="icbtn" onClick={ctrl.openFeedback} aria-label="Donner un retour">
+            <Icon name="message" size={20} />
+          </button>
+          <button className="icbtn" onClick={() => ctrl.goScreen("rules")} aria-label="Aide">
+            <Icon name="help" size={21} />
+          </button>
+        </div>
       </div>
 
       <div className="statusbar">

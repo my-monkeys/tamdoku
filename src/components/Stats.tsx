@@ -6,7 +6,7 @@ export function Stats({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   return (
     <div className="screen">
       <div className="subhead">
-        <button className="icbtn" onClick={ctrl.goHome} aria-label="Retour">
+        <button className="icbtn" onClick={ctrl.goBack} aria-label="Retour">
           <Icon name="back" size={22} />
         </button>
         <span className="subttl">Statistiques</span>
@@ -40,7 +40,7 @@ export function Stats({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           Le défi du jour est le même pour tout le monde et se renouvelle chaque nuit. Reviens demain
           pour prolonger ta série !
         </p>
-        <button className="obtn sec" onClick={ctrl.goHome}>
+        <button className="obtn sec" onClick={ctrl.goBack}>
           Retour
         </button>
       </div>

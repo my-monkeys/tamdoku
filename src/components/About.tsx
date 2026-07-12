@@ -6,7 +6,7 @@ export function About({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   return (
     <div className="screen">
       <div className="subhead">
-        <button className="icbtn" onClick={ctrl.goHome} aria-label="Retour">
+        <button className="icbtn" onClick={ctrl.goBack} aria-label="Retour">
           <Icon name="back" size={22} />
         </button>
         <span className="subttl">À propos</span>
@@ -37,7 +37,7 @@ export function About({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           ouvertes OpenStreetMap et le GTFS TaM ; les couleurs approchent la charte à des fins
           ludiques.
         </p>
-        <button className="obtn sec" onClick={ctrl.goHome}>
+        <button className="obtn sec" onClick={ctrl.goBack}>
           Retour
         </button>
       </div>

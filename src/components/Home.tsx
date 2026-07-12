@@ -4,6 +4,7 @@ import gsap from "gsap";
 import { criterion } from "../data.ts";
 import { prettyDate } from "../format.ts";
 import type { useGame } from "../useGame.ts";
+import { Icon } from "./icons.tsx";
 
 export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
@@ -99,6 +100,12 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
             {done ? "Revoir mon résultat" : "Jouer le défi"}
           </button>
         </div>
+
+        <button className="home-fb" onClick={ctrl.openFeedback}>
+          <Icon name="message" size={17} />
+          <span>Une idée, un bug, un retour&nbsp;?</span>
+          <span className="home-fb-go">›</span>
+        </button>
 
         <div className="teaser">
           <div className="tcell">

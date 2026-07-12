@@ -63,7 +63,7 @@ export function Rules({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   return (
     <div className="screen">
       <div className="subhead">
-        <button className="icbtn" onClick={ctrl.goHome} aria-label="Retour">
+        <button className="icbtn" onClick={ctrl.goBack} aria-label="Retour">
           <Icon name="back" size={22} />
         </button>
         <span className="subttl">Comment jouer</span>
@@ -112,7 +112,7 @@ export function Rules({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           );
         })}
 
-        <button className="obtn" onClick={ctrl.goHome}>
+        <button className="obtn" onClick={ctrl.goBack}>
           C'est parti
         </button>
       </div>

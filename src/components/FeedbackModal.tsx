@@ -12,10 +12,30 @@ export function FeedbackModal({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const [message, setMessage] = useState("");
   const [email, setEmail] = useState("");
   const [status, setStatus] = useState<Status>("idle");
+  // Zone visible (au-dessus du clavier mobile) : sert à centrer la modale entre le
+  // clavier et le haut de l'écran, plutôt qu'au milieu de l'écran entier.
+  const [vp, setVp] = useState<{ top: number; height: number } | null>(null);
 
   // Repartir d'un formulaire propre à chaque ouverture.
   useEffect(() => {
     if (g.feedbackOpen) setStatus("idle");
+  }, [g.feedbackOpen]);
+
+  // Suit le visualViewport : le clavier réduit la hauteur visible → on recadre l'overlay dessus.
+  useEffect(() => {
+    const v = window.visualViewport;
+    if (!g.feedbackOpen || !v) {
+      setVp(null);
+      return;
+    }
+    const sync = () => setVp({ top: v.offsetTop, height: v.height });
+    sync();
+    v.addEventListener("resize", sync);
+    v.addEventListener("scroll", sync);
+    return () => {
+      v.removeEventListener("resize", sync);
+      v.removeEventListener("scroll", sync);
+    };
   }, [g.feedbackOpen]);
 
   if (!g.feedbackOpen) return null;
@@ -37,7 +57,11 @@ export function FeedbackModal({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   };
 
   return (
-    <div className="ov" onClick={ctrl.closeFeedback}>
+    <div
+      className="ov"
+      onClick={ctrl.closeFeedback}
+      style={vp ? { top: vp.top, height: vp.height, bottom: "auto" } : undefined}
+    >
       <div className="fbcard" ref={card} onClick={(e) => e.stopPropagation()}>
         {status === "sent" ? (
           <>

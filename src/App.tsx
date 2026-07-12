@@ -15,7 +15,9 @@ import { HintMap } from "./components/HintMap.tsx";
 import { StatsSheet } from "./components/StatsSheet.tsx";
 import { InfoOverlay } from "./components/InfoOverlay.tsx";
 import { FeedbackModal } from "./components/FeedbackModal.tsx";
+import { LinesOverlay } from "./components/LinesOverlay.tsx";
 import { ResultOverlay } from "./components/ResultOverlay.tsx";
+import { Icon } from "./components/icons.tsx";
 
 export default function App() {
   const ctrl = useGame();
@@ -24,6 +26,12 @@ export default function App() {
   useEffect(() => {
     document.documentElement.dataset.theme = "light";
   }, []);
+
+  // Le bloc de contenu SEO (#seo-content, statique dans index.html) n'a de sens
+  // que sur l'accueil : on l'expose via data-screen pour le masquer ailleurs (CSS).
+  useEffect(() => {
+    document.documentElement.dataset.screen = g.screen;
+  }, [g.screen]);
 
   // Transition d'écran : fondu-glissé (l'accueil a sa propre cascade).
   const appRef = useRef<HTMLDivElement>(null);
@@ -62,25 +70,12 @@ export default function App() {
       <StatsSheet ctrl={ctrl} />
       <InfoOverlay ctrl={ctrl} />
       <FeedbackModal ctrl={ctrl} />
+      <LinesOverlay ctrl={ctrl} />
       <ResultOverlay ctrl={ctrl} onShare={doShare} />
 
-      {!g.feedbackOpen && (
-        <button className="fab" onClick={ctrl.openFeedback} aria-label="Donner un retour" title="Un retour ?">
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            aria-hidden="true"
-          >
-            <path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" />
-            <path d="M9 18h6" />
-            <path d="M10 22h4" />
-          </svg>
+      {!g.linesOpen && (
+        <button className="fab" onClick={ctrl.openLines} aria-label="Voir les lignes du réseau" title="Les lignes">
+          <Icon name="map" size={23} />
         </button>
       )}
 

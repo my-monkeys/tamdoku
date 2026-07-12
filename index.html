@@ -220,8 +220,13 @@
         border-top: 1px solid #e4dfd2;
         font-family: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
       }
+      /* Le contenu SEO n'apparaît que sur l'accueil ; masqué dans les autres écrans
+         (le HTML brut le garde pour les moteurs, seul l'affichage change au rendu JS). */
+      html[data-screen]:not([data-screen="home"]) #seo-content {
+        display: none;
+      }
       #seo-content .seo-wrap {
-        max-width: 468px;
+        max-width: 600px;
         margin: 0 auto;
         padding: 30px 20px 44px;
         font-size: 14px;

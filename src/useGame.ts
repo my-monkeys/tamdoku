@@ -42,6 +42,8 @@ export type GameType = "daily" | "practice" | "archive";
 
 export interface Game {
   screen: Screen;
+  /** Écran d'où l'on a ouvert un écran de contenu (règles/à propos/stats) → pour y revenir. */
+  returnTo: Screen;
   mode: Mode;
   game: GameType;
   /** Date (YYYY-MM-DD) de la grille en cours ; "" pour l'entraînement. */
@@ -62,6 +64,8 @@ export interface Game {
   infoCrit: string | null;
   /** Modale de retour utilisateur ouverte. */
   feedbackOpen: boolean;
+  /** Diagramme « lignes à plat » (aide : reconnaître les stations par leur nom). */
+  linesOpen: boolean;
   status: Status;
   result: GameResult | null;
   resultHidden: boolean;
@@ -124,6 +128,7 @@ export function useGame() {
 
   const [g, setG] = useState<Game>(() => ({
     screen: "home",
+    returnTo: "home",
     mode: lsGet<Mode>("mode", "simple"),
     game: "daily",
     puzzleDate: todayStr(),
@@ -140,6 +145,7 @@ export function useGame() {
     shakeCell: -1,
     infoCrit: null,
     feedbackOpen: false,
+    linesOpen: false,
     status: "idle",
     result: null,
     resultHidden: false,
@@ -162,14 +168,22 @@ export function useGame() {
       if (screen === "rules" || screen === "stats" || screen === "about" || screen === "archive") {
         track("view", { screen });
       }
-      patch({ screen });
+      setG((prev) => ({ ...prev, screen, returnTo: prev.screen }));
     },
-    [patch],
+    [],
   );
   const goHome = useCallback(
     () => patch({ screen: "home", sheetOpen: false, infoCrit: null, dailySave: lsGet(dailyKey(), null) }),
     [patch],
   );
+  /** Revient à l'écran d'origine (jeu en cours ou accueil) depuis un écran de contenu. */
+  const goBack = useCallback(() => {
+    setG((prev) =>
+      prev.returnTo === "home"
+        ? { ...prev, screen: "home", sheetOpen: false, infoCrit: null, dailySave: lsGet(dailyKey(), null) }
+        : { ...prev, screen: prev.returnTo, sheetOpen: false, infoCrit: null },
+    );
+  }, []);
 
   const setMode = useCallback(
     (mode: Mode) => {
@@ -276,6 +290,12 @@ export function useGame() {
     patch({ feedbackOpen: true });
   }, [patch]);
   const closeFeedback = useCallback(() => patch({ feedbackOpen: false }), [patch]);
+
+  const openLines = useCallback(() => {
+    track("lines_open");
+    patch({ linesOpen: true });
+  }, [patch]);
+  const closeLines = useCallback(() => patch({ linesOpen: false }), [patch]);
 
   /** Demande l'indice-plan pour la case sélectionnée (0 pt d'originalité sur cette case). */
   const useHint = useCallback(() => {
@@ -497,9 +517,9 @@ export function useGame() {
 
   return {
     g, inputRef, suggestions, remainingForSel,
-    goScreen, goHome, setMode, startDaily, startPractice, startArchive,
+    goScreen, goHome, goBack, setMode, startDaily, startPractice, startArchive,
     openSheet, closeSheet, openInfo, closeInfo, openFeedback, closeFeedback, setQuery, submit,
     toast, reopenResult, hideResult, openCellStats, closeCellStats,
-    useHint, closeHintMap,
+    useHint, closeHintMap, openLines, closeLines,
   };
 }
