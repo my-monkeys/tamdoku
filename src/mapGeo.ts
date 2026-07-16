@@ -31,6 +31,8 @@ export interface MapTrack {
 export interface MapGeo {
   width: number;
   height: number;
+  /** Facteur mètres → unités SVG (projection plane, fidèle à `metersBetween`). */
+  pxPerMeter: number;
   points: MapPoint[];
   tracks: MapTrack[];
 }
@@ -85,7 +87,7 @@ function build(): MapGeo {
     }
   }
 
-  return { width, height, points, tracks };
+  return { width, height, pxPerMeter: scale / 111_320, points, tracks };
 }
 
 export const mapGeo: MapGeo = build();

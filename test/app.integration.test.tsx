@@ -166,6 +166,52 @@ describe("app — partie complète du jour (jsdom)", () => {
     expect(screen.getByText("Comment jouer")).toBeTruthy();
   });
 
+  it("l'indice trace le cercle de distance quand la case a un critère Comédie", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-07-14T10:00:00")); // grille avec geo-loin-comedie
+    try {
+      const App = (await import("../src/App.tsx")).default;
+      const { pool } = await import("../src/data.ts");
+      const { generateDaily, seedForDate } = await import("../engine/daily.ts");
+
+      const puzzle = generateDaily(pool, seedForDate("2026-07-14"));
+      const cellRules = (ci: number) => [puzzle.rows[Math.floor(ci / 3)]!, puzzle.cols[ci % 3]!];
+      const DIST = new Set(["geo-loin-comedie", "geo-proche-comedie"]);
+      const cells = [...Array(9).keys()];
+      const withRing = cells.find((ci) => cellRules(ci).some((id) => DIST.has(id)))!;
+      const withoutRing = cells.find((ci) => !cellRules(ci).some((id) => DIST.has(id)))!;
+      expect(withRing).not.toBeUndefined();
+
+      render(<App />);
+      await act(async () => fireEvent.click(screen.getByRole("button", { name: /Jouer le défi/ })));
+
+      const openHint = async (ci: number) => {
+        await act(async () => fireEvent.click(screen.getAllByText("＋")[ci]!));
+        await act(async () => fireEvent.click(screen.getByRole("button", { name: /indice sur le plan/ })));
+        await flush();
+      };
+      const closeHint = async () => {
+        await act(async () => fireEvent.click(screen.getByRole("button", { name: /J'ai vu/ })));
+        await act(async () => fireEvent.click(screen.getByRole("button", { name: "Fermer" })));
+        await flush();
+      };
+
+      // Case avec critère de distance : cercle pointillé + libellé du rayon
+      await openHint(withRing);
+      expect(document.querySelector(".hintmap-canvas circle[stroke-dasharray]")).toBeTruthy();
+      expect(screen.getByText(/^(5 km|1,5 km)$/)).toBeTruthy();
+      expect(screen.getByText(/à vol d'oiseau autour de la Comédie/)).toBeTruthy();
+      await closeHint();
+
+      // Case sans critère de distance : pas de cercle
+      await openHint(withoutRing);
+      expect(document.querySelector(".hintmap-canvas circle[stroke-dasharray]")).toBeNull();
+      expect(screen.queryByText(/^(5 km|1,5 km)$/)).toBeNull();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("une réponse hors critère coûte un cœur", async () => {
     const App = (await import("../src/App.tsx")).default;
     const { pool, byId, stations } = await import("../src/data.ts");

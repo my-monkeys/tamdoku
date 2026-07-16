@@ -4,6 +4,12 @@ import type { useGame } from "../useGame.ts";
 
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
+/** Règles de distance à la Comédie : rayon à tracer sur le plan quand la case en a une. */
+const DISTANCE_RINGS: Record<string, { meters: number; label: string }> = {
+  "geo-proche-comedie": { meters: 1_500, label: "1,5 km" },
+  "geo-loin-comedie": { meters: 5_000, label: "5 km" },
+};
+
 /**
  * Indice : plan du réseau (positions réelles), les stations qui cochent les deux
  * critères de la case cerclées en rouge — SANS aucun nom. Au joueur d'identifier
@@ -26,6 +32,9 @@ export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
 
   if (g.hintMapCell < 0 || !g.puzzle) return null;
   const valid = new Set(g.puzzle.valid[g.hintMapCell]);
+  const cellRules = [g.puzzle.rows[Math.floor(g.hintMapCell / 3)]!, g.puzzle.cols[g.hintMapCell % 3]!];
+  const ring = cellRules.map((id) => DISTANCE_RINGS[id]).find(Boolean);
+  const comedie = mapGeo.points.find((p) => p.id === "comedie")!;
   // Marqueurs & traits à taille d'écran ~constante : on contre-scale par 1/zoom
   // pour qu'en zoomant la géographie s'écarte sans que les cercles restent collés.
   const iz = 1 / t.k;
@@ -60,6 +69,8 @@ export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
             <div className="hintmap-sub">
               En <span className="hm-red">rouge</span>, les stations qui cochent les deux critères.
               À toi de les reconnaître : pas de noms.
+              {ring &&
+                ` Le cercle pointillé trace la limite des ${ring.label} à vol d'oiseau autour de la Comédie.`}
             </div>
           </div>
           <button className="hintmap-x" onClick={ctrl.closeHintMap} aria-label="Fermer">
@@ -124,6 +135,33 @@ export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                   strokeLinecap="round"
                 />
               ))}
+              {ring && (
+                <g>
+                  <circle
+                    cx={comedie.x}
+                    cy={comedie.y}
+                    r={ring.meters * mapGeo.pxPerMeter}
+                    fill="none"
+                    stroke="var(--ink)"
+                    strokeOpacity={0.55}
+                    strokeWidth={2.5 * iz}
+                    strokeDasharray={`${9 * iz} ${7 * iz}`}
+                  />
+                  <text
+                    x={comedie.x}
+                    y={comedie.y - ring.meters * mapGeo.pxPerMeter - 9 * iz}
+                    textAnchor="middle"
+                    fontSize={16 * iz}
+                    fontWeight={800}
+                    fill="var(--ink)"
+                    stroke="var(--paper)"
+                    strokeWidth={4 * iz}
+                    paintOrder="stroke"
+                  >
+                    {ring.label}
+                  </text>
+                </g>
+              )}
               {mapGeo.points
                 .filter((p) => !valid.has(p.id))
                 .map((p) => (
