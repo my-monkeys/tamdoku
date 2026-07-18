@@ -34,8 +34,9 @@ const STEPS: { n: number; body: React.ReactNode }[] = [
     n: 3,
     body: (
       <>
-        Une station ne sert qu'<b>une seule fois</b>. Une fois validée, elle est <b>verrouillée</b>.
-        Seules les lignes qui s'arrêtent vraiment à la station comptent.
+        Une station ne sert qu'<b>une seule fois</b>. Une fois validée, elle est <b>verrouillée</b>
+        — mais tu peux la retirer en payant <b>un cœur</b> si tu es bloqué. Seules les lignes qui
+        s'arrêtent vraiment à la station comptent.
       </>
     ),
   },
@@ -43,13 +44,24 @@ const STEPS: { n: number; body: React.ReactNode }[] = [
     n: 4,
     body: (
       <>
-        <b>3 erreurs</b> maximum. Score d'originalité jusqu'à <b>900</b> : une station rare et peu
-        évidente rapporte plus de points.
+        <b>3 cœurs</b> en Expert, <b>5</b> en Simple : chaque erreur (ou retrait) en coûte un. Zéro
+        cœur = partie perdue.
       </>
     ),
   },
   {
     n: 5,
+    body: (
+      <>
+        Score d'originalité jusqu'à <b>900</b> : chaque bonne case vaut <b>40 pts</b> + jusqu'à{" "}
+        <b>60</b> selon la rareté de ta station parmi les réponses des joueurs. Bonus si tu es le
+        tout premier à la tenter ; une case indicée ne rapporte rien ; −20 pts par erreur. À la
+        fin, touche une case pour voir ce que les autres ont répondu.
+      </>
+    ),
+  },
+  {
+    n: 6,
     body: (
       <>
         Touche un critère <b>?</b> pour lire son explication. Mode <b>Simple</b> : suggestions +

@@ -2,10 +2,11 @@ import { useEffect, useRef } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { track } from "./analytics.ts";
-import { shareText } from "./format.ts";
-import { useGame } from "./useGame.ts";
+import { linesFromEmoji, prettyDate, shareCaption, shareText } from "./format.ts";
+import { renderShareCard } from "./shareCard.ts";
+import { puzzleNumber, useGame } from "./useGame.ts";
 import { Home } from "./components/Home.tsx";
-import { Game } from "./components/Game.tsx";
+import { Game, UnlockConfirm } from "./components/Game.tsx";
 import { Rules } from "./components/Rules.tsx";
 import { Stats } from "./components/Stats.tsx";
 import { About } from "./components/About.tsx";
@@ -44,16 +45,66 @@ export default function App() {
     { scope: appRef, dependencies: [g.screen] },
   );
 
-  const doShare = () => {
+  // Carte de partage pré-rendue dès le résultat : navigator.share doit rester
+  // dans le geste utilisateur, pas après un rendu canvas asynchrone.
+  const shareFile = useRef<File | null>(null);
+  useEffect(() => {
+    shareFile.current = null;
+    const r = g.result;
+    if (!r) return;
+    let stale = false;
+    const title =
+      g.game === "daily"
+        ? `Défi du ${prettyDate()}`
+        : g.game === "archive"
+          ? `Grille du ${prettyDate(g.puzzleDate)}`
+          : "Entraînement";
+    renderShareCard({
+      title,
+      subtitle: g.puzzleDate ? `nº ${puzzleNumber(g.puzzleDate)}` : "",
+      lines: r.lines ?? linesFromEmoji(r.emoji),
+      score: r.score, stars: r.stars, solved: r.solved, mistakes: r.mistakes,
+      rare: r.rare, won: r.won,
+      filename: g.puzzleDate ? `tamdoku-${g.puzzleDate}.png` : "tamdoku.png",
+    })
+      .then((f) => {
+        if (!stale) shareFile.current = f;
+      })
+      .catch(() => {});
+    return () => {
+      stale = true;
+    };
+  }, [g.result, g.game, g.puzzleDate]);
+
+  const doShare = async () => {
     if (!g.result) return;
     track("share", { game: g.game, won: g.result.won });
     const text = shareText(g.game, g.result, g.puzzleDate);
     const done = () => ctrl.toast("Résultat copié !");
-    if (navigator.share) {
-      navigator.share({ text }).catch(() => copy(text, done));
-    } else {
-      copy(text, done);
+    const file = shareFile.current;
+    if (file && navigator.canShare?.({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], text: shareCaption(g.game, g.result, g.puzzleDate) });
+        return;
+      } catch (e) {
+        if ((e as DOMException).name === "AbortError") return; // partage annulé, pas un échec
+      }
     }
+    if (navigator.share) {
+      try {
+        await navigator.share({ text });
+        return;
+      } catch (e) {
+        if ((e as DOMException).name === "AbortError") return;
+      }
+    }
+    // Desktop sans Web Share : l'image se télécharge, le texte part au presse-papier.
+    if (file) {
+      downloadFile(file);
+      copy(text, () => ctrl.toast("Image téléchargée · texte copié !"));
+      return;
+    }
+    copy(text, done);
   };
 
   return (
@@ -70,6 +121,7 @@ export default function App() {
       <StatsSheet ctrl={ctrl} />
       <InfoOverlay ctrl={ctrl} />
       <FeedbackModal ctrl={ctrl} />
+      <UnlockConfirm ctrl={ctrl} />
       <LinesOverlay ctrl={ctrl} />
       <ResultOverlay ctrl={ctrl} onShare={doShare} />
 
@@ -82,6 +134,15 @@ export default function App() {
       {g.toast && <div className="toast">{g.toast}</div>}
     </div>
   );
+}
+
+function downloadFile(file: File): void {
+  const url = URL.createObjectURL(file);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = file.name;
+  a.click();
+  URL.revokeObjectURL(url);
 }
 
 function copy(text: string, done: () => void): void {

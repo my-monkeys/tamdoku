@@ -149,7 +149,7 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
                       <button
                         key={ci}
                         className="gc ans filled"
-                        onClick={() => (finished ? ctrl.openCellStats(ci) : ctrl.toast("Station verrouillée 🔒"))}
+                        onClick={() => (finished ? ctrl.openCellStats(ci) : ctrl.openUnlock(ci))}
                       >
                         <span className="sname">{station.name}</span>
                         <LineDots stationId={id} />
@@ -188,7 +188,36 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
 
       <div className="legend">
         Chaque case = une station sur le critère de sa ligne ET de sa colonne.
-        <LineLegend />
+        <LineLegend caption="= les lignes qui desservent la station" />
+      </div>
+    </div>
+  );
+}
+
+/** Retirer une station verrouillée : la case redevient libre, contre un cœur.
+ * Rendu au niveau App (hors .screen) : la transition GSAP laisse un transform
+ * sur .screen, qui capturerait le position:fixed du backdrop. */
+export function UnlockConfirm({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
+  const { g } = ctrl;
+  const id = g.askUnlock >= 0 ? g.cells[g.askUnlock] : null;
+  const station = id ? byId.get(id) : null;
+  if (!station) return null;
+  return (
+    <div className="ov" onClick={ctrl.cancelUnlock}>
+      <div className="ulk" onClick={(e) => e.stopPropagation()}>
+        <div className="ulk-t">Retirer « {station.name} » ?</div>
+        <div className="ulk-d">
+          La case redevient libre et la station rejouable ailleurs — mais ça coûte{" "}
+          <b>un cœur</b>.
+        </div>
+        <div className="ulk-btns">
+          <button className="obtn" onClick={ctrl.confirmUnlock}>
+            Retirer · −1 <span className="heart">♥</span>
+          </button>
+          <button className="obtn sec" onClick={ctrl.cancelUnlock}>
+            Garder
+          </button>
+        </div>
       </div>
     </div>
   );

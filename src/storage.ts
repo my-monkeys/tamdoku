@@ -20,6 +20,9 @@ export interface GameResult {
   stars: number;
   rare: string;
   emoji: string[];
+  /** 1re ligne de tram de chaque case (null = case vide) — mini-grille colorée
+   * et carte de partage. Absent des vieux résultats : fallback via l'emoji. */
+  lines?: (number | null)[];
   /** Nb de stations dont le joueur est le premier à les donner (bonus pionnier). */
   firsts?: number;
 }

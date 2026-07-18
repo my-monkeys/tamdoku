@@ -212,6 +212,49 @@ describe("app — partie complète du jour (jsdom)", () => {
     }
   });
 
+  it("retirer une station verrouillée coûte un cœur et la rend rejouable", async () => {
+    const App = (await import("../src/App.tsx")).default;
+    const { pool, byId } = await import("../src/data.ts");
+    const { generateDaily, seedForDate } = await import("../engine/daily.ts");
+    const { todayStr } = await import("../src/format.ts");
+
+    const puzzle = generateDaily(pool, seedForDate(todayStr()));
+    const first = solve(puzzle.valid)[0]!;
+    const name = byId.get(first)!.name;
+
+    render(<App />);
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: /Jouer le défi/ })));
+
+    // Place une bonne station en case 0…
+    await act(async () => fireEvent.click(screen.getAllByText("＋")[0]!));
+    const input = screen.getByPlaceholderText(/station/i) as HTMLInputElement;
+    await act(async () => fireEvent.change(input, { target: { value: name } }));
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "OK" })));
+    await flush();
+    expect(screen.getAllByText("＋").length).toBe(8);
+
+    // … puis la retire via la confirmation : case libre, un cœur en moins.
+    await act(async () => fireEvent.click(document.querySelector(".gc.ans.filled") as HTMLElement));
+    expect(screen.getByText(/Retirer «/)).toBeTruthy();
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: /Retirer ·/ })));
+    await flush();
+    expect(screen.getAllByText("＋").length).toBe(9);
+    const hearts = document.querySelector(".hearts")!;
+    expect(within(hearts as HTMLElement).getByText("♡")).toBeTruthy();
+    const save = JSON.parse(localStorage.getItem(`tamdoku:daily:${todayStr()}`)!);
+    expect(save.mistakes).toBe(1);
+    expect(save.cells[0]).toBeNull();
+
+    // La station redevient jouable (pas d'avertissement « déjà placée »).
+    await act(async () => fireEvent.click(screen.getAllByText("＋")[0]!));
+    const input2 = screen.getByPlaceholderText(/station/i) as HTMLInputElement;
+    await act(async () => fireEvent.change(input2, { target: { value: name } }));
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "OK" })));
+    await flush();
+    expect(screen.queryByText(/déjà placée/)).toBeNull();
+    expect(screen.getAllByText("＋").length).toBe(8);
+  });
+
   it("une réponse hors critère coûte un cœur", async () => {
     const App = (await import("../src/App.tsx")).default;
     const { pool, byId, stations } = await import("../src/data.ts");

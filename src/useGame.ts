@@ -13,7 +13,7 @@ import type { Station } from "../engine/types.ts";
 import { track } from "./analytics.ts";
 import { fame, pool, satisfies, stations } from "./data.ts";
 import { cachedDay, cellScore, fetchAnswers, submitResults, warmPopularity, type CellAnswers } from "./stats.ts";
-import { emojiGrid, todayStr, yesterdayStr } from "./format.ts";
+import { emojiGrid, linesGrid, todayStr, yesterdayStr } from "./format.ts";
 import {
   DEFAULT_STATS,
   DEFAULT_STREAK,
@@ -56,6 +56,8 @@ export interface Game {
   /** Case dont on affiche le plan-indice ; -1 = fermé. */
   hintMapCell: number;
   sel: number;
+  /** Case verrouillée dont on propose le retrait (coûte un cœur) ; -1 = fermé. */
+  askUnlock: number;
   query: string;
   sheetOpen: boolean;
   sheetMsg: string;
@@ -138,6 +140,7 @@ export function useGame() {
     hinted: new Array(9).fill(false),
     hintMapCell: -1,
     sel: -1,
+    askUnlock: -1,
     query: "",
     sheetOpen: false,
     sheetMsg: "",
@@ -346,7 +349,7 @@ export function useGame() {
     const stars = won ? (mistakes === 0 ? 3 : mistakes === 1 ? 2 : 1) : solved >= 6 ? 1 : 0;
     const result: GameResult = {
       won, score, solved, mistakes, stars,
-      rare: rare?.name ?? "—", emoji: emojiGrid(finalCells),
+      rare: rare?.name ?? "—", emoji: emojiGrid(finalCells), lines: linesGrid(finalCells),
     };
     track(won ? "win" : "loss", { game, score, solved, mistakes });
     setG((prev) => {
@@ -436,6 +439,36 @@ export function useGame() {
     });
   }, [finish, registerMistake, savePlay]);
 
+  // ── Retrait d'une station verrouillée (coûte un cœur) ─────────────────────
+  const openUnlock = useCallback(
+    (ci: number) => {
+      setG((prev) => {
+        if (prev.status !== "playing" || !prev.cells[ci]) return prev;
+        if (prev.mistakes + 1 >= maxMistakesFor(prev.mode)) {
+          queueMicrotask(() => toast("Il faut garder au moins un cœur 💔"));
+          return prev;
+        }
+        return { ...prev, askUnlock: ci };
+      });
+    },
+    [toast],
+  );
+  const cancelUnlock = useCallback(() => patch({ askUnlock: -1 }), [patch]);
+  const confirmUnlock = useCallback(() => {
+    setG((prev) => {
+      const ci = prev.askUnlock;
+      if (prev.status !== "playing" || ci < 0 || !prev.cells[ci]) return { ...prev, askUnlock: -1 };
+      const cells = prev.cells.slice();
+      cells[ci] = null;
+      const mistakes = prev.mistakes + 1;
+      buzz(40);
+      track("unlock", { game: prev.game, mode: prev.mode });
+      if (prev.game === "daily" || prev.game === "archive") queueMicrotask(() => savePlay({ cells, mistakes }));
+      queueMicrotask(() => toast("Station retirée — un cœur en moins"));
+      return { ...prev, cells, mistakes, askUnlock: -1 };
+    });
+  }, [savePlay, toast]);
+
   const reopenResult = useCallback(() => patch({ resultHidden: false }), [patch]);
   const hideResult = useCallback(() => patch({ resultHidden: true }), [patch]);
 
@@ -521,5 +554,6 @@ export function useGame() {
     openSheet, closeSheet, openInfo, closeInfo, openFeedback, closeFeedback, setQuery, submit,
     toast, reopenResult, hideResult, openCellStats, closeCellStats,
     useHint, closeHintMap, openLines, closeLines,
+    openUnlock, cancelUnlock, confirmUnlock,
   };
 }

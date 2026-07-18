@@ -1,4 +1,4 @@
-import { prettyDate } from "../format.ts";
+import { linesFromEmoji, prettyDate } from "../format.ts";
 import { FIRST_BONUS } from "../useGame.ts";
 import type { useGame } from "../useGame.ts";
 import { LineLegend } from "./tokens.tsx";
@@ -93,13 +93,13 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
           </div>
         ) : null}
 
-        <div className="res-emoji">
-          {r.emoji.map((row, i) => (
-            <div key={i}>{row}</div>
+        <div className="res-mini">
+          {(r.lines ?? linesFromEmoji(r.emoji)).map((n, i) => (
+            <i key={i} className={n ? `v${n}` : "off"} />
           ))}
         </div>
         <div className="res-emocap">
-          <LineLegend />
+          <LineLegend caption="= la ligne de chaque station placée" />
         </div>
 
         <div className="res-stats">
@@ -118,7 +118,8 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
         </div>
 
         <div className="res-rare">
-          Score d’originalité : plus une station est rare, plus elle rapporte.
+          Score d’originalité : 40 pts par bonne case + jusqu’à 60 selon la rareté de ta station
+          parmi les réponses des joueurs.
           <br />
           Ta plus rare : <b>{r.rare}</b>
         </div>
