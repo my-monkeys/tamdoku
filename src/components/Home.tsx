@@ -6,6 +6,7 @@ import { prettyDate } from "../format.ts";
 import { lsGet, lsSet } from "../storage.ts";
 import type { useGame } from "../useGame.ts";
 import { Icon } from "./icons.tsx";
+import { InstallButton } from "./InstallButton.tsx";
 import { RuleFixNotice } from "./RuleFixNotice.tsx";
 
 export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
@@ -126,6 +127,8 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           <span>Une idée, un bug, un retour&nbsp;?</span>
           <span className="home-fb-go">›</span>
         </button>
+
+        <InstallButton />
 
         <div className="teaser">
           <div className="tcell">

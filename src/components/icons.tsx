@@ -119,6 +119,20 @@ const PATHS: Record<string, ReactNode> = {
       <path d="M12 17h.01" />
     </>
   ),
+  install: (
+    <>
+      <rect x="5" y="2" width="14" height="20" rx="2" />
+      <path d="M12 8v6" />
+      <path d="m9 11 3 3 3-3" />
+    </>
+  ),
+  "share-ios": (
+    <>
+      <path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8" />
+      <path d="m8 6 4-4 4 4" />
+      <path d="M12 2v13" />
+    </>
+  ),
 };
 
 export function Icon({ name, size = 18 }: { name: string; size?: number }) {
