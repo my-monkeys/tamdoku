@@ -1,3 +1,11 @@
+# Le service worker doit être revalidé à chaque visite, sinon les mises à jour
+# de l'app peuvent traîner jusqu'à 24 h (limite spec) derrière le cache Apache.
+<IfModule mod_headers.c>
+  <FilesMatch "^(sw\.js|registerSW\.js)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
