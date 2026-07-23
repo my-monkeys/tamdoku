@@ -39,9 +39,9 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   );
   const done = g.dailySave?.status === "won" || g.dailySave?.status === "lost";
 
-  // Défi du jour fini + archive jamais ouverte → bulle animée vers le bouton Archive.
+  // Archive jamais ouverte → bulle animée vers le bouton Archive.
   const [archiveSeen, setArchiveSeen] = useState(() => lsGet("archiveTipSeen", false));
-  const showArchiveTip = done && !archiveSeen;
+  const showArchiveTip = !archiveSeen;
   const openArchive = () => {
     lsSet("archiveTipSeen", true);
     setArchiveSeen(true);
