@@ -43,7 +43,7 @@ export function RuleFixNotice() {
           Au passage, la grille du jour et quelques grilles de l'archive ont changé. Si ta partie
           était en cours, elle a pu être chamboulée — désolé, c'est pour la bonne cause.
         </div>
-        <button className="obtn" style={{ marginTop: 16 }} onClick={dismiss}>
+        <button className="obtn" onClick={dismiss}>
           Compris
         </button>
       </div>

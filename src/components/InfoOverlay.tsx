@@ -30,7 +30,7 @@ export function InfoOverlay({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
         )}
         <div className="infotitle">{c.label}</div>
         <div className="infotext">{c.expl}</div>
-        <button className="obtn" style={{ marginTop: 16 }} onClick={ctrl.closeInfo}>
+        <button className="obtn" onClick={ctrl.closeInfo}>
           Compris
         </button>
       </div>

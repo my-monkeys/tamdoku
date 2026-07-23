@@ -142,6 +142,7 @@ button{font-family:inherit}
 .infochip{display:flex;justify-content:center;margin-bottom:12px}
 .infotitle{font-family:'Archivo';font-weight:800;font-size:21px;margin-bottom:8px}
 .infotext{font-size:14px;line-height:1.45;font-weight:500;color:var(--ink)}
+.infocard>.obtn{margin-top:16px;margin-left:auto;padding:12px 22px}
 .reopen{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);background:var(--ink);color:var(--paper);border:none;border-radius:999px;padding:11px 20px 11px 16px;font-weight:800;font-size:14px;z-index:48;box-shadow:0 12px 30px rgba(0,0,0,.3);cursor:pointer;display:inline-flex;align-items:center;gap:5px}
 .res-conf{position:absolute;inset:0;overflow:hidden;pointer-events:none;border-radius:26px}
 .cf{position:absolute;top:-14px;width:8px;height:12px;border-radius:2px;animation:cf-fall linear forwards}

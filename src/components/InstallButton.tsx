@@ -75,7 +75,7 @@ export function InstallButton() {
               puis choisis <b>« Sur l'écran d'accueil »</b>. Tamdoku s'ouvrira comme une vraie app,
               même sans connexion.
             </div>
-            <button className="obtn" style={{ marginTop: 16 }} onClick={() => setIosGuide(false)}>
+            <button className="obtn" onClick={() => setIosGuide(false)}>
               Compris
             </button>
           </div>
