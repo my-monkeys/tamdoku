@@ -54,6 +54,8 @@ Puis **lire le rapport de croisement OSM↔GTFS** affiché par le build : chaque
 
 Vite SPA : `npm run build` → `dist/` → `.monkey` (`source: ./dist/`, target **`tamdoku.fr`** — domaine dédié, pas un sous-domaine `my-monkey.fr` ; O2switch doit avoir le vhost `tamdoku.fr`). Confirmer le deploy via l'API admin monkey (`status: success`), cf. CLAUDE.md monorepo. OG image dans `public/og.png` (méta OG absolues sur `https://tamdoku.fr`). **À faire avant/juste après le 1er deploy** : créer le site dans Umami et injecter le script `u.js` dans `index.html` (cf. mémoire `umami-website-ids`).
 
+**PWA** (v0.3.16) : `vite-plugin-pwa` en `generateSW`/`autoUpdate` — shell précaché (~365 Ko, `og.png` et grosses icônes exclues), fonts Google en CacheFirst, manifest statique de `public/` conservé (`manifest: false`). Le jeu est 100 % jouable hors-ligne (grille calculée côté client par date). ⚠️ `tamdoku.fr` est derrière **Cloudflare** qui cache `sw.js` en edge ~4 h (`max-age=14400`, TTL défaut des `.js` — la directive no-cache du `.htaccess` ne passe pas) : après un deploy, les PWA installées peuvent mettre jusqu'à ~4 h à récupérer le nouveau SW. Si ça devient gênant, créer une Cache Rule Cloudflare « Bypass cache » sur `/sw.js`.
+
 ## À venir
 
 Score d'originalité **réel** (stats joueurs par case/jour, backend à décider — Supabase probable ; aujourd'hui cold-start via `engine/fame.ts`), archive (rejouer les grilles passées via `engine/generator.ts`), mode entraînement (déjà dans `useGame`/`daily.ts`, pas encore surfacé dans l'UI — fidélité à la maquette).
