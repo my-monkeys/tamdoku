@@ -24,6 +24,7 @@ La maquette embarquait son propre prototype de données (~53 stations, quelques 
 - Stations distinctes comme sur le plan officiel (les deux Gare Saint-Roch, les deux Albert 1er, les deux Saint-Éloi) ; seuls les quais directionnels fusionnent (Gambetta ×3 → 1), via `pipeline/curation.json`.
 - **Garcia Lorca est le terminus de la L4** : la ligne est circulaire (`circular: true`) *et* a un terminus (l'origine de la boucle). Ne pas re-sauter la L4 dans le calcul des terminus.
 - Toute règle du catalogue doit couvrir 6–88 stations (12–66 pour les lettres) — garde automatique dans `buildRules`.
+- **Changer la définition d'une règle réécrit l'archive** (le tirage de `generateDaily` dépend des `stationIds` via faisabilité/qualité, même pour des grilles qui n'affichent pas la règle). Toute correction de règle passe par une **bascule datée** : variante legacy dans `buildRules(net, opts)` + date charnière exportée par `rules.ts`, et l'app choisit le catalogue par date de grille via `poolFor(date)` (`src/data.ts`). Précédent : « lettre doublée » ne recolle plus les mots depuis `DOUBLE_LETTER_PER_WORD_FROM` (2026-07-24) ; les grilles antérieures rejouent avec `legacyDoubleLetter`, gardées figées par un test snapshot dans `test/daily.test.ts`.
 
 ## Rafraîchir les données
 

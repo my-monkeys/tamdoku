@@ -11,7 +11,7 @@ import { generateDaily, seedForDate, type DailyPuzzle } from "../engine/daily.ts
 import { findStation, suggestStations } from "../engine/answer.ts";
 import type { Station } from "../engine/types.ts";
 import { track } from "./analytics.ts";
-import { fame, pool, satisfies, stations } from "./data.ts";
+import { fame, pool, poolFor, satisfies, stations } from "./data.ts";
 import { cachedDay, cellScore, fetchAnswers, submitResults, warmPopularity, type CellAnswers } from "./stats.ts";
 import { emojiGrid, linesGrid, todayStr, yesterdayStr } from "./format.ts";
 import {
@@ -124,7 +124,7 @@ function buzz(pattern: number | number[]): void {
 }
 
 export function useGame() {
-  const dailyPuzzle = useMemo(() => generateDaily(pool, seedForDate(todayStr())), []);
+  const dailyPuzzle = useMemo(() => generateDaily(poolFor(todayStr()), seedForDate(todayStr())), []);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const toastTimer = useRef<number | undefined>(undefined);
 
@@ -242,7 +242,7 @@ export function useGame() {
         return;
       }
       warmPopularity(date);
-      const puzzle = generateDaily(pool, seedForDate(date));
+      const puzzle = generateDaily(poolFor(date), seedForDate(date));
       const saved = loadDaySave(date);
       const common = {
         screen: "game" as const, game: "archive" as const, puzzleDate: date, puzzle,
@@ -424,7 +424,9 @@ export function useGame() {
         return { ...prev, sheetMsg: `« ${station.name} » est déjà placée ailleurs`, sheetMsgCls: "warn" };
       }
       const ci = prev.sel;
-      const ok = satisfies(station, prev.puzzle!.rows[Math.floor(ci / 3)]!) && satisfies(station, prev.puzzle!.cols[ci % 3]!);
+      const ok =
+        satisfies(station, prev.puzzle!.rows[Math.floor(ci / 3)]!, prev.puzzleDate) &&
+        satisfies(station, prev.puzzle!.cols[ci % 3]!, prev.puzzleDate);
       if (!ok) {
         queueMicrotask(() => registerMistake(`« ${station.name} » ne coche pas les deux critères`));
         return prev;

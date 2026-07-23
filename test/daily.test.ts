@@ -93,6 +93,42 @@ describe("générateur du jour", () => {
     }
   });
 
+  it("l'archive d'avant la bascule « lettre doublée » reste figée (pool legacy)", () => {
+    // Grilles publiées avant DOUBLE_LETTER_PER_WORD_FROM, relevées en production.
+    // Si ce test casse, des joueurs verront leurs résultats sauvés sur d'autres grilles.
+    const legacy = buildRules(net, { legacyDoubleLetter: true });
+    const frozen: Record<string, { rows: string[]; cols: string[] }> = {
+      "2026-07-11": {
+        rows: ["nom-commence-voyelle", "tag-enseignement", "ligne-3"],
+        cols: ["nom-lettre-d", "ligne-1", "nom-trois-mots"],
+      },
+      "2026-07-14": {
+        rows: ["nom-un-mot", "ligne-5", "nom-double-lettre"],
+        cols: ["geo-loin-comedie", "ligne-4", "tag-personnalite"],
+      },
+      "2026-07-23": {
+        rows: ["nom-double-lettre", "ligne-5", "tag-personnalite"],
+        cols: ["nom-chiffre", "ligne-4", "nom-lettre-b"],
+      },
+    };
+    for (const [date, expected] of Object.entries(frozen)) {
+      const p = generateDaily(legacy, seedForDate(date));
+      expect({ rows: p.rows, cols: p.cols }, date).toEqual(expected);
+    }
+  });
+
+  it("« lettre doublée » ne recolle plus les mots depuis la bascule", () => {
+    const current = ruleById.get("nom-double-lettre")!;
+    const legacy = buildRules(net, { legacyDoubleLetter: true }).find((r) => r.id === "nom-double-lettre")!;
+    for (const junction of ["plan-des-4-seigneurs", "parc-clemenceau", "hopital-lapeyronie", "gare-sud-de-france"]) {
+      expect(legacy.stationIds.has(junction), junction).toBe(true);
+      expect(current.stationIds.has(junction), junction).toBe(false);
+    }
+    for (const real of ["mosson", "tonnelles"]) {
+      expect(current.stationIds.has(real), real).toBe(true);
+    }
+  });
+
   it("mobilise une large part du catalogue sur un an", () => {
     const start = Date.parse("2026-07-06");
     const used = new Set<string>();

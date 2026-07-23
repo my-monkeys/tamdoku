@@ -1,8 +1,9 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { criterion } from "../data.ts";
 import { prettyDate } from "../format.ts";
+import { lsGet, lsSet } from "../storage.ts";
 import type { useGame } from "../useGame.ts";
 import { Icon } from "./icons.tsx";
 
@@ -37,6 +38,24 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
     { scope: seg, dependencies: [g.mode] },
   );
   const done = g.dailySave?.status === "won" || g.dailySave?.status === "lost";
+
+  // Défi du jour fini + archive jamais ouverte → bulle animée vers le bouton Archive.
+  const [archiveSeen, setArchiveSeen] = useState(() => lsGet("archiveTipSeen", false));
+  const showArchiveTip = done && !archiveSeen;
+  const openArchive = () => {
+    lsSet("archiveTipSeen", true);
+    setArchiveSeen(true);
+    ctrl.goScreen("archive");
+  };
+  useGSAP(
+    () => {
+      if (!showArchiveTip) return;
+      gsap.from(".archive-tip", { opacity: 0, y: -10, duration: 0.45, ease: "power2.out", delay: 0.7 });
+      gsap.to(".archive-tip", { y: 5, duration: 0.85, ease: "sine.inOut", repeat: -1, yoyo: true, delay: 1.15 });
+    },
+    { scope: root, dependencies: [showArchiveTip] },
+  );
+
   const chips = [...g.dailyPuzzle.rows, ...g.dailyPuzzle.cols].map(criterion);
   const title = done
     ? g.dailySave?.status === "won"
@@ -146,9 +165,12 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
         <button className="flink" onClick={() => ctrl.goScreen("rules")}>
           Règles du jeu
         </button>
-        <button className="flink" onClick={() => ctrl.goScreen("archive")}>
-          Archive
-        </button>
+        <span className="flink-wrap">
+          {showArchiveTip && <span className="archive-tip">Rejoue les grilles des jours précédents</span>}
+          <button className="flink" onClick={openArchive}>
+            Archive
+          </button>
+        </span>
         <button className="flink" onClick={() => ctrl.goScreen("stats")}>
           Statistiques
         </button>

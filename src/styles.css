@@ -42,6 +42,10 @@ button{font-family:inherit}
 .sbtn:active{transform:scale(.98)}
 .footlinks{display:flex;justify-content:center;gap:4px;padding:4px 0 8px;flex-wrap:wrap}
 .flink{background:transparent;border:none;color:var(--muted);font-weight:700;font-size:13px;cursor:pointer;padding:8px 12px;border-radius:10px}
+.flink-wrap{position:relative;display:inline-flex}
+/* Centrage via left/right+margin (pas de transform : GSAP anime y). */
+.archive-tip{position:absolute;bottom:calc(100% + 9px);left:-200px;right:-200px;margin:0 auto;width:max-content;background:var(--ink);color:var(--paper);font-size:12px;font-weight:700;padding:7px 12px;border-radius:11px;pointer-events:none;box-shadow:0 8px 20px rgba(23,24,28,.22);z-index:5}
+.archive-tip::after{content:"";position:absolute;top:100%;left:50%;margin-left:-5px;border:5px solid transparent;border-top-color:var(--ink)}
 .sitefoot{display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;padding:2px 20px calc(18px + env(safe-area-inset-bottom))}
 .sitefoot-brand{font-family:'Archivo';font-weight:800;font-size:12.5px;letter-spacing:.02em;color:var(--ink);opacity:.78}
 .sitefoot-links{font-size:12px;font-weight:700}

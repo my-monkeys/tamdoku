@@ -91,7 +91,7 @@ const META: Record<string, { icon: string; iconKey?: string; short: string; labe
     icon: "aa",
     short: "Lettre doublée",
     label: "Contient une lettre doublée",
-    expl: "Deux lettres identiques se suivent dans le nom (espaces et tirets ignorés).",
+    expl: "Un mot du nom contient deux fois la même lettre, collées (ll, ss, nn…). Deux lettres identiques séparées ne comptent pas.",
   },
   "nom-chiffre": {
     icon: "#",
