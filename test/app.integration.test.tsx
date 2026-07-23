@@ -46,11 +46,11 @@ const flush = () => act(async () => { await Promise.resolve(); });
 describe("app — partie complète du jour (jsdom)", () => {
   it("rend l'accueil, joue les 9 cases et gagne le défi", async () => {
     const App = (await import("../src/App.tsx")).default;
-    const { poolFor, byId } = await import("../src/data.ts");
+    const { pool, byId } = await import("../src/data.ts");
     const { generateDaily, seedForDate } = await import("../engine/daily.ts");
     const { todayStr } = await import("../src/format.ts");
 
-    const puzzle = generateDaily(poolFor(todayStr()), seedForDate(todayStr()));
+    const puzzle = generateDaily(pool, seedForDate(todayStr()));
     const answerNames = solve(puzzle.valid).map((id) => byId.get(id)!.name);
 
     render(<App />);
@@ -99,7 +99,7 @@ describe("app — partie complète du jour (jsdom)", () => {
     vi.setSystemTime(new Date("2026-07-10T10:00:00"));
     try {
       const App = (await import("../src/App.tsx")).default;
-      const { poolFor, byId } = await import("../src/data.ts");
+      const { pool, byId } = await import("../src/data.ts");
       const { generateDaily, seedForDate } = await import("../engine/daily.ts");
       const { archiveDates } = await import("../src/useGame.ts");
 
@@ -109,7 +109,7 @@ describe("app — partie complète du jour (jsdom)", () => {
       expect(window.location.pathname).toBe("/archive");
 
       const past = archiveDates()[1]!; // la veille = 2026-07-09
-      const names = solve(generateDaily(poolFor(past), seedForDate(past)).valid).map((id) => byId.get(id)!.name);
+      const names = solve(generateDaily(pool, seedForDate(past)).valid).map((id) => byId.get(id)!.name);
 
       const rows = document.querySelectorAll(".arow");
       await act(async () => fireEvent.click(rows[1] as HTMLElement));
@@ -171,10 +171,10 @@ describe("app — partie complète du jour (jsdom)", () => {
     vi.setSystemTime(new Date("2026-07-14T10:00:00")); // grille avec geo-loin-comedie
     try {
       const App = (await import("../src/App.tsx")).default;
-      const { poolFor } = await import("../src/data.ts");
+      const { pool } = await import("../src/data.ts");
       const { generateDaily, seedForDate } = await import("../engine/daily.ts");
 
-      const puzzle = generateDaily(poolFor("2026-07-14"), seedForDate("2026-07-14"));
+      const puzzle = generateDaily(pool, seedForDate("2026-07-14"));
       const cellRules = (ci: number) => [puzzle.rows[Math.floor(ci / 3)]!, puzzle.cols[ci % 3]!];
       const DIST = new Set(["geo-loin-comedie", "geo-proche-comedie"]);
       const cells = [...Array(9).keys()];
@@ -214,11 +214,11 @@ describe("app — partie complète du jour (jsdom)", () => {
 
   it("retirer une station verrouillée coûte un cœur et la rend rejouable", async () => {
     const App = (await import("../src/App.tsx")).default;
-    const { poolFor, byId } = await import("../src/data.ts");
+    const { pool, byId } = await import("../src/data.ts");
     const { generateDaily, seedForDate } = await import("../engine/daily.ts");
     const { todayStr } = await import("../src/format.ts");
 
-    const puzzle = generateDaily(poolFor(todayStr()), seedForDate(todayStr()));
+    const puzzle = generateDaily(pool, seedForDate(todayStr()));
     const first = solve(puzzle.valid)[0]!;
     const name = byId.get(first)!.name;
 
@@ -257,19 +257,19 @@ describe("app — partie complète du jour (jsdom)", () => {
 
   it("une réponse hors critère coûte un cœur", async () => {
     const App = (await import("../src/App.tsx")).default;
-    const { poolFor, byId, stations } = await import("../src/data.ts");
+    const { pool, byId, stations } = await import("../src/data.ts");
     const { generateDaily, seedForDate } = await import("../engine/daily.ts");
     const { todayStr } = await import("../src/format.ts");
     const { satisfies } = await import("../src/data.ts");
 
-    const puzzle = generateDaily(poolFor(todayStr()), seedForDate(todayStr()));
+    const puzzle = generateDaily(pool, seedForDate(todayStr()));
     render(<App />);
     await act(async () => fireEvent.click(screen.getByRole("button", { name: /Jouer le défi/ })));
 
     // Une station qui ne coche PAS le critère de la case 0
     const rowRule = puzzle.rows[0]!;
     const colRule = puzzle.cols[0]!;
-    const wrong = stations.find((s) => !(satisfies(s, rowRule, todayStr()) && satisfies(s, colRule, todayStr())))!;
+    const wrong = stations.find((s) => !(satisfies(s, rowRule) && satisfies(s, colRule)))!;
 
     await act(async () => fireEvent.click(screen.getAllByText("＋")[0]!));
     const input = screen.getByPlaceholderText(/station/i) as HTMLInputElement;

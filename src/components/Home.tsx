@@ -6,6 +6,7 @@ import { prettyDate } from "../format.ts";
 import { lsGet, lsSet } from "../storage.ts";
 import type { useGame } from "../useGame.ts";
 import { Icon } from "./icons.tsx";
+import { RuleFixNotice } from "./RuleFixNotice.tsx";
 
 export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
@@ -191,6 +192,8 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           </a>
         </div>
       </div>
+
+      <RuleFixNotice />
     </div>
   );
 }

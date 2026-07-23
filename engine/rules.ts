@@ -12,7 +12,6 @@ import {
   hasAccent,
   hasApostrophe,
   hasDigit,
-  hasDoubleLetter,
   hasDoubleLetterInWord,
   letterCount,
   slugify,
@@ -31,21 +30,7 @@ const LETTER_MAX = 66;
 const NEAR_CENTER_METERS = 1_500;
 const FAR_CENTER_METERS = 5_000;
 
-/**
- * Date (incluse) à partir de laquelle « lettre doublée » s'entend au sein d'un
- * même mot. Avant, la règle recollait les mots (« Plan des 4 Seigneurs » comptait
- * via le s‿S de « des Seigneurs »), ce que les joueurs lisaient comme un bug.
- * Les grilles antérieures restent générées avec l'ancienne définition
- * (`legacyDoubleLetter`) pour ne pas réécrire l'archive ni les résultats sauvés.
- */
-export const DOUBLE_LETTER_PER_WORD_FROM = "2026-07-24";
-
-export interface BuildRulesOptions {
-  /** Compile « nom-double-lettre » avec la définition d'avant la bascule. */
-  legacyDoubleLetter?: boolean;
-}
-
-export function buildRules(net: Network, opts: BuildRulesOptions = {}): CompiledRule[] {
+export function buildRules(net: Network): CompiledRule[] {
   const rules: Rule[] = [];
 
   // ── Lignes ──────────────────────────────────────────────────────────────
@@ -152,7 +137,7 @@ export function buildRules(net: Network, opts: BuildRulesOptions = {}): Compiled
       label: "Contient une lettre doublée",
       description:
         "Un mot du nom contient deux lettres identiques qui se suivent (Mosson, Tonnelles, …).",
-      test: (s) => (opts.legacyDoubleLetter ? hasDoubleLetter : hasDoubleLetterInWord)(s.name),
+      test: (s) => hasDoubleLetterInWord(s.name),
     },
     {
       id: "nom-chiffre",

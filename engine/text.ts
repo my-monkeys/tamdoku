@@ -28,16 +28,10 @@ export function containsLetter(name: string, letter: string): boolean {
 }
 
 /**
- * Double lettre consécutive identique, mots recollés : "Parc Clemenceau" compte
- * via le c‿C de la jonction. Définition d'origine, perçue comme une erreur par
- * les joueurs — conservée uniquement pour rejouer à l'identique les grilles
- * d'avant la bascule (cf. DOUBLE_LETTER_PER_WORD_FROM dans rules.ts).
+ * Double lettre consécutive identique au sein d'un même mot : "Tonnelles", "Mosson".
+ * Surtout pas sur le nom entier recollé : "Parc Clemenceau" matcherait via le c‿C
+ * de la jonction, ce que les joueurs lisaient comme un bug (corrigé en juillet 2026).
  */
-export function hasDoubleLetter(name: string): boolean {
-  return /(.)\1/.test(lettersOnly(name));
-}
-
-/** Double lettre consécutive identique au sein d'un même mot : "Tonnelles", "Mosson". */
 export function hasDoubleLetterInWord(name: string): boolean {
   return words(name).some((w) => /(.)\1/.test(lettersOnly(w)));
 }
