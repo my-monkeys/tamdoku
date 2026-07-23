@@ -1,6 +1,7 @@
 import { lineSummaries } from "../data.ts";
 import type { useGame } from "../useGame.ts";
 import { Icon } from "./icons.tsx";
+import { InstallButton } from "./InstallButton.tsx";
 
 export function About({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   return (
@@ -32,6 +33,7 @@ export function About({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
             </div>
           ))}
         </div>
+        <InstallButton />
         <p className="prose m" style={{ fontSize: 12 }}>
           Projet non officiel, sans lien avec TaM. Réseau et correspondances d'après les données
           ouvertes OpenStreetMap et le GTFS TaM ; les couleurs approchent la charte à des fins
