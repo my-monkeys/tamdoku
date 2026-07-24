@@ -4,6 +4,8 @@
  * niveau module, avec un abonnement pour les composants (useSyncExternalStore).
  * Safari (iOS et macOS) et Firefox n'émettent jamais cet événement.
  */
+import { track } from "./analytics.ts";
+
 export type BeforeInstallPromptEvent = Event & {
   prompt: () => Promise<void>;
   userChoice: Promise<{ outcome: "accepted" | "dismissed" }>;
@@ -25,6 +27,7 @@ window.addEventListener("beforeinstallprompt", (e) => {
 window.addEventListener("appinstalled", () => {
   deferred = null;
   notify();
+  track("pwa_installed");
 });
 
 export function getInstallPrompt(): BeforeInstallPromptEvent | null {

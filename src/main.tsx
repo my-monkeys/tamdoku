@@ -3,9 +3,18 @@ import { createRoot } from "react-dom/client";
 import gsap from "gsap";
 import { useGSAP } from "@gsap/react";
 import App from "./App.tsx";
+import { track } from "./analytics.ts";
 import "./styles.css";
 
 gsap.registerPlugin(useGSAP);
+
+// Une session sur l'app installée (fenêtre standalone) : mesure l'usage PWA réel.
+if (
+  window.matchMedia("(display-mode: standalone)").matches ||
+  ("standalone" in navigator && (navigator as { standalone?: boolean }).standalone === true)
+) {
+  track("pwa_launch");
+}
 
 const root = document.getElementById("root");
 if (!root) throw new Error("#root introuvable");

@@ -1,4 +1,5 @@
 import { useState, useSyncExternalStore } from "react";
+import { track } from "../analytics.ts";
 import {
   clearInstallPrompt,
   getInstallPrompt,
@@ -41,11 +42,13 @@ export function InstallButton() {
 
   const install = async () => {
     if (!native) {
+      track("pwa_install_prompt", { platform: "ios", outcome: "guide" });
       setIosGuide(true);
       return;
     }
     await native.prompt();
     const { outcome } = await native.userChoice;
+    track("pwa_install_prompt", { platform: "native", outcome });
     clearInstallPrompt();
     if (outcome === "dismissed") setSnoozed(true);
   };
