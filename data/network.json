@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-07T17:46:38.745Z",
+ "generatedAt": "2026-07-24T10:01:07.614Z",
  "source": "OSM (Overpass, service nominal) + GTFS TaM (identité/alias) + geo.api.gouv.fr (communes)",
  "stations": [
   {
@@ -93,7 +93,9 @@
    "commune": "Montpellier",
    "terminusOf": [],
    "parkRide": false,
-   "tags": []
+   "tags": [
+    "personnalite"
+   ]
   },
   {
    "id": "aube-rouge",
@@ -1625,6 +1627,7 @@
    "terminusOf": [],
    "parkRide": false,
    "tags": [
+    "personnalite",
     "enseignement"
    ]
   },

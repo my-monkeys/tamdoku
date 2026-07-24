@@ -1,33 +1,33 @@
 {
   "_doc": "Curation manuelle appliquée par build-network.ts. Les clés de 'merges'/'renames' sont des noms d'arrêts OSM (espaces normalisés) ; les listes de 'tags' et 'parkRideOverrides' utilisent les slugs canoniques du network.json final.",
-
   "merges": {
     "_doc": "Quais directionnels que le GTFS officiel considère comme une seule station.",
     "Gambetta - Chaptal": "Gambetta",
     "Gambetta - Saint-Denis": "Gambetta"
   },
-
   "renames": {
     "_doc": "Nom canonique quand la signalétique officielle diffère du tag OSM.",
     "Arceaux": "Les Arceaux"
   },
-
   "gtfsAliases": {
     "_doc": "Nom GTFS → nom canonique, quand le rapprochement automatique par clé pliée échoue.",
     "Saint-Martin": "Saint-Martin - Le Jam"
   },
-
   "parkRideOverrides": {
     "_doc": "slug → bool, prime sur la détection par proximité OSM."
   },
-
   "terminusExtra": {
     "_doc": "Demi-terminus permanents (short-turns réguliers où ~1 tram sur 2 fait demi-tour), validés sur les destinations réelles du GTFS TaM — PAS des déviations travaux. slug → lignes qui y terminent régulièrement. S'ajoutent aux terminus nominaux OSM sur la station (critère « terminus »), sans toucher Line.termini (extrémités nominales de ligne).",
-    "notre-dame-de-sablassou": ["2"],
-    "sabines": ["2"],
-    "mosson": ["3"]
+    "notre-dame-de-sablassou": [
+      "2"
+    ],
+    "sabines": [
+      "2"
+    ],
+    "mosson": [
+      "3"
+    ]
   },
-
   "tags": {
     "personnalite": [
       "albert-1er-saint-charles",
@@ -45,7 +45,9 @@
       "du-guesclin",
       "louis-blanc-agora-de-la-danse",
       "yves-du-manoir",
-      "parc-clemenceau"
+      "parc-clemenceau",
+      "universite-paul-valery",
+      "astruc"
     ],
     "espace-vert": [
       "parc-bagatelle",
@@ -75,7 +77,6 @@
       "boutonnet-cite-des-arts"
     ]
   },
-
   "_notes": {
     "personnalite": "Saints exclus volontairement (règle « Saint » séparée). Astruc et Victoire 2 exclus (référence trop indirecte). Parc Expo exclu d'espace-vert (parc des expositions).",
     "sport": "Ovalie inclus : quartier nommé pour le rugby (stades de l'Ovalie).",

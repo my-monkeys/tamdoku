@@ -128,9 +128,9 @@ const META: Record<string, { icon: string; iconKey?: string; short: string; labe
   "tag-personnalite": {
     icon: "☺",
     iconKey: "user",
-    short: "Nom propre",
-    label: "Nom propre",
-    expl: "La station porte le nom d’une personnalité, pas d’un lieu ni d’un quartier. Les saints ne comptent pas.",
+    short: "Personnalité",
+    label: "Nom d'une personnalité",
+    expl: "La station porte le nom d'une personne réelle, y compris au sein d'un nom composé (université, stade, parc…). Les saints ne comptent pas.",
   },
   "tag-espace-vert": {
     icon: "✿",

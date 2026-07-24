@@ -187,7 +187,7 @@ export function buildRules(net: Network): CompiledRule[] {
     [
       "personnalite",
       "Porte le nom d'une personnalité",
-      "La station est nommée d'après une personne réelle (Léon Blum, Garcia Lorca, Gambetta, …). Les saints ne comptent pas.",
+      "La station est nommée d'après une personne réelle, y compris dans un nom composé (Léon Blum, Université Paul Valéry, Yves du Manoir, …). Les saints ne comptent pas.",
     ],
     [
       "espace-vert",
