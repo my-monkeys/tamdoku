@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-24T10:01:07.614Z",
+ "generatedAt": "2026-07-24T10:06:26.759Z",
  "source": "OSM (Overpass, service nominal) + GTFS TaM (identité/alias) + geo.api.gouv.fr (communes)",
  "stations": [
   {
@@ -1579,6 +1579,7 @@
    "terminusOf": [],
    "parkRide": false,
    "tags": [
+    "personnalite",
     "sport"
    ]
   },
