@@ -48,7 +48,8 @@
       "parc-clemenceau",
       "universite-paul-valery",
       "astruc",
-      "stade-philippides"
+      "stade-philippides",
+      "saint-eloi-docteur-pezet"
     ],
     "espace-vert": [
       "parc-bagatelle",
@@ -79,7 +80,7 @@
     ]
   },
   "_notes": {
-    "personnalite": "Saints exclus volontairement (règle « Saint » séparée). Astruc et Victoire 2 exclus (référence trop indirecte). Parc Expo exclu d'espace-vert (parc des expositions).",
+    "personnalite": "Saints exclus volontairement (règle « Saint » séparée), sauf nom composé avec une vraie personne (Saint-Éloi - Docteur Pézet : Paul Pezet, maire 1901-1904). Victoire 2 exclu (référence trop indirecte). Parc Expo exclu d'espace-vert (parc des expositions).",
     "sport": "Ovalie inclus : quartier nommé pour le rugby (stades de l'Ovalie).",
     "enseignement": "Cité des Arts = conservatoire à rayonnement régional de Montpellier."
   }

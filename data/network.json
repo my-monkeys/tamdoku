@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-24T10:06:26.759Z",
+ "generatedAt": "2026-07-31T20:26:28.616Z",
  "source": "OSM (Overpass, service nominal) + GTFS TaM (identité/alias) + geo.api.gouv.fr (communes)",
  "stations": [
   {
@@ -1438,7 +1438,9 @@
    "commune": "Montpellier",
    "terminusOf": [],
    "parkRide": false,
-   "tags": []
+   "tags": [
+    "personnalite"
+   ]
   },
   {
    "id": "saint-guilhem-courreau",
