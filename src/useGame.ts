@@ -58,6 +58,9 @@ export interface Game {
   sel: number;
   /** Case verrouillée dont on propose le retrait (coûte un cœur) ; -1 = fermé. */
   askUnlock: number;
+  /** Rejeu d'une grille d'archive déjà terminée : seul un meilleur résultat
+   * remplace l'ancien, et rien n'est renvoyé aux stats communautaires. */
+  replay: boolean;
   query: string;
   sheetOpen: boolean;
   sheetMsg: string;
@@ -90,6 +93,13 @@ const dailyKey = () => saveKey(todayStr());
 /** Charge la sauvegarde d'une date (browser-safe, utilisé par l'écran Archive). */
 export function loadDaySave(date: string): DailySave | null {
   return lsGet<DailySave | null>(saveKey(date), null);
+}
+
+/** a bat-il b ? Une victoire prime, à victoire égale le score tranche. */
+function beats(a: GameResult | null, b: GameResult): boolean {
+  if (!a) return false;
+  if (a.won !== b.won) return a.won;
+  return a.score > b.score;
 }
 
 function dayNum(date: string): number {
@@ -141,6 +151,7 @@ export function useGame() {
     hintMapCell: -1,
     sel: -1,
     askUnlock: -1,
+    replay: false,
     query: "",
     sheetOpen: false,
     sheetMsg: "",
@@ -207,6 +218,13 @@ export function useGame() {
         result: next.forResult !== undefined ? next.forResult : prev.result,
         hinted: next.hinted ?? prev.hinted,
       };
+      // Rejeu : l'ancienne partie reste la référence — rien n'est écrit en cours
+      // de route, et le résultat final ne remplace l'ancien que s'il le bat.
+      if (prev.replay) {
+        if (save.status === "playing") return prev;
+        const old = loadDaySave(prev.puzzleDate);
+        if (old?.result && !beats(save.result, old.result)) return prev;
+      }
       lsSet(saveKey(prev.puzzleDate), save);
       // dailySave (carte d'accueil) ne reflète QUE la grille du jour.
       return prev.puzzleDate === todayStr() ? { ...prev, dailySave: save } : prev;
@@ -220,7 +238,7 @@ export function useGame() {
       patch({
         screen: "game", game: "daily", puzzleDate: todayStr(), puzzle: dailyPuzzle,
         cells: saved.cells, mistakes: saved.mistakes, status: saved.status,
-        hinted: saved.hinted ?? new Array(9).fill(false), hintMapCell: -1,
+        hinted: saved.hinted ?? new Array(9).fill(false), hintMapCell: -1, replay: false,
         result: saved.result, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
       });
       return;
@@ -229,7 +247,7 @@ export function useGame() {
     patch({
       screen: "game", game: "daily", puzzleDate: todayStr(), puzzle: dailyPuzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
-      hinted: new Array(9).fill(false), hintMapCell: -1,
+      hinted: new Array(9).fill(false), hintMapCell: -1, replay: false,
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
     });
   }, [dailyPuzzle, patch]);
@@ -246,7 +264,7 @@ export function useGame() {
       const saved = loadDaySave(date);
       const common = {
         screen: "game" as const, game: "archive" as const, puzzleDate: date, puzzle,
-        hintMapCell: -1, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
+        hintMapCell: -1, replay: false, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
       };
       if (saved) {
         patch({
@@ -271,10 +289,26 @@ export function useGame() {
     patch({
       screen: "game", game: "practice", puzzleDate: "", puzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
-      hinted: new Array(9).fill(false), hintMapCell: -1,
+      hinted: new Array(9).fill(false), hintMapCell: -1, replay: false,
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
     });
   }, [patch]);
+
+  /** Relance de zéro une grille d'archive déjà terminée (demande joueurs : retenter
+   * pour améliorer son score). Le meilleur résultat reste celui enregistré. */
+  const replayArchive = useCallback(() => {
+    setG((prev) => {
+      if (prev.game !== "archive" || (prev.status !== "won" && prev.status !== "lost")) return prev;
+      track("replay", { mode: prev.mode });
+      return {
+        ...prev,
+        cells: new Array(9).fill(null), mistakes: 0, status: "playing",
+        hinted: new Array(9).fill(false), hintMapCell: -1, replay: true,
+        result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
+        statsCell: -1, cellStats: null,
+      };
+    });
+  }, []);
 
   // ── Feuille de saisie ─────────────────────────────────────────────────────
   const openSheet = useCallback(
@@ -326,7 +360,7 @@ export function useGame() {
   );
 
   const finish = useCallback(
-    (won: boolean, finalCells: (string | null)[], mistakes: number, game: GameType, date: string, hinted: boolean[]) => {
+    (won: boolean, finalCells: (string | null)[], mistakes: number, game: GameType, date: string, hinted: boolean[], replay: boolean) => {
     // Distribution réelle du jour si consolidée, sinon fallback fame par case.
     const dist = date ? cachedDay(date) : null;
     let score = 0;
@@ -375,6 +409,9 @@ export function useGame() {
     });
     if (game === "daily" || game === "archive") {
       savePlay({ cells: finalCells, mistakes, status: won ? "won" : "lost", forResult: result, hinted });
+      // Un rejeu ne renvoie rien aux stats communautaires : la distribution du
+      // jour et le bonus pionnier ne comptent qu'une partie par joueur.
+      if (replay) return;
       // Bonus pionnier : à la réponse du submit, +FIRST_BONUS par station dont le
       // joueur est le premier à l'avoir donnée. Non bloquant : le résultat est
       // déjà affiché, on met à jour le score si un bonus arrive.
@@ -404,7 +441,7 @@ export function useGame() {
       if (mistakes >= maxMistakesFor(prev.mode)) {
         window.setTimeout(() => {
           setG((p) => ({ ...p, sheetOpen: false, sel: -1 }));
-          finish(false, prev.cells, mistakes, prev.game, prev.puzzleDate, prev.hinted);
+          finish(false, prev.cells, mistakes, prev.game, prev.puzzleDate, prev.hinted, prev.replay);
         }, 680);
       } else if (prev.game === "daily" || prev.game === "archive") {
         savePlay({ mistakes });
@@ -433,7 +470,7 @@ export function useGame() {
       cells[ci] = station.id;
       buzz(18);
       const won = cells.every(Boolean);
-      if (won) queueMicrotask(() => finish(true, cells, prev.mistakes, prev.game, prev.puzzleDate, prev.hinted));
+      if (won) queueMicrotask(() => finish(true, cells, prev.mistakes, prev.game, prev.puzzleDate, prev.hinted, prev.replay));
       else if (prev.game === "daily" || prev.game === "archive") queueMicrotask(() => savePlay({ cells }));
       return { ...prev, cells, sheetOpen: false, sel: -1, query: "", sheetMsg: "" };
     });
@@ -550,7 +587,7 @@ export function useGame() {
 
   return {
     g, inputRef, suggestions, remainingForSel,
-    goScreen, goHome, goBack, setMode, startDaily, startPractice, startArchive,
+    goScreen, goHome, goBack, setMode, startDaily, startPractice, startArchive, replayArchive,
     openSheet, closeSheet, openInfo, closeInfo, openFeedback, closeFeedback, setQuery, submit,
     toast, reopenResult, hideResult, openCellStats, closeCellStats,
     useHint, closeHintMap, openLines, closeLines,

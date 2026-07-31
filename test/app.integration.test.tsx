@@ -132,6 +132,73 @@ describe("app — partie complète du jour (jsdom)", () => {
     }
   });
 
+  it("rejouer une grille d'archive : le meilleur résultat est conservé", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-07-10T10:00:00"));
+    try {
+      const App = (await import("../src/App.tsx")).default;
+      const { pool, byId, stations, satisfies } = await import("../src/data.ts");
+      const { generateDaily, seedForDate } = await import("../engine/daily.ts");
+
+      const past = "2026-07-09";
+      const puzzle = generateDaily(pool, seedForDate(past));
+      const names = solve(puzzle.valid).map((id) => byId.get(id)!.name);
+      const wrong = stations.find(
+        (s) => !(satisfies(s, puzzle.rows[0]!) && satisfies(s, puzzle.cols[0]!)),
+      )!;
+      const saveOf = () => JSON.parse(localStorage.getItem(`tamdoku:daily:${past}`)!);
+
+      const guess = async (name: string) => {
+        await act(async () => fireEvent.click(screen.getAllByText("＋")[0]!));
+        const input = screen.getByPlaceholderText(/station/i) as HTMLInputElement;
+        await act(async () => fireEvent.change(input, { target: { value: name } }));
+        await act(async () => fireEvent.click(screen.getByRole("button", { name: "OK" })));
+        await flush();
+      };
+      // Perd la partie : 5 fautes en mode simple, puis 680 ms avant l'écran de fin.
+      const loseAll = async () => {
+        for (let k = 0; k < 5; k++) await guess(wrong.name);
+        await act(async () => {
+          await new Promise((r) => setTimeout(r, 750));
+        });
+      };
+
+      window.history.replaceState(null, "", `/archive/${past}`);
+      render(<App />);
+      await flush();
+
+      // 1re partie : perdue → sauvegardée comme telle.
+      await loseAll();
+      expect(screen.getByText("Rame déraillée")).toBeTruthy();
+      expect(saveOf().status).toBe("lost");
+
+      // Rejeu : la grille repart de zéro, l'ancienne sauvegarde reste en place…
+      await act(async () => fireEvent.click(screen.getByRole("button", { name: "Rejouer cette grille" })));
+      await flush();
+      expect(screen.queryByText("Rame déraillée")).toBeNull();
+      expect(screen.getAllByText("＋").length).toBe(9);
+      await guess(names[0]!);
+      expect(saveOf().status).toBe("lost"); // rien n'est écrit en cours de rejeu
+
+      // … et une victoire bat la défaite enregistrée.
+      for (let ci = 1; ci < 9; ci++) await guess(names[ci]!);
+      expect(screen.getByText("Terminus !")).toBeTruthy();
+      expect(saveOf().status).toBe("won");
+      const bestScore = saveOf().result.score;
+      expect(bestScore).toBeGreaterThan(0);
+
+      // Second rejeu perdu : la victoire reste la référence.
+      await act(async () => fireEvent.click(screen.getByRole("button", { name: "Rejouer cette grille" })));
+      await flush();
+      await loseAll();
+      expect(screen.getByText("Rame déraillée")).toBeTruthy();
+      expect(saveOf().status).toBe("won");
+      expect(saveOf().result.score).toBe(bestScore);
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it("une grille passée pose meta robots=noindex, l'accueil reste indexable", async () => {
     vi.useFakeTimers({ toFake: ["Date"] });
     vi.setSystemTime(new Date("2026-07-10T10:00:00"));

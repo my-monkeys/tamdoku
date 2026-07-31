@@ -128,6 +128,11 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
           <button className="obtn" onClick={onShare}>
             Partager mon résultat
           </button>
+          {g.game === "archive" && (
+            <button className="obtn sec" onClick={ctrl.replayArchive}>
+              Rejouer cette grille
+            </button>
+          )}
           <button className="obtn sec" onClick={ctrl.hideResult}>
             Voir la grille
           </button>

@@ -25,7 +25,8 @@ export function Archive({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
       <div className="sub">
         <p className="prose m" style={{ fontSize: 13, marginTop: -6 }}>
           Rejoue les grilles des jours précédents. Ces parties sont des bonus : elles ne comptent
-          pas dans ta série quotidienne.
+          pas dans ta série quotidienne. Une grille déjà finie peut être retentée — ton meilleur
+          résultat est conservé.
         </p>
         <div className="card arch">
           {dates.map((date) => {
