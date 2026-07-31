@@ -50,7 +50,9 @@ export function RuleFixNotice() {
           </span>
         </div>
         <div className="infotitle">Du neuf sur Tamdoku</div>
-        <div className="infotext">
+        {/* Trois paragraphes longs : le centrage hérité d'.infocard rend la
+            lecture pénible, on aligne à gauche (titre et pastilles restent centrés). */}
+        <div className="infotext" style={{ textAlign: "left" }}>
           <b>Rejouer les grilles</b> : dans l&rsquo;Archive, une grille déjà terminée propose
           désormais « Rejouer cette grille ». Ton meilleur résultat est conservé — un rejeu raté
           n&rsquo;écrase rien.
