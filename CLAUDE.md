@@ -58,4 +58,6 @@ Vite SPA : `npm run build` → `dist/` → `.monkey` (`source: ./dist/`, target 
 
 ## À venir
 
-Score d'originalité **réel** (stats joueurs par case/jour, backend à décider — Supabase probable ; aujourd'hui cold-start via `engine/fame.ts`), archive (rejouer les grilles passées via `engine/generator.ts`), mode entraînement (déjà dans `useGame`/`daily.ts`, pas encore surfacé dans l'UI — fidélité à la maquette).
+Fait depuis : score d'originalité réel (backend Convex `t-api.my-monkey.fr`, `src/stats.ts`, fallback `engine/fame.ts`), archive rejouable par date (v0.3.25 — rejeu d'une grille finie avec meilleur résultat conservé, via `daily.ts` ; `engine/generator.ts` reste réservé à une éventuelle série anti-répétition).
+
+Reste : classement entre joueurs (les réponses par case/jour existent déjà côté serveur), mode entraînement (dans `useGame`/`daily.ts`, pas encore surfacé dans l'UI), règles candidates issues des retours joueurs — P+Tram (le champ `parkRide` existe déjà, 16 stations), Est/Ouest du Lez, FISE. ⚠️ Ajouter une règle au catalogue rebat toutes les grilles passées (cf. invariants) : décision explicite avec Maxim à chaque fois.
