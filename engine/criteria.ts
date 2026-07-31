@@ -54,6 +54,12 @@ const META: Record<string, { icon: string; iconKey?: string; short: string; labe
     label: "Terminus",
     expl: "La station est le départ ou l’arrivée d’une ligne (la ligne 4, circulaire, part et revient à son terminus).",
   },
+  "p-tram": {
+    icon: "P+",
+    short: "P+Tram",
+    label: "Station avec P+Tram",
+    expl: "Un parking-relais TaM (P+Tram) est accolé à la station — on y gare sa voiture et on continue en tram.",
+  },
   // Nom — structure
   // Pas de lettre en icône : un « A » laisserait croire qu'il faut une station
   // commençant par A. On affiche le libellé en toutes lettres.

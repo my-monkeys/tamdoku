@@ -30,6 +30,24 @@ const LETTER_MAX = 66;
 const NEAR_CENTER_METERS = 1_500;
 const FAR_CENTER_METERS = 5_000;
 
+/**
+ * Date (incluse) à partir de laquelle « Station avec P+Tram » entre au tirage
+ * (idée joueur, juillet 2026). Marge d'un jour sur l'annonce : les PWA pas
+ * encore à jour généreraient sinon une grille différente le jour J.
+ */
+export const P_TRAM_FROM = "2026-08-02";
+
+/**
+ * Catalogue en vigueur pour une grille datée : les règles portant `since`
+ * n'entrent au tirage qu'à partir de leur date, sans réécrire les grilles
+ * antérieures (filter préserve l'ordre, donc les tirages passés aussi).
+ * "" = hors calendrier (entraînement) → tout le catalogue.
+ */
+export function poolFor(rules: CompiledRule[], date: string): CompiledRule[] {
+  if (!date) return rules;
+  return rules.filter((r) => !r.since || r.since <= date);
+}
+
 export function buildRules(net: Network): CompiledRule[] {
   const rules: Rule[] = [];
 
@@ -71,6 +89,16 @@ export function buildRules(net: Network): CompiledRule[] {
       description:
         "Cette station est le terminus d'au moins une ligne (la ligne 4, circulaire, part et revient à son terminus, Garcia Lorca).",
       test: (s) => s.terminusOf.length > 0,
+    },
+    {
+      id: "p-tram",
+      family: "reseau",
+      subfamily: "p-tram",
+      label: "Station avec P+Tram",
+      description:
+        "Un parking-relais TaM (P+Tram) est accolé à la station : on y gare sa voiture et on continue en tram.",
+      since: P_TRAM_FROM,
+      test: (s) => s.parkRide,
     },
   );
 

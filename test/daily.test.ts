@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { loadNetwork } from "../engine/network.ts";
-import { buildRules } from "../engine/rules.ts";
+import { buildRules, poolFor, P_TRAM_FROM } from "../engine/rules.ts";
 import { buildCriteria, terminiPhrase } from "../engine/criteria.ts";
 import { generateDaily, seedForDate } from "../engine/daily.ts";
 import { fameByStation, originalityPoints } from "../engine/fame.ts";
@@ -8,9 +8,11 @@ import { hasPerfectAssignment } from "../engine/matching.ts";
 
 const net = loadNetwork();
 const rules = buildRules(net);
-const pool = rules; // tout le catalogue alimente la grille du jour
+const pool = rules; // tout le catalogue (l'app tire dans poolFor(rules, date))
 const criteria = buildCriteria(rules);
 const ruleById = new Map(rules.map((r) => [r.id, r]));
+/** Génère comme l'app : catalogue en vigueur à la date de la grille. */
+const dailyFor = (date: string) => generateDaily(poolFor(rules, date), seedForDate(date));
 
 describe("catalogue de critères", () => {
   it("chaque règle a des métadonnées d'affichage complètes", () => {
@@ -42,15 +44,15 @@ describe("catalogue de critères", () => {
 
 describe("générateur du jour", () => {
   it("est déterministe par date", () => {
-    const a = generateDaily(pool, seedForDate("2026-07-10"));
-    const b = generateDaily(pool, seedForDate("2026-07-10"));
+    const a = dailyFor("2026-07-10");
+    const b = dailyFor("2026-07-10");
     expect(a).toEqual(b);
   });
 
   it("dates différentes → grilles (en général) différentes", () => {
     const seeds = ["2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10"];
     const sigs = seeds.map((d) => {
-      const p = generateDaily(pool, seedForDate(d));
+      const p = dailyFor(d);
       return [...p.rows, ...p.cols].join("|");
     });
     expect(new Set(sigs).size).toBeGreaterThanOrEqual(4);
@@ -60,7 +62,7 @@ describe("générateur du jour", () => {
     const start = Date.parse("2026-07-06");
     for (let d = 0; d < 400; d++) {
       const date = new Date(start + d * 86_400_000).toISOString().slice(0, 10);
-      const p = generateDaily(pool, seedForDate(date));
+      const p = dailyFor(date);
       expect(new Set([...p.rows, ...p.cols]).size, date).toBe(6);
       expect(p.valid.every((c) => c.length >= 1), date).toBe(true);
       expect(hasPerfectAssignment(p.valid.map((c) => new Set(c))), date).toBe(true);
@@ -79,7 +81,7 @@ describe("générateur du jour", () => {
     const start = Date.parse("2026-07-06");
     for (let d = 0; d < 200; d++) {
       const date = new Date(start + d * 86_400_000).toISOString().slice(0, 10);
-      const p = generateDaily(pool, seedForDate(date));
+      const p = dailyFor(date);
       const chosen = [...p.rows, ...p.cols].map((id) => ruleById.get(id)!);
       const lines = chosen.filter((r) => r.family === "ligne").length;
       expect(lines, `${date} lignes`).toBeGreaterThanOrEqual(1);
@@ -108,10 +110,47 @@ describe("générateur du jour", () => {
     const used = new Set<string>();
     for (let d = 0; d < 365; d++) {
       const date = new Date(start + d * 86_400_000).toISOString().slice(0, 10);
-      const p = generateDaily(pool, seedForDate(date));
+      const p = dailyFor(date);
       for (const id of [...p.rows, ...p.cols]) used.add(id);
     }
     expect(used.size).toBeGreaterThanOrEqual(rules.length * 0.7);
+  });
+});
+
+describe("bascule datée du catalogue (poolFor)", () => {
+  it("p-tram n'entre au tirage qu'à partir de la bascule ; l'entraînement a tout", () => {
+    expect(P_TRAM_FROM).toBe("2026-08-02");
+    const has = (date: string) => poolFor(rules, date).some((r) => r.id === "p-tram");
+    expect(has("2026-08-01")).toBe(false);
+    expect(has("2026-08-02")).toBe(true);
+    expect(poolFor(rules, "").some((r) => r.id === "p-tram")).toBe(true);
+  });
+
+  it("la règle p-tram couvre exactement les stations parkRide", () => {
+    const r = ruleById.get("p-tram")!;
+    for (const s of net.stations) {
+      expect(r.stationIds.has(s.id), s.id).toBe(s.parkRide);
+    }
+  });
+
+  it("les grilles d'avant bascule restent figées (vérifiées identiques à v0.3.25)", () => {
+    const g27 = dailyFor("2026-07-27");
+    expect(g27.rows).toEqual(["ligne-3", "ligne-5", "nom-saint"]);
+    expect(g27.cols).toEqual(["ligne-1", "tag-personnalite", "geo-hors-montpellier"]);
+    const g01 = dailyFor("2026-08-01");
+    expect(g01.rows).toEqual(["nom-lettre-b", "ligne-4", "nom-apostrophe"]);
+    expect(g01.cols).toEqual(["nom-lettre-t", "ligne-1", "ligne-3"]);
+  });
+
+  it("p-tram est réellement tirée dans les grilles d'après-bascule", () => {
+    const start = Date.parse(P_TRAM_FROM);
+    let found = false;
+    for (let d = 0; d < 60 && !found; d++) {
+      const date = new Date(start + d * 86_400_000).toISOString().slice(0, 10);
+      const p = dailyFor(date);
+      found = [...p.rows, ...p.cols].includes("p-tram");
+    }
+    expect(found).toBe(true);
   });
 });
 

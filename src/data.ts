@@ -4,7 +4,7 @@
  * critères du jeu quotidien, notoriété. Tout est calculé une fois au chargement.
  */
 import rawNetwork from "../data/network.json";
-import { buildRules } from "../engine/rules.ts";
+import { buildRules, poolFor as enginePoolFor } from "../engine/rules.ts";
 import { buildCriteria, terminiPhrase, type Criterion } from "../engine/criteria.ts";
 import { fameByStation } from "../engine/fame.ts";
 import { stationById } from "../engine/select.ts";
@@ -17,6 +17,11 @@ export const byId = stationById(network);
 /** L'ensemble du catalogue de règles alimente la grille du jour. */
 export const pool: CompiledRule[] = buildRules(network);
 const ruleMap = new Map<string, CompiledRule>(pool.map((r) => [r.id, r]));
+
+/** Catalogue en vigueur pour une grille datée ("" = entraînement → tout). */
+export function poolFor(date: string): CompiledRule[] {
+  return enginePoolFor(pool, date);
+}
 
 export const criteria: Map<string, Criterion> = buildCriteria(pool);
 export const fame: Map<string, number> = fameByStation(network);

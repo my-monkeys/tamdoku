@@ -53,6 +53,9 @@ export interface Rule {
   label: string;
   /** Explication complète affichée au « ? ». */
   description: string;
+  /** Date ISO (incluse) d'entrée au tirage des grilles datées : introduire un
+   * critère sans réécrire les grilles antérieures (cf. poolFor). */
+  since?: string;
   test: (station: Station) => boolean;
 }
 

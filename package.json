@@ -1,6 +1,6 @@
 {
   "name": "tamdoku",
-  "version": "0.3.25",
+  "version": "0.3.26",
   "private": true,
   "type": "module",
   "description": "Tamdoku — le puzzle quotidien du tramway de Montpellier",
