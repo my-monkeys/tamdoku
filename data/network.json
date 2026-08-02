@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-07-31T20:26:28.616Z",
+ "generatedAt": "2026-08-02T12:47:23.371Z",
  "source": "OSM (Overpass, service nominal) + GTFS TaM (identité/alias) + geo.api.gouv.fr (communes)",
  "stations": [
   {
@@ -213,7 +213,7 @@
    "lon": 3.897761,
    "commune": "Castelnau-le-Lez",
    "terminusOf": [],
-   "parkRide": false,
+   "parkRide": true,
    "tags": [
     "personnalite"
    ]
