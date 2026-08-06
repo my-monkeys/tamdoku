@@ -15,7 +15,7 @@ La maquette embarquait son propre prototype de données (~53 stations, quelques 
 - Le générateur du jour tire parmi **tout le catalogue** avec équilibrage des familles (`drawRuleSet` partagé depuis `generator.ts` : ≥ 1 ligne, ≤ 2 par sous-famille, ≤ 2 règles-lettres), sinon les grilles seraient noyées sous les « contient un X ».
 - Deux générateurs coexistent : `engine/daily.ts` (date-seedé, indépendant, O(1) au chargement — **utilisé par l'app**) et `engine/generator.ts` (série anti-répétition — pour une future archive + le CLI `gen`). Ne pas confondre.
 - **Toute nouvelle règle dans `rules.ts` doit recevoir ses métadonnées dans `criteria.ts`** (sinon `buildCriteria` throw). Les lettres et communes sont générées automatiquement, le reste via la table `META`. Explications **sans nom de station** (règle absolue).
-- Deux tsconfig : racine (Node, `engine/pipeline/cli/test/*.ts`) + `tsconfig.app.json` (DOM+JSX, `src` + `test/**/*.tsx`). `npm run typecheck` lance les deux.
+- Deux tsconfig : racine (Node, `engine/pipeline/cli/test/*.ts`) + `tsconfig.app.json` (DOM+JSX, `src` + `test/**/*.tsx`). `pnpm run typecheck` lance les deux.
 
 ## Invariants à ne pas casser
 
@@ -29,8 +29,8 @@ La maquette embarquait son propre prototype de données (~53 stations, quelques 
 ## Rafraîchir les données
 
 ```bash
-npm run build:data   # OSM + GTFS + communes → data/network.json
-npm test             # les invariants réseau + 365 jours de grilles revalidés
+pnpm run build:data   # OSM + GTFS + communes → data/network.json
+pnpm test             # les invariants réseau + 365 jours de grilles revalidés
 ```
 
 Puis **lire le rapport de croisement OSM↔GTFS** affiché par le build : chaque divergence doit être soit une déviation travaux connue, soit corrigée (curation ou signalement OSM). Les snapshots `data/raw/*.json` sont committés (builds reproductibles) ; le zip GTFS et son extraction ne le sont pas.
@@ -52,7 +52,7 @@ Puis **lire le rapport de croisement OSM↔GTFS** affiché par le build : chaque
 
 ## Déploiement
 
-Vite SPA : `npm run build` → `dist/` → `.monkey` (`source: ./dist/`, target **`tamdoku.fr`** — domaine dédié, pas un sous-domaine `my-monkey.fr` ; O2switch doit avoir le vhost `tamdoku.fr`). Confirmer le deploy via l'API admin monkey (`status: success`), cf. CLAUDE.md monorepo. OG image dans `public/og.png` (méta OG absolues sur `https://tamdoku.fr`). **À faire avant/juste après le 1er deploy** : créer le site dans Umami et injecter le script `u.js` dans `index.html` (cf. mémoire `umami-website-ids`).
+Vite SPA : `pnpm run build` → `dist/` → `.monkey` (`source: ./dist/`, target **`tamdoku.fr`** — domaine dédié, pas un sous-domaine `my-monkey.fr` ; O2switch doit avoir le vhost `tamdoku.fr`). Confirmer le deploy via l'API admin monkey (`status: success`), cf. CLAUDE.md monorepo. OG image dans `public/og.png` (méta OG absolues sur `https://tamdoku.fr`). **À faire avant/juste après le 1er deploy** : créer le site dans Umami et injecter le script `u.js` dans `index.html` (cf. mémoire `umami-website-ids`).
 
 **PWA** (v0.3.16) : `vite-plugin-pwa` en `generateSW`/`autoUpdate` — shell précaché (~365 Ko, `og.png` et grosses icônes exclues), fonts Google en CacheFirst, manifest statique de `public/` conservé (`manifest: false`). Le jeu est 100 % jouable hors-ligne (grille calculée côté client par date). ⚠️ `tamdoku.fr` est derrière **Cloudflare** qui cache `sw.js` en edge ~4 h (`max-age=14400`, TTL défaut des `.js` — la directive no-cache du `.htaccess` ne passe pas) : après un deploy, les PWA installées peuvent mettre jusqu'à ~4 h à récupérer le nouveau SW. Si ça devient gênant, créer une Cache Rule Cloudflare « Bypass cache » sur `/sw.js`.
 

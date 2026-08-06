@@ -13,16 +13,16 @@ Le puzzle quotidien du tramway de Montpellier — un sudoku de stations, sur le 
 ## Commandes
 
 ```bash
-npm run dev                 # serveur de dev Vite
-npm run build               # build de prod → dist/
-npm run preview             # sert le build
+pnpm run dev                 # serveur de dev Vite
+pnpm run build               # build de prod → dist/
+pnpm run preview             # sert le build
 
-npm run build:data          # re-fetch OSM + GTFS + communes, reconstruit network.json
-npm run gen                 # grille du jour en terminal (--days 30, --date 2026-07-10)
-npm run stats               # couverture des règles
+pnpm run build:data          # re-fetch OSM + GTFS + communes, reconstruit network.json
+pnpm run gen                 # grille du jour en terminal (--days 30, --date 2026-07-10)
+pnpm run stats               # couverture des règles
 
-npm test                    # 46 tests (données, règles, générateur, notoriété, app end-to-end jsdom)
-npm run typecheck           # engine (Node) + app (DOM)
+pnpm test                    # 46 tests (données, règles, générateur, notoriété, app end-to-end jsdom)
+pnpm run typecheck           # engine (Node) + app (DOM)
 ```
 
 ## Comment ça marche
