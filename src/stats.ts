@@ -9,7 +9,7 @@
  */
 import { originalityPoints } from "../engine/fame.ts";
 
-const STATS_API = "https://t-api.my-monkey.fr";
+const STATS_API = "https://api.tamdoku.fr";
 /** En-dessous, la distribution n'est pas assez fiable : on garde le fallback fame. */
 const MIN_SAMPLES = 20;
 
