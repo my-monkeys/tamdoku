@@ -1,0 +1,16 @@
+{
+  "name": "tamdoku-stats",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "API des statistiques de tamdoku (remplace le déploiement Convex)",
+  "scripts": {
+    "start": "node src/index.ts",
+    "dev": "node --watch src/index.ts"
+  },
+  "dependencies": {
+    "express": "4.22.2",
+    "pg": "8.13.1"
+  },
+  "packageManager": "pnpm@10.26.1"
+}
