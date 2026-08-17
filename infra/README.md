@@ -1,9 +1,9 @@
 # tamdoku-stats — instance Convex self-host
 
 Backend des stats « qui tape quoi » (originalité réelle). Isolé des autres
-instances Convex de cookie-server (ultra-note, vigie, monkey).
+instances Convex de dev-cookie (ultra-note, vigie, monkey).
 
-## Mise en place sur cookie-server
+## Mise en place sur dev-cookie
 
 ```bash
 # 1. Déposer ce dossier
@@ -46,17 +46,17 @@ docker compose logs -f backend    # attendre "Convex backend ... ready"
 
 ## Déployer les functions
 
-Le CLI Convex a besoin de Node + du dossier `convex/`. Sur cookie-server, un
+Le CLI Convex a besoin de Node + du dossier `convex/`. Sur dev-cookie, un
 checkout minimal vit dans `/home/maxim/tamdoku-stats/deploy/` (convex/ +
 package.json + convex CLI). Pour re-pousser après modif des functions :
 
 ```bash
 # 1. sync le convex/ + le moteur + les données (grid.ts embarque l'engine)
-rsync -az --exclude='_generated' convex cookie-server.tailscale:/home/maxim/tamdoku-stats/deploy/
-rsync -az engine cookie-server.tailscale:/home/maxim/tamdoku-stats/deploy/
-rsync -az data/network.json cookie-server.tailscale:/home/maxim/tamdoku-stats/deploy/data/
+rsync -az --exclude='_generated' convex dev-cookie:/home/maxim/tamdoku-stats/deploy/
+rsync -az engine dev-cookie:/home/maxim/tamdoku-stats/deploy/
+rsync -az data/network.json dev-cookie:/home/maxim/tamdoku-stats/deploy/data/
 # 2. deploy depuis le serveur
-ssh cookie-server.tailscale '
+ssh dev-cookie '
   cd /home/maxim/tamdoku-stats/deploy
   export CONVEX_SELF_HOSTED_URL="http://127.0.0.1:3240"
   export CONVEX_SELF_HOSTED_ADMIN_KEY="$(docker exec tamdoku-convex-backend ./generate_admin_key.sh | tail -1)"
