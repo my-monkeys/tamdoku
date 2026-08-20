@@ -69,6 +69,16 @@ const STEPS: { n: number; body: React.ReactNode }[] = [
       </>
     ),
   },
+  {
+    n: 7,
+    body: (
+      <>
+        Envie de t'exercer&nbsp;? L'<b>entraînement</b>, sur l'accueil, tire une grille quand tu
+        veux — sur tout le réseau, ou sur les <b>lignes de ton choix</b>. Elle ne compte ni dans ta
+        série, ni dans ton score.
+      </>
+    ),
+  },
 ];
 
 export function Rules({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
