@@ -19,6 +19,7 @@ beforeEach(() => {
 afterEach(() => {
   cleanup();
   vi.unstubAllGlobals();
+  vi.restoreAllMocks();
 });
 
 /** Système de représentants distincts : une station différente par case. */
@@ -127,6 +128,84 @@ describe("app — partie complète du jour (jsdom)", () => {
       expect(streak?.current ?? 0).toBe(0);
       // mais la grille passée est sauvegardée sous sa date
       expect(localStorage.getItem("tamdoku:daily:2026-07-09")).toBeTruthy();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
+  it("entraînement sur une ligne : grille du périmètre, hors classement", async () => {
+    const App = (await import("../src/App.tsx")).default;
+    const { poolForLines, byId } = await import("../src/data.ts");
+    const { generateDaily, seedForDate } = await import("../engine/daily.ts");
+    const { todayStr } = await import("../src/format.ts");
+    const { stations } = await import("../src/data.ts");
+
+    // La grille d'entraînement est tirée au hasard : on fige la source d'aléa
+    // pour rejouer le même tirage côté test.
+    vi.spyOn(Math, "random").mockReturnValue(0.42);
+    const { rules, lineRules } = poolForLines(["3"]);
+    const seed = (seedForDate(todayStr()) ^ Math.floor(0.42 * 0xffffffff)) >>> 0;
+    const puzzle = generateDaily(rules, seed, { lineRules });
+
+    render(<App />);
+    await flush();
+
+    await act(async () => fireEvent.click(screen.getByLabelText("Ligne 3")));
+    expect(screen.getByText(/Sur la ligne 3/)).toBeTruthy();
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "Lancer une grille" })));
+    await flush();
+
+    expect(screen.getByText("Entraînement · L3")).toBeTruthy();
+    // Sur une ligne unique, aucun critère « Sur la ligne N » : il serait vrai partout.
+    expect(document.querySelectorAll(".gc.head .rd").length).toBe(0);
+
+    // Une station hors périmètre est refusée sans coûter de cœur.
+    const outsider = stations.find((s) => !s.lines.includes("3"))!;
+    await act(async () => fireEvent.click(screen.getAllByText("＋")[0]!));
+    const input = screen.getByPlaceholderText(/station/i) as HTMLInputElement;
+    await act(async () => fireEvent.change(input, { target: { value: outsider.name } }));
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "OK" })));
+    await flush();
+    expect(screen.getByText(/n’est pas sur la ligne 3/)).toBeTruthy();
+    expect(document.querySelectorAll(".heart.off").length).toBe(0);
+
+    // Une réponse du périmètre entre normalement, et rien n'est sauvegardé.
+    const answer = byId.get(solve(puzzle.valid)[0]!)!;
+    await act(async () => fireEvent.change(input, { target: { value: answer.name } }));
+    await act(async () => fireEvent.click(screen.getByRole("button", { name: "OK" })));
+    await flush();
+    expect(screen.getByText(answer.name)).toBeTruthy();
+    expect(localStorage.getItem(`tamdoku:daily:${todayStr()}`)).toBeNull();
+  });
+
+  it("un nom court ambigu (« Saint-Éloi ») demande lequel au lieu de coûter un cœur", async () => {
+    vi.useFakeTimers({ toFake: ["Date"] });
+    vi.setSystemTime(new Date("2026-07-15T10:00:00"));
+    try {
+      const App = (await import("../src/App.tsx")).default;
+
+      // Grille du 14/07 : la case 5 croise « Ligne 5 » et « Personnalité » —
+      // Saint-Éloi - Docteur Pezet y répond, la station Saint-Éloi (L1) non.
+      window.history.replaceState(null, "", "/archive/2026-07-14");
+      render(<App />);
+      await flush();
+
+      await act(async () => fireEvent.click(screen.getAllByText("＋")[5]!));
+      const input = screen.getByPlaceholderText(/station/i) as HTMLInputElement;
+      await act(async () => fireEvent.change(input, { target: { value: "Saint-Éloi" } }));
+      await act(async () => fireEvent.click(screen.getByRole("button", { name: "OK" })));
+      await flush();
+
+      expect(screen.getByText(/Plusieurs stations commencent par/)).toBeTruthy();
+      expect(document.querySelectorAll(".heart.off").length).toBe(0);
+
+      // La suggestion tranche : la case se remplit.
+      await act(async () =>
+        fireEvent.click(screen.getByText("Saint-Éloi - Docteur Pezet").closest("button")!),
+      );
+      await flush();
+      expect(screen.getByText("Saint-Éloi - Docteur Pezet")).toBeTruthy();
+      expect(document.querySelectorAll(".heart.off").length).toBe(0);
     } finally {
       vi.useRealTimers();
     }

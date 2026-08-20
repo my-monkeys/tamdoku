@@ -7,6 +7,7 @@ import { lsGet, lsSet } from "../storage.ts";
 import type { useGame } from "../useGame.ts";
 import { Icon } from "./icons.tsx";
 import { InstallButton } from "./InstallButton.tsx";
+import { PracticeCard } from "./PracticeCard.tsx";
 import { RuleFixNotice } from "./RuleFixNotice.tsx";
 
 export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
@@ -121,6 +122,8 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
             {done ? "Revoir mon résultat" : "Jouer le défi"}
           </button>
         </div>
+
+        <PracticeCard ctrl={ctrl} />
 
         <button className="home-fb" onClick={ctrl.openFeedback}>
           <Icon name="message" size={17} />

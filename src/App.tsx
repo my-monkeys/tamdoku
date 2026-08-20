@@ -58,7 +58,9 @@ export default function App() {
         ? `Défi du ${prettyDate()}`
         : g.game === "archive"
           ? `Grille du ${prettyDate(g.puzzleDate)}`
-          : "Entraînement";
+          : g.practiceLines.length > 0
+            ? `Entraînement · L${g.practiceLines.join(" L")}`
+            : "Entraînement";
     renderShareCard({
       title,
       subtitle: g.puzzleDate ? `nº ${puzzleNumber(g.puzzleDate)}` : "",

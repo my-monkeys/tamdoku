@@ -27,6 +27,13 @@ export interface DailyOptions {
   looseCell: number;
   targetAvgMin: number;
   targetAvgMax: number;
+  /**
+   * Nombre de règles « ligne » imposé. Absent = tirage pondéré habituel — le
+   * défi du jour n'utilise que ce chemin, sa graine est donc consommée à
+   * l'identique. Un entraînement restreint à une seule ligne passe 0 : la règle
+   * n'y apprendrait rien.
+   */
+  lineRules?: number;
 }
 
 export const DEFAULT_DAILY: DailyOptions = {
@@ -74,7 +81,7 @@ export function generateDaily(
   let best: { rows: CompiledRule[]; cols: CompiledRule[]; cells: string[][]; q: number } | null = null;
 
   for (let attempt = 0; attempt < opts.attempts; attempt++) {
-    const chosen = drawRuleSet(rng, rules, pickLineRuleCount(rng));
+    const chosen = drawRuleSet(rng, rules, opts.lineRules ?? pickLineRuleCount(rng));
     if (!chosen) continue;
     const arranged = shuffle(rng, chosen);
     const rows = arranged.slice(0, 3);

@@ -59,7 +59,9 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
               ? "Défi du jour"
               : g.game === "archive"
                 ? `Grille du ${prettyDate(g.puzzleDate)}`
-                : "Entraînement"}
+                : g.practiceLines.length > 0
+                  ? `Entraînement · L${g.practiceLines.join(" L")}`
+                  : "Entraînement"}
           </span>
           <span className="gmode">{g.mode === "simple" ? "Mode simple" : "Mode expert"}</span>
         </div>

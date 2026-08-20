@@ -62,7 +62,7 @@ export function InputSheet({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
         {suggestions.length > 0 && (
           <div className="sugs">
             {suggestions.map((s) => (
-              <button key={s.id} className="sugitem" onClick={() => ctrl.submit(s.name)}>
+              <button key={s.id} className="sugitem" onClick={() => ctrl.submit(s.name, s.id)}>
                 <span className="sname2">{s.name}</span>
                 <LineDots stationId={s.id} />
               </button>

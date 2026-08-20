@@ -8,12 +8,12 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { parsePath, pathFor, type Route } from "./routes.ts";
 import { applyRouteMeta } from "./seo.ts";
 import { generateDaily, seedForDate, type DailyPuzzle } from "../engine/daily.ts";
-import { findStation, suggestStations } from "../engine/answer.ts";
-import type { Station } from "../engine/types.ts";
+import { findStation, longerNamesakes, suggestStations } from "../engine/answer.ts";
+import type { LineRef, Station } from "../engine/types.ts";
 import { track } from "./analytics.ts";
-import { fame, pool, poolFor, satisfies, stations } from "./data.ts";
+import { byId, fame, poolFor, poolForLines, satisfies, stations, stationsOnLines } from "./data.ts";
 import { cachedDay, cellScore, fetchAnswers, submitResults, warmPopularity, type CellAnswers } from "./stats.ts";
-import { emojiGrid, linesGrid, todayStr, yesterdayStr } from "./format.ts";
+import { emojiGrid, linesGrid, linesPhrase, todayStr, yesterdayStr } from "./format.ts";
 import {
   DEFAULT_STATS,
   DEFAULT_STREAK,
@@ -48,6 +48,8 @@ export interface Game {
   game: GameType;
   /** Date (YYYY-MM-DD) de la grille en cours ; "" pour l'entraînement. */
   puzzleDate: string;
+  /** Lignes de l'entraînement en cours ; [] = tout le réseau (et hors entraînement). */
+  practiceLines: LineRef[];
   puzzle: DailyPuzzle | null;
   cells: (string | null)[];
   mistakes: number;
@@ -144,6 +146,7 @@ export function useGame() {
     mode: lsGet<Mode>("mode", "simple"),
     game: "daily",
     puzzleDate: todayStr(),
+    practiceLines: [],
     puzzle: null,
     cells: new Array(9).fill(null),
     mistakes: 0,
@@ -236,7 +239,7 @@ export function useGame() {
     const saved = lsGet<DailySave | null>(dailyKey(), null);
     if (saved) {
       patch({
-        screen: "game", game: "daily", puzzleDate: todayStr(), puzzle: dailyPuzzle,
+        screen: "game", game: "daily", puzzleDate: todayStr(), practiceLines: [], puzzle: dailyPuzzle,
         cells: saved.cells, mistakes: saved.mistakes, status: saved.status,
         hinted: saved.hinted ?? new Array(9).fill(false), hintMapCell: -1, replay: false,
         result: saved.result, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
@@ -245,7 +248,7 @@ export function useGame() {
     }
     track("play", { mode: lsGet<Mode>("mode", "simple"), game: "daily" });
     patch({
-      screen: "game", game: "daily", puzzleDate: todayStr(), puzzle: dailyPuzzle,
+      screen: "game", game: "daily", puzzleDate: todayStr(), practiceLines: [], puzzle: dailyPuzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
       hinted: new Array(9).fill(false), hintMapCell: -1, replay: false,
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
@@ -263,7 +266,7 @@ export function useGame() {
       const puzzle = generateDaily(poolFor(date), seedForDate(date));
       const saved = loadDaySave(date);
       const common = {
-        screen: "game" as const, game: "archive" as const, puzzleDate: date, puzzle,
+        screen: "game" as const, game: "archive" as const, puzzleDate: date, practiceLines: [], puzzle,
         hintMapCell: -1, replay: false, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
       };
       if (saved) {
@@ -282,12 +285,15 @@ export function useGame() {
     [patch, startDaily],
   );
 
-  const startPractice = useCallback(() => {
+  /** Grille libre, hors calendrier : jamais sauvegardée ni remontée aux stats.
+   * `lines` restreint le tirage à ces lignes ([] = tout le réseau). */
+  const startPractice = useCallback((lines: LineRef[] = []) => {
     const seed = (seedForDate(todayStr()) ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
-    const puzzle = generateDaily(pool, seed);
-    track("play", { mode: lsGet<Mode>("mode", "simple"), game: "practice" });
+    const { rules, lineRules } = poolForLines(lines);
+    const puzzle = generateDaily(rules, seed, { lineRules });
+    track("play", { mode: lsGet<Mode>("mode", "simple"), game: "practice", lines: lines.join("+") });
     patch({
-      screen: "game", game: "practice", puzzleDate: "", puzzle,
+      screen: "game", game: "practice", puzzleDate: "", practiceLines: lines, puzzle,
       cells: new Array(9).fill(null), mistakes: 0, status: "playing",
       hinted: new Array(9).fill(false), hintMapCell: -1, replay: false,
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
@@ -451,11 +457,20 @@ export function useGame() {
     window.setTimeout(() => patch({ shakeCell: -1 }), 380);
   }, [finish, patch, savePlay]);
 
-  const submit = useCallback((text: string) => {
+  /** `pickedId` : la suggestion cliquée désigne une station sans ambiguïté possible. */
+  const submit = useCallback((text: string, pickedId?: string) => {
     setG((prev) => {
       if (prev.status !== "playing" || prev.sel < 0) return prev;
-      const station = findStation(text, stations);
+      const station = pickedId ? byId.get(pickedId) : findStation(text, stations);
       if (!station) return { ...prev, sheetMsg: "Station inconnue — vérifie l’orthographe", sheetMsgCls: "warn" };
+      if (prev.practiceLines.length > 0 && !station.lines.some((ref) => prev.practiceLines.includes(ref))) {
+        // Hors du périmètre choisi : l'entraînement ne pénalise pas ce qu'il n'a pas proposé.
+        return {
+          ...prev,
+          sheetMsg: `« ${station.name} » n’est pas sur ${linesPhrase(prev.practiceLines)}`,
+          sheetMsgCls: "warn",
+        };
+      }
       if (prev.cells.includes(station.id)) {
         // Doublon = trou de mémoire, pas une erreur de raisonnement : on avertit sans pénaliser.
         return { ...prev, sheetMsg: `« ${station.name} » est déjà placée ailleurs`, sheetMsgCls: "warn" };
@@ -463,6 +478,16 @@ export function useGame() {
       const ci = prev.sel;
       const ok = satisfies(station, prev.puzzle!.rows[Math.floor(ci / 3)]!) && satisfies(station, prev.puzzle!.cols[ci % 3]!);
       if (!ok) {
+        // Une saisie clavier peut désigner deux stations (« Saint-Éloi » vaut aussi
+        // pour « Saint-Éloi - Docteur Pezet ») : on demande laquelle plutôt que de
+        // faire perdre un cœur sur un malentendu. Cliquer une suggestion tranche.
+        if (!pickedId && longerNamesakes(text, stations).length > 0) {
+          return {
+            ...prev,
+            sheetMsg: `Plusieurs stations commencent par « ${station.name} » — choisis dans la liste`,
+            sheetMsgCls: "warn",
+          };
+        }
         queueMicrotask(() => registerMistake(`« ${station.name} » ne coche pas les deux critères`));
         return prev;
       }
@@ -569,15 +594,18 @@ export function useGame() {
     applyRouteMeta(g.screen, g.game, g.puzzleDate);
   }, [g.screen, g.game, g.puzzleDate]);
 
+  /** Périmètre jouable : tout le réseau, ou les seules lignes de l'entraînement. */
+  const playable = useMemo(() => stationsOnLines(g.practiceLines), [g.practiceLines]);
+
   // Suggestions (mode simple) : dès le 1er caractère, jusqu'à 6 propositions.
   const suggestions = useMemo<Station[]>(() => {
     if (g.mode !== "simple" || !g.sheetOpen || g.query.trim().length < 1) return [];
-    return suggestStations(g.query, stations, {
+    return suggestStations(g.query, playable, {
       fame,
       exclude: new Set(g.cells.filter(Boolean) as string[]),
       limit: 6,
     });
-  }, [g.mode, g.sheetOpen, g.query, g.cells]);
+  }, [g.mode, g.sheetOpen, g.query, g.cells, playable]);
 
   // Nombre de réponses restantes pour la case sélectionnée
   const remainingForSel = useMemo(() => {

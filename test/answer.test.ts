@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { findStation, matchesStation, suggestStations } from "../engine/answer.ts";
+import { findStation, longerNamesakes, matchesStation, suggestStations } from "../engine/answer.ts";
 import { loadNetwork, stationById } from "../engine/network.ts";
 
 const net = loadNetwork();
@@ -28,6 +28,16 @@ describe("correspondance des réponses", () => {
 
   it("« Albert 1er » seul reste ambigu → aucun match", () => {
     expect(findStation("Albert 1er", net.stations)).toBeUndefined();
+  });
+
+  it("repère les noms courts qu'une autre station prolonge", () => {
+    expect(longerNamesakes("Saint-Éloi", net.stations).map((s) => s.id)).toEqual([
+      "saint-eloi-docteur-pezet",
+    ]);
+    expect(longerNamesakes("Gare Saint-Roch", net.stations).map((s) => s.id)).toEqual([
+      "gare-saint-roch-republique",
+    ]);
+    expect(longerNamesakes("Comédie", net.stations)).toEqual([]);
   });
 
   it("suggestions par préfixe puis sous-chaîne", () => {

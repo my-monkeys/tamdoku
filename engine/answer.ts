@@ -37,6 +37,18 @@ export function findStation(input: string, stations: Station[]): Station | undef
   return subs.length === 1 ? subs[0] : undefined;
 }
 
+/**
+ * Stations dont le nom (ou un alias) prolonge exactement la saisie : « Saint-Éloi »
+ * désigne aussi bien la station de la L1 que « Saint-Éloi - Docteur Pezet ». La
+ * correspondance exacte tranche en faveur du nom court, ce qui rend une saisie
+ * clavier ambiguë sans que le joueur s'en rende compte.
+ */
+export function longerNamesakes(input: string, stations: Station[]): Station[] {
+  const q = normalizeAnswer(input);
+  if (q.length < 2) return [];
+  return stations.filter((s) => stationAnswerKeys(s).some((k) => k.startsWith(`${q} `)));
+}
+
 export interface SuggestOptions {
   /** Ids de stations à masquer (déjà placées dans la grille). */
   exclude?: ReadonlySet<string>;

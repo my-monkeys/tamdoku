@@ -4,7 +4,7 @@
  * critères du jeu quotidien, notoriété. Tout est calculé une fois au chargement.
  */
 import rawNetwork from "../data/network.json";
-import { buildRules, poolFor as enginePoolFor } from "../engine/rules.ts";
+import { buildRules, poolFor as enginePoolFor, restrictRules } from "../engine/rules.ts";
 import { buildCriteria, terminiPhrase, type Criterion } from "../engine/criteria.ts";
 import { fameByStation } from "../engine/fame.ts";
 import { stationById } from "../engine/select.ts";
@@ -21,6 +21,32 @@ const ruleMap = new Map<string, CompiledRule>(pool.map((r) => [r.id, r]));
 /** Catalogue en vigueur pour une grille datée ("" = entraînement → tout). */
 export function poolFor(date: string): CompiledRule[] {
   return enginePoolFor(pool, date);
+}
+
+/** Stations desservies par au moins une des lignes ([] = tout le réseau). */
+export function stationsOnLines(lines: LineRef[]): Station[] {
+  if (lines.length === 0) return stations;
+  return stations.filter((s) => s.lines.some((ref) => lines.includes(ref)));
+}
+
+export interface LinePool {
+  rules: CompiledRule[];
+  /** Règles « ligne » à imposer au tirage ; absent = tirage pondéré habituel. */
+  lineRules?: number;
+}
+
+/**
+ * Catalogue d'entraînement restreint à une sélection de lignes. Sur une seule
+ * ligne, le critère « Sur la ligne N » est vrai partout : il sort du tirage.
+ * Au-delà, il redevient discriminant — on en impose autant que le périmètre en
+ * supporte, plafonné à 2 pour laisser de la place aux autres familles.
+ */
+export function poolForLines(lines: LineRef[]): LinePool {
+  if (lines.length === 0) return { rules: pool };
+  const ids = new Set(stationsOnLines(lines).map((s) => s.id));
+  const rules = restrictRules(pool, ids);
+  const available = rules.filter((r) => r.family === "ligne").length;
+  return { rules, lineRules: Math.min(lines.length - 1, 2, available) };
 }
 
 export const criteria: Map<string, Criterion> = buildCriteria(pool);

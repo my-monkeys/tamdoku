@@ -23,6 +23,12 @@ import type { CompiledRule, Network, Rule, Station } from "./types.ts";
 /** Bande de jouabilité générale (sur ~110 stations). */
 const MIN_STATIONS = 6;
 const MAX_STATIONS = 88;
+/**
+ * Bande d'un sous-réseau (entraînement) : il faut 3 stations pour remplir une
+ * ligne de grille, et autant hors de la règle pour qu'elle discrimine.
+ */
+const SUBSET_MIN_STATIONS = 3;
+const SUBSET_MARGIN = 3;
 /** Les règles-lettres sont des « bouche-trous » : bande plus stricte. */
 const LETTER_MIN = 12;
 const LETTER_MAX = 66;
@@ -46,6 +52,25 @@ export const P_TRAM_FROM = "2026-08-02";
 export function poolFor(rules: CompiledRule[], date: string): CompiledRule[] {
   if (!date) return rules;
   return rules.filter((r) => !r.since || r.since <= date);
+}
+
+/**
+ * Restreint un catalogue à un sous-réseau (entraînement sur une ou plusieurs
+ * lignes) : chaque règle ne garde que ses stations du périmètre, et n'est
+ * conservée que si elle y reste discriminante — au moins de quoi remplir une
+ * ligne de grille, et pas au point de valider presque tout le monde.
+ */
+export function restrictRules(
+  rules: CompiledRule[],
+  stationIds: ReadonlySet<string>,
+): CompiledRule[] {
+  const max = stationIds.size - SUBSET_MARGIN;
+  const out: CompiledRule[] = [];
+  for (const rule of rules) {
+    const kept = new Set([...rule.stationIds].filter((id) => stationIds.has(id)));
+    if (kept.size >= SUBSET_MIN_STATIONS && kept.size <= max) out.push({ ...rule, stationIds: kept });
+  }
+  return out;
 }
 
 export function buildRules(net: Network): CompiledRule[] {

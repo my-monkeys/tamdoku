@@ -1,5 +1,6 @@
 /** Dates, grille d'emojis de partage, texte de partage. */
 import { byId } from "./data.ts";
+import type { LineRef } from "../engine/types.ts";
 
 const pad2 = (x: number) => String(x).padStart(2, "0");
 
@@ -11,6 +12,13 @@ export function todayStr(): string {
 export function yesterdayStr(): string {
   const d = new Date(Date.now() - 86_400_000);
   return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`;
+}
+
+/** « la ligne 3 », « les lignes 1 et 4 », « les lignes 1, 2 et 5 ». */
+export function linesPhrase(lines: LineRef[]): string {
+  if (lines.length === 1) return `la ligne ${lines[0]}`;
+  const last = lines[lines.length - 1];
+  return `les lignes ${lines.slice(0, -1).join(", ")} et ${last}`;
 }
 
 /** JJ/MM pour l'affichage. */

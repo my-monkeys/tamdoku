@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { loadNetwork } from "../engine/network.ts";
-import { buildRules, poolFor, P_TRAM_FROM } from "../engine/rules.ts";
+import { buildRules, poolFor, restrictRules, P_TRAM_FROM } from "../engine/rules.ts";
 import { buildCriteria, terminiPhrase } from "../engine/criteria.ts";
 import { generateDaily, seedForDate } from "../engine/daily.ts";
 import { fameByStation, originalityPoints } from "../engine/fame.ts";
@@ -172,5 +172,33 @@ describe("notoriété et score d'originalité", () => {
     expect(rare).toBeGreaterThan(obvious);
     expect(originalityPoints(0)).toBeLessThanOrEqual(100);
     expect(originalityPoints(10)).toBeGreaterThanOrEqual(40);
+  });
+});
+
+describe("grilles d'entraînement restreintes à une ligne", () => {
+  const lines = ["1", "2", "3", "4", "5"] as const;
+
+  it("chaque ligne produit des grilles valides et solvables", () => {
+    for (const ref of lines) {
+      const ids = new Set(net.stations.filter((s) => s.lines.includes(ref)).map((s) => s.id));
+      const restricted = restrictRules(rules, ids);
+      for (let k = 0; k < 20; k++) {
+        const puzzle = generateDaily(restricted, (k * 7919 + 13) >>> 0, { lineRules: 0 });
+        expect(puzzle.valid.every((cell) => cell.length > 0)).toBe(true);
+        expect(hasPerfectAssignment(puzzle.valid.map((c) => new Set(c)))).toBe(true);
+        // Le périmètre est étanche : aucune solution hors de la ligne.
+        for (const cell of puzzle.valid) for (const id of cell) expect(ids.has(id)).toBe(true);
+        // Et aucun critère « Sur la ligne N », qui n'apprendrait rien ici.
+        for (const id of [...puzzle.rows, ...puzzle.cols]) expect(id.startsWith("ligne-")).toBe(false);
+      }
+    }
+  });
+
+  it("l'option lineRules ne touche pas le tirage du défi du jour", () => {
+    for (const date of ["2026-07-06", "2026-08-02", "2026-08-20"]) {
+      const withOption = generateDaily(poolFor(rules, date), seedForDate(date), {});
+      const asShipped = generateDaily(poolFor(rules, date), seedForDate(date));
+      expect(withOption).toEqual(asShipped);
+    }
   });
 });
