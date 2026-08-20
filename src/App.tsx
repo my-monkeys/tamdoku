@@ -20,6 +20,12 @@ import { LinesOverlay } from "./components/LinesOverlay.tsx";
 import { ResultOverlay } from "./components/ResultOverlay.tsx";
 import { Icon } from "./components/icons.tsx";
 
+// Ici et pas dans main.tsx : sans cet enregistrement, useGSAP ne révoque plus
+// ses tweens au démontage — l'animation infinie de l'accueil survivrait à chaque
+// aller-retour, ticker éveillé pour rien. Le point d'entrée n'est pas chargé par
+// les tests, l'enregistrement doit donc vivre avec le code qui en dépend.
+gsap.registerPlugin(useGSAP);
+
 export default function App() {
   const ctrl = useGame();
   const { g } = ctrl;

@@ -46,4 +46,11 @@ export default defineConfig({
     outDir: "dist",
     target: "es2020",
   },
+  test: {
+    // Les tests d'intégration montent l'app entière et jouent des grilles
+    // complètes ; deux d'entre eux attendent de vrais délais (fin de partie).
+    // Ils tiennent en 2 à 3 s, mais les 5 s par défaut ne laissent aucune marge
+    // sur une machine chargée.
+    testTimeout: 15_000,
+  },
 });
