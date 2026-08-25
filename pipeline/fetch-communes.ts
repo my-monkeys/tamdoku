@@ -1,8 +1,10 @@
 /**
  * Résout la commune de chaque arrêt via geo.api.gouv.fr (point → commune).
  * Clé de sortie : nom d'arrêt OSM normalisé (espaces), une entrée par nom unique.
+ * Les arrêts déjà résolus sont repris tels quels : une commune ne bouge pas, et
+ * un snapshot stable garde les builds reproductibles quand le réseau s'étend.
  */
-import { readFileSync, writeFileSync } from "node:fs";
+import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -16,19 +18,26 @@ interface OsmNode {
   tags?: { name?: string };
 }
 
-const osm = JSON.parse(readFileSync(join(rawDir, "osm-tram.json"), "utf8")) as {
-  elements: OsmNode[];
-};
+const readNodes = (file: string): OsmNode[] =>
+  (JSON.parse(readFileSync(join(rawDir, file), "utf8")) as { elements: OsmNode[] }).elements;
 
 const byName = new Map<string, { lat: number; lon: number }>();
-for (const el of osm.elements) {
+for (const el of [...readNodes("osm-tram.json"), ...readNodes("osm-bustram.json")]) {
   if (el.type !== "node") continue;
   const name = el.tags?.name?.replace(/\s+/g, " ").trim();
   if (name && !byName.has(name)) byName.set(name, { lat: el.lat, lon: el.lon });
 }
 
+const known: Record<string, string> = existsSync(join(rawDir, "communes.json"))
+  ? JSON.parse(readFileSync(join(rawDir, "communes.json"), "utf8"))
+  : {};
+
 const communes: Record<string, string> = {};
 for (const [name, { lat, lon }] of byName) {
+  if (known[name]) {
+    communes[name] = known[name];
+    continue;
+  }
   const url = `https://geo.api.gouv.fr/communes?lat=${lat}&lon=${lon}&fields=nom`;
   const res = await fetch(url);
   if (!res.ok) throw new Error(`geo.api.gouv.fr ${res.status} pour ${name}`);

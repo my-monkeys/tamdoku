@@ -1,5 +1,5 @@
 {
- "generatedAt": "2026-08-02T12:47:23.371Z",
+ "generatedAt": "2026-08-25T19:55:32.684Z",
  "source": "OSM (Overpass, service nominal) + GTFS TaM (identité/alias) + geo.api.gouv.fr (communes)",
  "stations": [
   {
@@ -66,6 +66,20 @@
    "tags": [
     "personnalite"
    ]
+  },
+  {
+   "id": "alfred-nobel",
+   "name": "Alfred Nobel",
+   "aliases": [],
+   "lines": [
+    "A"
+   ],
+   "lat": 43.616027,
+   "lon": 3.910049,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
   },
   {
    "id": "antigone",
@@ -401,6 +415,20 @@
    ],
    "lat": 43.600705,
    "lon": 3.849301,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "eureka",
+   "name": "Eurêka",
+   "aliases": [],
+   "lines": [
+    "A"
+   ],
+   "lat": 43.619441,
+   "lon": 3.91433,
    "commune": "Montpellier",
    "terminusOf": [],
    "parkRide": false,
@@ -926,13 +954,15 @@
    "name": "Notre-Dame de Sablassou",
    "aliases": [],
    "lines": [
-    "2"
+    "2",
+    "A"
    ],
-   "lat": 43.634234,
-   "lon": 3.922265,
+   "lat": 43.633854,
+   "lon": 3.922233,
    "commune": "Castelnau-le-Lez",
    "terminusOf": [
-    "2"
+    "2",
+    "A"
    ],
    "parkRide": true,
    "tags": []
@@ -1114,6 +1144,20 @@
    ]
   },
   {
+   "id": "paul-painleve",
+   "name": "Paul Painlevé",
+   "aliases": [],
+   "lines": [
+    "A"
+   ],
+   "lat": 43.610005,
+   "lon": 3.899341,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
    "id": "pergola",
    "name": "Pergola",
    "aliases": [],
@@ -1191,6 +1235,20 @@
    "tags": []
   },
   {
+   "id": "pinville",
+   "name": "Pinville",
+   "aliases": [],
+   "lines": [
+    "A"
+   ],
+   "lat": 43.613989,
+   "lon": 3.906213,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
    "id": "place-carnot",
    "name": "Place Carnot",
    "aliases": [],
@@ -1224,12 +1282,15 @@
    "aliases": [],
    "lines": [
     "1",
-    "4"
+    "4",
+    "A"
    ],
-   "lat": 43.607345,
-   "lon": 3.89394,
+   "lat": 43.607222,
+   "lon": 3.893655,
    "commune": "Montpellier",
-   "terminusOf": [],
+   "terminusOf": [
+    "A"
+   ],
    "parkRide": false,
    "tags": []
   },
@@ -1300,6 +1361,20 @@
    ],
    "lat": 43.612584,
    "lon": 3.894948,
+   "commune": "Montpellier",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
+   "id": "pont-juvenal",
+   "name": "Pont Juvénal",
+   "aliases": [],
+   "lines": [
+    "A"
+   ],
+   "lat": 43.606222,
+   "lon": 3.898127,
    "commune": "Montpellier",
    "terminusOf": [],
    "parkRide": false,
@@ -1635,6 +1710,20 @@
    ]
   },
   {
+   "id": "verchant",
+   "name": "Verchant",
+   "aliases": [],
+   "lines": [
+    "A"
+   ],
+   "lat": 43.623096,
+   "lon": 3.91832,
+   "commune": "Castelnau-le-Lez",
+   "terminusOf": [],
+   "parkRide": false,
+   "tags": []
+  },
+  {
    "id": "via-domitia",
    "name": "Via Domitia",
    "aliases": [],
@@ -1900,7 +1989,7 @@
   {
    "ref": "5",
    "name": "Lavérune - Clapiers",
-   "color": "#",
+   "color": "#2D7431",
    "circular": false,
    "termini": [
     "clapiers",
@@ -1963,6 +2052,29 @@
      "clapiers"
     ]
    ]
+  },
+  {
+   "ref": "A",
+   "name": "ND de Sablassou - Pl. de l'Europe",
+   "color": "#841931",
+   "circular": false,
+   "termini": [
+    "notre-dame-de-sablassou",
+    "place-de-l-europe"
+   ],
+   "branches": [
+    [
+     "notre-dame-de-sablassou",
+     "verchant",
+     "eureka",
+     "alfred-nobel",
+     "pinville",
+     "paul-painleve",
+     "pont-juvenal",
+     "place-de-l-europe"
+    ]
+   ],
+   "since": "2026-08-27"
   }
  ]
 }

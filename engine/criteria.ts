@@ -14,8 +14,8 @@ import type { CompiledRule, LineRef, Network } from "./types.ts";
 export interface Criterion {
   ruleId: string;
   kind: "line" | "attr";
-  /** Numéro de ligne (pastille colorée) pour les critères « ligne ». */
-  n?: number;
+  /** Repère de ligne affiché dans la pastille colorée : « 1 »…« 5 », « A ». */
+  n?: string;
   valClass: string;
   /** Repère typographique (lettre, « St », « 18+ »…) quand il EST le critère. */
   icon: string;
@@ -35,6 +35,7 @@ const LINE_FLAVOR: Record<LineRef, string> = {
   "3": "la ligne verte, l’univers marin de Christian Lacroix",
   "4": "la circulaire dorée autour de l’Écusson",
   "5": "la ligne magenta des Parcs, la Feuille de Vie de Barthélémy Toguo",
+  A: "le Bustram bordeaux, seule ligne du réseau à rouler sur pneus",
 };
 
 /** Métadonnées des règles fixes (hors lignes, lettres et communes, générées). */
@@ -45,7 +46,7 @@ const META: Record<string, { icon: string; iconKey?: string; short: string; labe
     iconKey: "swap",
     short: "Corresp.",
     label: "Correspondance",
-    expl: "Au moins deux lignes de tram s’arrêtent à cette station.",
+    expl: "Au moins deux lignes du réseau s’arrêtent à cette station — le Bustram compte comme les tramways.",
   },
   terminus: {
     icon: "⇥",
@@ -217,7 +218,7 @@ function criterionFor(rule: CompiledRule): Criterion {
     return {
       ruleId: rule.id,
       kind: "line",
-      n: Number(ref),
+      n: ref,
       valClass: `v${ref}`,
       icon: "",
       short: `Ligne ${ref}`,

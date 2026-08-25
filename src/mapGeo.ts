@@ -1,23 +1,20 @@
 /**
  * Géométrie du plan réseau pour l'indice : projette les stations (lat/lon réels)
- * dans un repère SVG et trace les 5 lignes en **courbes lissées** (spline
- * Catmull-Rom) à travers la séquence de stations. Calculé une fois.
+ * dans un repère SVG et trace les lignes en **courbes lissées** (spline
+ * Catmull-Rom) à travers la séquence de stations.
  *
  * Source = `network.json` (réseau **nominal** OSM = exactement le tracé des règles),
  * PAS les tracés GTFS (qui portent les déviations travaux été 2026). Les stations
- * tombent donc sur la ligne par construction, et le plan colle au jeu. Couleurs =
- * palette de l'app par ref (network.json a la L5 cassée : color = "#").
+ * tombent donc sur la ligne par construction, et le plan colle au jeu.
+ *
+ * Le plan est **daté** comme le reste du jeu : une grille d'archive montre le
+ * réseau de sa date, sans les lignes ouvertes depuis. Le cadrage, lui, est
+ * calculé une fois pour toutes sur le réseau complet — sinon l'échelle (et donc
+ * le cercle des règles de distance) sauterait d'une date à l'autre.
  */
-import { network, byId } from "./data.ts";
-import type { LineRef } from "../engine/types.ts";
-
-const LINE_COLORS: Record<LineRef, string> = {
-  "1": "#0059a2",
-  "2": "#ef7d00",
-  "3": "#c6d302",
-  "4": "#4c2b0e",
-  "5": "#287530",
-};
+import { network, byId, stationsFor } from "./data.ts";
+import { LINE_COLORS } from "./lineColors.ts";
+import { networkFor } from "../engine/select.ts";
 
 export interface MapPoint {
   id: string;
@@ -54,7 +51,8 @@ function spline(pts: { x: number; y: number }[]): string {
   return d;
 }
 
-function build(): MapGeo {
+/** Cadrage commun à toutes les dates : emprise du réseau complet. */
+const frame = (() => {
   const SIZE = 1000;
   const PAD = 44;
   const lats = network.stations.map((s) => s.lat);
@@ -67,16 +65,21 @@ function build(): MapGeo {
   const spanX = (maxLon - minLon) * kx;
   const spanY = maxLat - minLat;
   const scale = (SIZE - 2 * PAD) / Math.max(spanX, spanY);
-  const width = spanX * scale + 2 * PAD;
-  const height = spanY * scale + 2 * PAD;
+  return {
+    width: spanX * scale + 2 * PAD,
+    height: spanY * scale + 2 * PAD,
+    pxPerMeter: scale / 111_320,
+    px: (lon: number) => PAD + (lon - minLon) * kx * scale,
+    py: (lat: number) => PAD + (maxLat - lat) * scale, // nord en haut
+  };
+})();
 
-  const px = (lon: number) => PAD + (lon - minLon) * kx * scale;
-  const py = (lat: number) => PAD + (maxLat - lat) * scale; // nord en haut
-
-  const points: MapPoint[] = network.stations.map((s) => ({ id: s.id, x: px(s.lon), y: py(s.lat) }));
+function build(date: string): MapGeo {
+  const { px, py } = frame;
+  const points: MapPoint[] = stationsFor(date).map((s) => ({ id: s.id, x: px(s.lon), y: py(s.lat) }));
 
   const tracks: MapTrack[] = [];
-  for (const line of network.lines) {
+  for (const line of networkFor(network, date).lines) {
     for (const branch of line.branches) {
       const pts = branch
         .map((id) => byId.get(id))
@@ -87,7 +90,17 @@ function build(): MapGeo {
     }
   }
 
-  return { width, height, pxPerMeter: scale / 111_320, points, tracks };
+  const { width, height, pxPerMeter } = frame;
+  return { width, height, pxPerMeter, points, tracks };
 }
 
-export const mapGeo: MapGeo = build();
+/** Plan du réseau à une date, mémoïsé par état du réseau (pas par jour). */
+const plans = new Map<string, MapGeo>();
+export function mapGeoFor(date: string): MapGeo {
+  const key = networkFor(network, date).lines.map((l) => l.ref).join("");
+  const cached = plans.get(key);
+  if (cached) return cached;
+  const plan = build(date);
+  plans.set(key, plan);
+  return plan;
+}

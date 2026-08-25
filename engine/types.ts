@@ -1,4 +1,5 @@
-export type LineRef = "1" | "2" | "3" | "4" | "5";
+/** Lignes du réseau structurant TaM : les 5 tramways, et le Bustram « A ». */
+export type LineRef = "1" | "2" | "3" | "4" | "5" | "A";
 
 export interface Station {
   /** Slug stable, dérivé du nom canonique (ex. "gare-saint-roch"). */
@@ -33,6 +34,12 @@ export interface Line {
   termini: string[];
   /** Séquences ordonnées d'ids de stations, une par branche (sens aller). */
   branches: string[][];
+  /**
+   * Date ISO (incluse) d'entrée de la ligne dans le jeu. Une ligne à venir est
+   * absente du réseau des grilles antérieures — stations comprises, si elles ne
+   * sont desservies que par elle (cf. networkFor).
+   */
+  since?: string;
 }
 
 export interface Network {

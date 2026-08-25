@@ -1,16 +1,9 @@
 import { useMemo } from "react";
 import { network, byId } from "../data.ts";
+import { LINE_COLORS } from "../lineColors.ts";
+import { networkFor } from "../../engine/select.ts";
 import type { LineRef } from "../../engine/types.ts";
-import type { useGame } from "../useGame.ts";
-
-// Couleurs officielles TaM (identiques aux pastilles .v1..v5).
-const LINE_COLORS: Record<LineRef, string> = {
-  "1": "#0059A2",
-  "2": "#EF7D00",
-  "3": "#C6D302",
-  "4": "#4C2B0E",
-  "5": "#287530",
-};
+import { networkDateOf, type useGame } from "../useGame.ts";
 
 const GAP = 38; // écart horizontal entre stations
 const PADX = 46; // marge de départ (dégage le badge en haut-gauche)
@@ -40,10 +33,11 @@ const toNames = (ids: string[]) => ids.map((id) => byId.get(id)?.name ?? id);
  * les mêmes terminus sont dédupliquées (L5). Une ligne à deux vraies branches
  * (L3 : Lattes / Pérols) est fusionnée : tronc commun une fois, puis fourche.
  * La boucle L4 est ouverte. Aucune info en plus : juste le nom.
+ * Daté comme le reste : une ligne pas encore ouverte n'y figure pas.
  */
-function buildStrips(): Strip[] {
+function buildStrips(date: string): Strip[] {
   const out: Strip[] = [];
-  for (const line of network.lines) {
+  for (const line of networkFor(network, date).lines) {
     const uniq: string[][] = [];
     const seen = new Set<string>();
     for (const br of [...line.branches].sort((a, b) => b.length - a.length)) {
@@ -130,7 +124,8 @@ function ForkStrip({ s }: { s: Fork }) {
 
 export function LinesOverlay({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
-  const strips = useMemo(buildStrips, []);
+  const planDate = networkDateOf(g);
+  const strips = useMemo(() => buildStrips(planDate), [planDate]);
   if (!g.linesOpen) return null;
 
   return (

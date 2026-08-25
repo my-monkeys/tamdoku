@@ -7,10 +7,27 @@ const byId = stationById(net);
 const lines = (id: string): LineRef[] => byId.get(id)!.lines;
 
 describe("network.json — invariants du réseau TaM", () => {
-  it("a 5 lignes et un nombre plausible de stations", () => {
-    expect(net.lines.map((l) => l.ref)).toEqual(["1", "2", "3", "4", "5"]);
+  it("a 5 tramways + le Bustram, et un nombre plausible de stations", () => {
+    expect(net.lines.map((l) => l.ref)).toEqual(["1", "2", "3", "4", "5", "A"]);
     expect(net.stations.length).toBeGreaterThanOrEqual(100);
-    expect(net.stations.length).toBeLessThanOrEqual(120);
+    expect(net.stations.length).toBeLessThanOrEqual(125);
+  });
+
+  it("Bustram A : 8 arrêts, ses deux bouts en terminus, daté pour ne pas réécrire l'archive", () => {
+    const a = net.lines.find((l) => l.ref === "A")!;
+    expect(a.circular).toBe(false);
+    expect(a.since).toBeTruthy();
+    expect(a.branches).toHaveLength(1);
+    expect(a.branches[0]).toHaveLength(8);
+    expect(a.termini.sort()).toEqual(["notre-dame-de-sablassou", "place-de-l-europe"]);
+    // Les deux extrémités sont des stations de tram : le Bustram s'y raccroche.
+    expect(lines("place-de-l-europe")).toEqual(["1", "4", "A"]);
+    expect(lines("notre-dame-de-sablassou")).toEqual(["2", "A"]);
+    // Les six autres n'existent que par lui.
+    const propres = net.stations.filter((s) => s.lines.length === 1 && s.lines[0] === "A");
+    expect(propres.map((s) => s.id).sort()).toEqual([
+      "alfred-nobel", "eureka", "paul-painleve", "pinville", "pont-juvenal", "verchant",
+    ]);
   });
 
   it("ids uniques, chaque station a lignes, commune et coordonnées", () => {

@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from "react";
-import { mapGeo } from "../mapGeo.ts";
-import type { useGame } from "../useGame.ts";
+import { mapGeoFor } from "../mapGeo.ts";
+import { LINE_COLORS } from "../lineColors.ts";
+import { linesFor } from "../data.ts";
+import { networkDateOf, type useGame } from "../useGame.ts";
 
 const clamp = (v: number, lo: number, hi: number) => Math.max(lo, Math.min(hi, v));
 
@@ -17,6 +19,10 @@ const DISTANCE_RINGS: Record<string, { meters: number; label: string }> = {
  */
 export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
+  // Le plan d'une grille d'archive est celui de sa date : pas de ligne ouverte
+  // depuis. L'entraînement, hors calendrier, montre le réseau du jour.
+  const planDate = networkDateOf(g);
+  const mapGeo = mapGeoFor(planDate);
   const vp = useRef<HTMLDivElement>(null);
   const pointers = useRef(new Map<number, { x: number; y: number }>());
   const pinchDist = useRef<number | null>(null);
@@ -68,7 +74,7 @@ export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
             <div className="hintmap-ttl">Indice — le plan</div>
             <div className="hintmap-sub">
               En <span className="hm-red">rouge</span>, les stations qui cochent les deux critères.
-              À toi de les reconnaître : pas de noms.
+              À toi de les reconnaître : pas de noms. Les tracés colorés donnent les lignes.
               {ring &&
                 ` Le cercle pointillé trace la limite des ${ring.label} à vol d'oiseau autour de la Comédie.`}
             </div>
@@ -187,6 +193,15 @@ export function HintMap({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
               −
             </button>
           </div>
+        </div>
+
+        <div className="hintmap-legend" aria-label="Les lignes du réseau">
+          {linesFor(planDate).map((ref) => (
+            <span className="hintmap-leg" key={ref}>
+              <span className="hintmap-swatch" style={{ background: LINE_COLORS[ref] }} />
+              {ref}
+            </span>
+          ))}
         </div>
 
         <button className="hintmap-done" onClick={ctrl.closeHintMap}>

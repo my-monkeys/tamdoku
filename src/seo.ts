@@ -30,7 +30,7 @@ const META: Record<string, ScreenMeta> = {
   about: {
     title: "À propos de Tamdoku — le sudoku du tram de Montpellier (TaM)",
     description:
-      "Tamdoku est un hommage ludique au réseau de tramway de Montpellier et à ses 5 lignes TaM, dans l'esprit d'UbahnDoku. Projet indépendant et non officiel My-Monkey, bâti sur les données ouvertes OpenStreetMap et le GTFS TaM.",
+      "Tamdoku est un hommage ludique au réseau TaM de Montpellier — ses 5 lignes de tramway et le Bustram A —, dans l'esprit d'UbahnDoku. Projet indépendant et non officiel My-Monkey, bâti sur les données ouvertes OpenStreetMap et le GTFS TaM.",
   },
   stats: {
     title: "Statistiques — Tamdoku, le puzzle quotidien du tram de Montpellier",

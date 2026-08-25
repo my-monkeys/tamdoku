@@ -20,9 +20,14 @@ import {
 } from "./text.ts";
 import type { CompiledRule, Network, Rule, Station } from "./types.ts";
 
-/** Bande de jouabilité générale (sur ~110 stations). */
+/**
+ * Bande de jouabilité générale. Le plancher est absolu — il faut de quoi remplir
+ * une ligne de grille — mais le plafond suit la taille du réseau : figé, une
+ * extension du réseau ferait sortir des critères entiers du catalogue (« Dans
+ * Montpellier » passe 88 dès qu'on ajoute une poignée de stations).
+ */
 const MIN_STATIONS = 6;
-const MAX_STATIONS = 88;
+const MAX_SHARE = 0.8;
 /**
  * Bande d'un sous-réseau (entraînement) : il faut 3 stations pour remplir une
  * ligne de grille, et autant hors de la règle pour qu'elle discrimine.
@@ -31,7 +36,7 @@ const SUBSET_MIN_STATIONS = 3;
 const SUBSET_MARGIN = 3;
 /** Les règles-lettres sont des « bouche-trous » : bande plus stricte. */
 const LETTER_MIN = 12;
-const LETTER_MAX = 66;
+const LETTER_MAX_SHARE = 0.6;
 
 const NEAR_CENTER_METERS = 1_500;
 const FAR_CENTER_METERS = 5_000;
@@ -75,6 +80,8 @@ export function restrictRules(
 
 export function buildRules(net: Network): CompiledRule[] {
   const rules: Rule[] = [];
+  const maxStations = Math.round(MAX_SHARE * net.stations.length);
+  const letterMax = Math.round(LETTER_MAX_SHARE * net.stations.length);
 
   // ── Lignes ──────────────────────────────────────────────────────────────
   for (const line of net.lines) {
@@ -95,7 +102,8 @@ export function buildRules(net: Network): CompiledRule[] {
       family: "reseau",
       subfamily: "correspondance",
       label: "Station de correspondance",
-      description: "Au moins deux lignes de tramway s'arrêtent à cette station.",
+      description:
+        "Au moins deux lignes du réseau s'arrêtent à cette station. Le Bustram compte comme les tramways.",
       test: (s) => s.lines.length >= 2,
     },
     {
@@ -103,7 +111,7 @@ export function buildRules(net: Network): CompiledRule[] {
       family: "reseau",
       subfamily: "correspondance",
       label: "Une seule ligne",
-      description: "Une seule ligne de tramway s'arrête à cette station.",
+      description: "Une seule ligne du réseau s'arrête à cette station, Bustram compris.",
       test: (s) => s.lines.length === 1,
     },
     {
@@ -130,7 +138,7 @@ export function buildRules(net: Network): CompiledRule[] {
   // ── Nom : lettres (dynamique, bande stricte) ────────────────────────────
   for (const letter of "abcdefghijklmnopqrstuvwxyz") {
     const count = net.stations.filter((s) => containsLetter(s.name, letter)).length;
-    if (count < LETTER_MIN || count > LETTER_MAX) continue;
+    if (count < LETTER_MIN || count > letterMax) continue;
     rules.push({
       id: `nom-lettre-${letter}`,
       family: "nom",
@@ -349,7 +357,7 @@ export function buildRules(net: Network): CompiledRule[] {
   const compiled: CompiledRule[] = [];
   for (const rule of rules) {
     const stationIds = new Set(net.stations.filter(rule.test).map((s) => s.id));
-    const inBand = stationIds.size >= MIN_STATIONS && stationIds.size <= MAX_STATIONS;
+    const inBand = stationIds.size >= MIN_STATIONS && stationIds.size <= maxStations;
     // Les règles ligne/commune dédiée sont structurelles : jamais filtrées par le haut.
     const structural = rule.family === "ligne";
     if (inBand || (structural && stationIds.size >= MIN_STATIONS)) {

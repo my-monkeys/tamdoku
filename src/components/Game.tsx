@@ -3,7 +3,7 @@ import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { byId, criterion } from "../data.ts";
 import { revealGrid } from "../../engine/matching.ts";
-import { maxMistakesFor, type useGame } from "../useGame.ts";
+import { maxMistakesFor, networkDateOf, type useGame } from "../useGame.ts";
 import { prettyDate } from "../format.ts";
 import { LineDots, LineLegend } from "./tokens.tsx";
 import { CritGlyph, hasGlyph, Icon } from "./icons.tsx";
@@ -190,7 +190,7 @@ export function Game({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
 
       <div className="legend">
         Chaque case = une station sur le critère de sa ligne ET de sa colonne.
-        <LineLegend caption="= les lignes qui desservent la station" />
+        <LineLegend caption="= les lignes qui desservent la station" date={networkDateOf(g)} />
       </div>
     </div>
   );

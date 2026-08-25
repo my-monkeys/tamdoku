@@ -1,5 +1,5 @@
 import { linesFromEmoji, prettyDate } from "../format.ts";
-import { FIRST_BONUS } from "../useGame.ts";
+import { FIRST_BONUS, networkDateOf } from "../useGame.ts";
 import type { useGame } from "../useGame.ts";
 import { LineLegend } from "./tokens.tsx";
 import { Icon } from "./icons.tsx";
@@ -99,7 +99,7 @@ export function ResultOverlay({ ctrl, onShare }: { ctrl: ReturnType<typeof useGa
           ))}
         </div>
         <div className="res-emocap">
-          <LineLegend caption="= la ligne de chaque station placée" />
+          <LineLegend caption="= la ligne de chaque station placée" date={networkDateOf(g)} />
         </div>
 
         <div className="res-stats">

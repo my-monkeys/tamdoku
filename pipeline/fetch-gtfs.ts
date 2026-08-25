@@ -1,6 +1,7 @@
 /**
  * Télécharge le GTFS officiel TaM (open data Montpellier Méditerranée Métropole)
- * et en extrait les stations de tramway avec, pour chaque paire station×ligne,
+ * et en extrait les stations du réseau structurant (tramway + Bustram) avec,
+ * pour chaque paire station×ligne,
  * le nombre de courses — ce qui permet au build de distinguer la desserte
  * nominale des variantes exceptionnelles (déviations travaux présentes dans le GTFS).
  */
@@ -28,9 +29,16 @@ execSync(`unzip -o -q ${JSON.stringify(zipPath)} -d ${JSON.stringify(gtfsDir)}`)
 
 const read = (f: string) => parseCsv(readFileSync(join(gtfsDir, f), "utf8"));
 
-const tramRoutes = new Map(
+/**
+ * Le GTFS range les Bustram parmi les bus ordinaires (route_type=3) : rien ne
+ * les en distingue, il faut les nommer. OSM, lui, les identifie par leur nom de
+ * relation — c'est de là que vient la topologie (cf. fetch-osm.ts).
+ */
+const BUSTRAM_REFS = new Set(["A"]);
+
+const networkRoutes = new Map(
   read("routes.txt")
-    .filter((r) => r["route_type"] === "0")
+    .filter((r) => r["route_type"] === "0" || BUSTRAM_REFS.has(r["route_short_name"]!))
     .map((r) => [
       r["route_id"]!,
       { ref: r["route_short_name"]!, longName: r["route_long_name"]!, color: r["route_color"]! },
@@ -39,7 +47,7 @@ const tramRoutes = new Map(
 
 const tripLine = new Map<string, string>();
 for (const t of read("trips.txt")) {
-  const route = tramRoutes.get(t["route_id"]!);
+  const route = networkRoutes.get(t["route_id"]!);
   if (route) tripLine.set(t["trip_id"]!, route.ref);
 }
 
@@ -59,7 +67,7 @@ for (const st of read("stop_times.txt")) {
 
 const output = {
   fetchedAt: new Date().toISOString(),
-  routes: Object.fromEntries([...tramRoutes.values()].map((r) => [r.ref, r])),
+  routes: Object.fromEntries([...networkRoutes.values()].map((r) => [r.ref, r])),
   lineTripTotals: Object.fromEntries(
     Object.entries(lineTotals).map(([ref, trips]) => [ref, trips.size]),
   ),
@@ -67,5 +75,5 @@ const output = {
 };
 writeFileSync(join(rawDir, "gtfs-tram.json"), JSON.stringify(output, null, 1));
 console.log(
-  `OK → data/raw/gtfs-tram.json (${Object.keys(tripCounts).length} stations, lignes: ${[...tramRoutes.values()].map((r) => r.ref).join(", ")})`,
+  `OK → data/raw/gtfs-tram.json (${Object.keys(tripCounts).length} stations, lignes: ${[...networkRoutes.values()].map((r) => r.ref).join(", ")})`,
 );

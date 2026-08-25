@@ -1,6 +1,7 @@
 /**
  * Construit data/network.json à partir des snapshots bruts :
- *  - topologie et desserte nominale : relations OSM (les variantes travaux du GTFS sont ignorées),
+ *  - topologie et desserte nominale : relations OSM tram + Bustram (les variantes
+ *    travaux du GTFS sont ignorées),
  *  - identité et alias des stations : GTFS officiel + curation,
  *  - communes : geo.api.gouv.fr, P+Tram : parkings park_ride OSM à moins de 300 m.
  * Un rapport de croisement OSM/GTFS est affiché en console : toute divergence doit
@@ -18,6 +19,8 @@ const readJson = (p: string) => JSON.parse(readFileSync(p, "utf8"));
 
 interface Curation {
   merges: Record<string, string>;
+  /** Date d'entrée en service côté jeu, par ligne (cf. Line.since). */
+  lineSince: Record<string, string>;
   renames: Record<string, string>;
   gtfsAliases: Record<string, string>;
   parkRideOverrides: Record<string, boolean>;
@@ -26,6 +29,7 @@ interface Curation {
 }
 const curation = readJson(join(ROOT, "pipeline", "curation.json")) as Curation;
 const osm = readJson(join(rawDir, "osm-tram.json"));
+const osmBustram = readJson(join(rawDir, "osm-bustram.json"));
 const parkRideRaw = readJson(join(rawDir, "osm-parkride.json"));
 const gtfs = readJson(join(rawDir, "gtfs-tram.json"));
 const communes = readJson(join(rawDir, "communes.json")) as Record<string, string>;
@@ -39,8 +43,9 @@ const canonicalize = (rawName: string): string => {
 const matchKey = (name: string) => fold(name).replace(/[^a-z0-9]/g, "");
 
 // ── Stations et branches depuis les relations OSM ────────────────────────────
+const osmElements = [...osm.elements, ...osmBustram.elements];
 const nodes = new Map<number, { lat: number; lon: number; name?: string }>();
-for (const el of osm.elements) {
+for (const el of osmElements) {
   if (el.type === "node") nodes.set(el.id, { lat: el.lat, lon: el.lon, name: el.tags?.name });
 }
 
@@ -52,12 +57,16 @@ interface Acc {
 }
 const stations = new Map<string, Acc>();
 const lineBranches = new Map<LineRef, string[][]>();
-const lineColors: Record<string, string> = {};
+const osmLineColors = new Map<LineRef, string>();
 
-for (const rel of osm.elements) {
+for (const rel of osmElements) {
   if (rel.type !== "relation") continue;
   const rawRef: string = rel.tags.ref;
-  const ref = rawRef[0] as LineRef; // "4A"/"4B" → "4"
+  // Les deux sens d'une même ligne portent le même ref ; la L4 le suffixe
+  // ("4A"/"4B" → "4"). Un Bustram a un ref d'une seule lettre, déjà canonique.
+  const ref = rawRef[0] as LineRef;
+  const colour: string | undefined = rel.tags.colour;
+  if (colour) osmLineColors.set(ref, colour.replace(/^#/, ""));
   const sequence: string[] = [];
   for (const member of rel.members) {
     if (member.type !== "node" || !member.role.startsWith("stop")) continue;
@@ -221,13 +230,16 @@ const lineList: Line[] = [...lineBranches.keys()].sort().map((ref) => {
     ? branches.map((b) => b[0]!)
     : branches.flatMap((b) => [b[0]!, b[b.length - 1]!]);
   const termini = [...new Set(ends)].sort();
+  // Le GTFS TaM laisse la couleur vide sur certaines lignes : OSM prend le relais.
+  const color = gtfs.routes[ref]?.color || osmLineColors.get(ref) || "888888";
   return {
     ref,
     name: gtfs.routes[ref]?.longName ?? `Ligne ${ref}`,
-    color: `#${gtfs.routes[ref]?.color ?? "888888"}`,
+    color: `#${color}`,
     circular,
     termini,
     branches,
+    ...(curation.lineSince[ref] ? { since: curation.lineSince[ref] } : {}),
   };
 });
 
@@ -247,8 +259,13 @@ for (const [slug, refs] of Object.entries(curation.terminusExtra)) {
     if (!st.lines.includes(ref as LineRef))
       throw new Error(`Terminus extra L${ref} sur ${slug} qui ne dessert pas cette ligne`);
 }
-if (lineList.length !== 5) throw new Error(`5 lignes attendues, ${lineList.length} trouvées`);
-if (stationList.length < 95 || stationList.length > 125)
+for (const ref of Object.keys(curation.lineSince)) {
+  if (ref.startsWith("_")) continue;
+  if (!lineList.some((l) => l.ref === ref))
+    throw new Error(`lineSince sur une ligne inconnue : ${ref}`);
+}
+if (lineList.length !== 6) throw new Error(`6 lignes attendues, ${lineList.length} trouvées`);
+if (stationList.length < 95 || stationList.length > 130)
   throw new Error(`Nombre de stations suspect : ${stationList.length}`);
 
 const network: Network = {
@@ -263,7 +280,7 @@ console.log(`\n✓ data/network.json : ${stationList.length} stations, ${lineLis
 for (const line of lineList) {
   const count = stationList.filter((s) => s.lines.includes(line.ref)).length;
   console.log(
-    `  L${line.ref} ${line.name} — ${count} stations, ${line.circular ? "circulaire" : `terminus: ${line.termini.join(", ")}`}`,
+    `  L${line.ref} ${line.name} — ${count} stations, ${line.circular ? "circulaire" : `terminus: ${line.termini.join(", ")}`}${line.since ? ` (au tirage dès le ${line.since})` : ""}`,
   );
 }
 console.log(`  P+Tram : ${stationList.filter((s) => s.parkRide).length} stations`);

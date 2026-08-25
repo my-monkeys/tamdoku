@@ -1,5 +1,5 @@
 {
- "fetchedAt": "2026-07-04T10:30:05.972Z",
+ "fetchedAt": "2026-08-25T19:53:44.144Z",
  "routes": {
   "1": {
    "ref": "1",
@@ -25,6 +25,11 @@
    "ref": "5",
    "longName": "Lavérune - Clapiers",
    "color": ""
+  },
+  "A": {
+   "ref": "A",
+   "longName": "ND de Sablassou - Pl. de l'Europe",
+   "color": ""
   }
  },
  "lineTripTotals": {
@@ -32,7 +37,8 @@
   "2": 4478,
   "3": 2194,
   "4": 2753,
-  "5": 2363
+  "5": 2363,
+  "A": 882
  },
  "stations": {
   "Garcia Lorca": {
@@ -97,7 +103,8 @@
   "Place de l'Europe": {
    "1": 4516,
    "2": 1382,
-   "4": 2686
+   "4": 2686,
+   "A": 882
   },
   "Rives du Lez": {
    "1": 4516,
@@ -108,6 +115,28 @@
   },
   "La Rauze": {
    "4": 2686
+  },
+  "Notre-Dame de Sablassou": {
+   "2": 3768,
+   "A": 882
+  },
+  "Verchant": {
+   "A": 882
+  },
+  "Eurêka": {
+   "A": 882
+  },
+  "Alfred Nobel": {
+   "A": 882
+  },
+  "Pinville": {
+   "A": 882
+  },
+  "Paul Painlevé": {
+   "A": 882
+  },
+  "Pont Juvénal": {
+   "A": 882
   },
   "Sabines": {
    "2": 3787
@@ -158,9 +187,6 @@
    "2": 3768
   },
   "Centurions": {
-   "2": 3768
-  },
-  "Notre-Dame de Sablassou": {
    "2": 3768
   },
   "Aube Rouge": {

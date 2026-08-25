@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { loadNetwork } from "../engine/network.ts";
+import { networkFor } from "../engine/select.ts";
 import { buildRules, poolFor, restrictRules, P_TRAM_FROM } from "../engine/rules.ts";
 import { buildCriteria, terminiPhrase } from "../engine/criteria.ts";
 import { generateDaily, seedForDate } from "../engine/daily.ts";
@@ -11,8 +12,25 @@ const rules = buildRules(net);
 const pool = rules; // tout le catalogue (l'app tire dans poolFor(rules, date))
 const criteria = buildCriteria(rules);
 const ruleById = new Map(rules.map((r) => [r.id, r]));
-/** Génère comme l'app : catalogue en vigueur à la date de la grille. */
-const dailyFor = (date: string) => generateDaily(poolFor(rules, date), seedForDate(date));
+
+/**
+ * Génère exactement comme l'app (cf. src/data.ts) : le catalogue est recompilé
+ * sur le **réseau** en vigueur à la date, puis filtré des règles pas encore
+ * entrées au tirage. C'est ce double filtrage qui fige les grilles passées quand
+ * le réseau s'étend — le tester sur le catalogue complet ne prouverait rien.
+ */
+const catalogs = new Map<string, ReturnType<typeof buildRules>>();
+const catalogFor = (date: string) => {
+  const net_ = networkFor(net, date);
+  const key = net_.lines.map((l) => l.ref).join("");
+  const cached = catalogs.get(key);
+  if (cached) return cached;
+  const compiled = buildRules(net_);
+  catalogs.set(key, compiled);
+  return compiled;
+};
+const dailyFor = (date: string) =>
+  generateDaily(poolFor(catalogFor(date), date), seedForDate(date));
 
 describe("catalogue de critères", () => {
   it("chaque règle a des métadonnées d'affichage complètes", () => {
@@ -142,6 +160,48 @@ describe("bascule datée du catalogue (poolFor)", () => {
     expect(g01.cols).toEqual(["nom-lettre-t", "ligne-1", "ligne-3"]);
   });
 
+  it("le Bustram n'existe pas avant sa date : ni ligne, ni stations, ni critère", () => {
+    const since = net.lines.find((l) => l.ref === "A")!.since!;
+    const veille = new Date(Date.parse(since) - 86_400_000).toISOString().slice(0, 10);
+    const avant = networkFor(net, veille);
+    expect(avant.lines.map((l) => l.ref)).toEqual(["1", "2", "3", "4", "5"]);
+    expect(avant.stations).toHaveLength(net.stations.length - 6);
+    expect(avant.stations.some((s) => s.id === "verchant")).toBe(false);
+    // Les stations partagées restent, amputées du Bustram.
+    const sablassou = avant.stations.find((s) => s.id === "notre-dame-de-sablassou")!;
+    expect(sablassou.lines).toEqual(["2"]);
+    expect(sablassou.terminusOf).toEqual(["2"]);
+    expect(catalogFor(veille).some((r) => r.id === "ligne-A")).toBe(false);
+    expect(catalogFor(since).some((r) => r.id === "ligne-A")).toBe(true);
+    expect(networkFor(net, "").lines).toHaveLength(6); // entraînement : tout le réseau
+  });
+
+  it("aucune grille d'avant la bascule ne propose une station du Bustram", () => {
+    const since = net.lines.find((l) => l.ref === "A")!.since!;
+    const propres = new Set(
+      net.stations.filter((s) => s.lines.length === 1 && s.lines[0] === "A").map((s) => s.id),
+    );
+    for (let d = 0; d < 120; d++) {
+      const date = new Date(Date.parse("2026-07-01") + d * 86_400_000).toISOString().slice(0, 10);
+      if (date >= since) break;
+      for (const cell of dailyFor(date).valid) {
+        for (const id of cell) expect(propres.has(id), `${date} : ${id}`).toBe(false);
+      }
+    }
+  });
+
+  it("le Bustram entre bien au tirage une fois sa date passée", () => {
+    const since = net.lines.find((l) => l.ref === "A")!.since!;
+    const start = Date.parse(since);
+    let found = false;
+    for (let d = 0; d < 120 && !found; d++) {
+      const date = new Date(start + d * 86_400_000).toISOString().slice(0, 10);
+      const p = dailyFor(date);
+      found = [...p.rows, ...p.cols].includes("ligne-A");
+    }
+    expect(found).toBe(true);
+  });
+
   it("p-tram est réellement tirée dans les grilles d'après-bascule", () => {
     const start = Date.parse(P_TRAM_FROM);
     let found = false;
@@ -191,6 +251,22 @@ describe("grilles d'entraînement restreintes à une ligne", () => {
         // Et aucun critère « Sur la ligne N », qui n'apprendrait rien ici.
         for (const id of [...puzzle.rows, ...puzzle.cols]) expect(id.startsWith("ligne-")).toBe(false);
       }
+    }
+  });
+
+  it("le Bustram seul ne compose pas de grille, mais s'associe à n'importe quelle ligne", () => {
+    const idsOf = (refs: string[]) =>
+      new Set(net.stations.filter((s) => s.lines.some((r) => refs.includes(r))).map((s) => s.id));
+    // 8 stations pour 9 cases distinctes : mathématiquement impossible. C'est ce
+    // que le garde-fou de l'écran d'entraînement empêche de tenter.
+    expect(idsOf(["A"]).size).toBeLessThan(9);
+    expect(() =>
+      generateDaily(restrictRules(rules, idsOf(["A"])), 42, { lineRules: 0 }),
+    ).toThrow();
+    for (const other of lines) {
+      const restricted = restrictRules(rules, idsOf(["A", other]));
+      const puzzle = generateDaily(restricted, 42, { lineRules: 1 });
+      expect(puzzle.valid.every((cell) => cell.length > 0)).toBe(true);
     }
   });
 

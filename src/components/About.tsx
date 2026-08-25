@@ -1,9 +1,11 @@
-import { lineSummaries } from "../data.ts";
+import { lineSummariesFor } from "../data.ts";
+import { todayStr } from "../format.ts";
 import type { useGame } from "../useGame.ts";
 import { Icon } from "./icons.tsx";
 import { InstallButton } from "./InstallButton.tsx";
 
 export function About({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
+  const lineSummaries = lineSummariesFor(todayStr());
   return (
     <div className="screen">
       <div className="subhead">
@@ -22,6 +24,11 @@ export function About({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           Depuis 2000, le tram de Montpellier est célèbre pour ses habillages d'artistes : les{" "}
           <b>hirondelles</b> de Garouste &amp; Bonetti (L1), les <b>fleurs</b> (L2), les univers de{" "}
           <b>Christian Lacroix</b> (L3, L4) et la <b>Feuille de Vie</b> de Barthélémy Toguo (L5).
+        </p>
+        <p className="prose">
+          Le <b>Bustram A</b>, qui roule sur pneus entre l'est de Montpellier et Castelnau-le-Lez,
+          a rejoint le jeu en août 2026 : il compte comme une ligne à part entière — terminus et
+          correspondances compris.
         </p>
         <div className="card">
           {lineSummaries.map((l) => (

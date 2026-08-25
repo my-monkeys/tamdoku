@@ -1,0 +1,1108 @@
+{
+ "version": 0.6,
+ "generator": "Overpass API 0.7.62.11 87bfad18",
+ "osm3s": {
+  "timestamp_osm_base": "2026-08-25T19:39:11Z",
+  "copyright": "The data included in this document is from www.openstreetmap.org. The data is made available under ODbL."
+ },
+ "elements": [
+  {
+   "type": "relation",
+   "id": 5401895,
+   "members": [
+    {
+     "type": "node",
+     "ref": 12860288784,
+     "role": "stop_entry_only"
+    },
+    {
+     "type": "node",
+     "ref": 12860288783,
+     "role": "platform_entry_only"
+    },
+    {
+     "type": "node",
+     "ref": 12766069572,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843820299,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12766069582,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843828901,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12843828903,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12766069592,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12766090785,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843828906,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12843828909,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843828907,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 3791265929,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 6767551482,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12843828911,
+     "role": "stop_exit_only"
+    },
+    {
+     "type": "node",
+     "ref": 12843828912,
+     "role": "platform_exit_only"
+    },
+    {
+     "type": "way",
+     "ref": 1389253687,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211490,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1389459050,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 18909530,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 26334156,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1317359940,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211489,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388806187,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1317359941,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046967,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211485,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1387476883,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1378574322,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211487,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388851369,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388851368,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046972,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046970,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046973,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046978,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046979,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046980,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211482,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046982,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1378091204,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388806190,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 26704879,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 387327475,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 146500999,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 362994809,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211479,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1379309014,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 37216198,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 362926211,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 96702275,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1365364432,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211477,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 22918012,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1445753367,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 24423558,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 81760594,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388806194,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 25824083,
+     "role": ""
+    }
+   ],
+   "tags": {
+    "colour": "#841931",
+    "duration": "00:15:00",
+    "fee": "yes",
+    "from": "Notre-Dame de Sablassou",
+    "interval": "00:10:00",
+    "name": "Bustram A: Notre-Dame de Sablassou → Place de l'Europe",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "network:wikipedia": "fr:Transports de l'agglomération de Montpellier",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "public_transport:version": "2",
+    "ref": "A",
+    "route": "bus",
+    "to": "Place de l'Europe",
+    "type": "route",
+    "wikidata": "Q137368871"
+   }
+  },
+  {
+   "type": "relation",
+   "id": 5401896,
+   "members": [
+    {
+     "type": "node",
+     "ref": 12843828911,
+     "role": "stop_entry_only"
+    },
+    {
+     "type": "node",
+     "ref": 12843828912,
+     "role": "platform_entry_only"
+    },
+    {
+     "type": "node",
+     "ref": 13372697045,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12855768036,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12843828909,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843828908,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12766090785,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843828905,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12843828903,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843828904,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12766069582,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843828902,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 12860550086,
+     "role": "stop"
+    },
+    {
+     "type": "node",
+     "ref": 12843820300,
+     "role": "platform"
+    },
+    {
+     "type": "node",
+     "ref": 20932959,
+     "role": "stop_exit_only"
+    },
+    {
+     "type": "node",
+     "ref": 9846109738,
+     "role": "platform_exit_only"
+    },
+    {
+     "type": "way",
+     "ref": 1388806193,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1315324502,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 32705925,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1315324105,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 37216158,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 810896236,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1315964291,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 81760596,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1445753367,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 22918012,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 4218765,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 26832115,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 168188755,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 721526153,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 721526147,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 721526148,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388806195,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1446552777,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 22917867,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1378658410,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1424744273,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211479,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 362994809,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 146500999,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 387327475,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 26704879,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388806189,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1378091205,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046982,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046983,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 359585193,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046976,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046978,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046974,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046975,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046969,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388851372,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388851367,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388851373,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 128516010,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211486,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1378574322,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1387476883,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1378275503,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 25833279,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1430046966,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 147054722,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 25833275,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1317359942,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1317359940,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 26334156,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 26334157,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 362927206,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1319211491,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1389253687,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1388093902,
+     "role": ""
+    },
+    {
+     "type": "way",
+     "ref": 1378618349,
+     "role": ""
+    }
+   ],
+   "tags": {
+    "colour": "#841931",
+    "duration": "00:16:00",
+    "fee": "yes",
+    "from": "Place de l'Europe",
+    "interval": "00:10:00",
+    "name": "Bustram A: Place de l'Europe → Notre-Dame de Sablassou",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "network:wikipedia": "fr:Transports de l'agglomération de Montpellier",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "public_transport:version": "2",
+    "ref": "A",
+    "route": "bus",
+    "to": "Notre-Dame de Sablassou",
+    "type": "route",
+    "wikidata": "Q137368871"
+   }
+  },
+  {
+   "type": "node",
+   "id": 20932959,
+   "lat": 43.6336514,
+   "lon": 3.9221234,
+   "tags": {
+    "bus": "yes",
+    "name": "Notre-Dame de Sablassou",
+    "public_transport": "stop_position",
+    "source:location": "survey2019"
+   }
+  },
+  {
+   "type": "node",
+   "id": 3791265929,
+   "lat": 43.6062634,
+   "lon": 3.8980544,
+   "tags": {
+    "bus": "yes",
+    "name": "Pont Juvénal",
+    "network": "TaM",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "public_transport": "stop_position",
+    "source": "knowledge 2019"
+   }
+  },
+  {
+   "type": "node",
+   "id": 6767551482,
+   "lat": 43.6062864,
+   "lon": 3.8980212,
+   "tags": {
+    "bench": "no",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Pont Juvénal",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "public_transport": "platform",
+    "shelter": "no",
+    "source": "knowledge 2019"
+   }
+  },
+  {
+   "type": "node",
+   "id": 9846109738,
+   "lat": 43.6336597,
+   "lon": 3.9221422,
+   "tags": {
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Notre-Dame de Sablassou",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform",
+    "shelter": "yes",
+    "source": "survey2019",
+    "start_date": "2019-09-02"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12766069572,
+   "lat": 43.6230396,
+   "lon": 3.9182291,
+   "tags": {
+    "bus": "yes",
+    "name": "Verchant",
+    "network": "TaM",
+    "operator": "TaM",
+    "public_transport": "stop_position"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12766069582,
+   "lat": 43.6194413,
+   "lon": 3.9143303,
+   "tags": {
+    "bus": "yes",
+    "name": "Eurêka",
+    "network": "TaM",
+    "operator": "TaM",
+    "public_transport": "stop_position"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12766069592,
+   "lat": 43.6159778,
+   "lon": 3.909877,
+   "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Alfred Nobel",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12766090785,
+   "lat": 43.6139886,
+   "lon": 3.9062133,
+   "tags": {
+    "bus": "yes",
+    "name": "Pinville",
+    "network": "TaM",
+    "operator": "TaM",
+    "public_transport": "stop_position"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843820299,
+   "lat": 43.6230559,
+   "lon": 3.9182024,
+   "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Verchant",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843820300,
+   "lat": 43.6231315,
+   "lon": 3.9184358,
+   "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Verchant",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828901,
+   "lat": 43.6194154,
+   "lon": 3.9142254,
+   "tags": {
+    "bench": "yes",
+    "bin": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Eurêka",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform",
+    "shelter": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828902,
+   "lat": 43.6194921,
+   "lon": 3.9144631,
+   "tags": {
+    "bench": "yes",
+    "bin": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Eurêka",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform",
+    "shelter": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828903,
+   "lat": 43.6160274,
+   "lon": 3.9100489,
+   "tags": {
+    "bus": "yes",
+    "name": "Alfred Nobel",
+    "network": "TaM",
+    "operator": "TaM",
+    "public_transport": "stop_position"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828904,
+   "lat": 43.616044,
+   "lon": 3.9101666,
+   "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Alfred Nobel",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828905,
+   "lat": 43.6140056,
+   "lon": 3.9063534,
+   "tags": {
+    "bench": "no",
+    "bin": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "lit": "yes",
+    "name": "Pinville",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "passenger_information_display": "no",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828906,
+   "lat": 43.6139799,
+   "lon": 3.9060616,
+   "tags": {
+    "bench": "no",
+    "bin": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "lit": "yes",
+    "name": "Pinville",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "passenger_information_display": "no",
+    "public_transport": "platform",
+    "shelter": "no",
+    "tactile_paving": "no"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828907,
+   "lat": 43.6100371,
+   "lon": 3.8992812,
+   "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Paul Painlevé",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828908,
+   "lat": 43.610008,
+   "lon": 3.8996027,
+   "tags": {
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Paul Painlevé",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828909,
+   "lat": 43.6100045,
+   "lon": 3.8993412,
+   "tags": {
+    "bus": "yes",
+    "name": "Paul Painlevé",
+    "network": "TaM",
+    "operator": "TaM",
+    "public_transport": "stop_position"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828911,
+   "lat": 43.6069761,
+   "lon": 3.8930848,
+   "tags": {
+    "bus": "yes",
+    "name": "Place de l'Europe",
+    "public_transport": "stop_position"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12843828912,
+   "lat": 43.6069928,
+   "lon": 3.8930878,
+   "tags": {
+    "bench": "yes",
+    "bin": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "lit": "yes",
+    "name": "Place de l'Europe",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform",
+    "shelter": "yes",
+    "tactile_paving": "yes"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12855768036,
+   "lat": 43.6061545,
+   "lon": 3.89819,
+   "tags": {
+    "bench": "no",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Pont Juvénal",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "public_transport": "platform",
+    "shelter": "no",
+    "source": "knowledge 2019"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12860288783,
+   "lat": 43.633253,
+   "lon": 3.9222324,
+   "tags": {
+    "bench": "yes",
+    "bus": "yes",
+    "highway": "bus_stop",
+    "name": "Notre-Dame de Sablassou",
+    "network": "TaM",
+    "network:wikidata": "Q3537922",
+    "public_transport": "platform",
+    "shelter": "yes",
+    "source": "survey2019",
+    "start_date": "2019-09-02"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12860288784,
+   "lat": 43.6332961,
+   "lon": 3.9222771,
+   "tags": {
+    "bus": "yes",
+    "name": "Notre-Dame de Sablassou",
+    "public_transport": "stop_position",
+    "source:location": "survey2019"
+   }
+  },
+  {
+   "type": "node",
+   "id": 12860550086,
+   "lat": 43.6231524,
+   "lon": 3.91841,
+   "tags": {
+    "bus": "yes",
+    "name": "Verchant",
+    "public_transport": "stop_position"
+   }
+  },
+  {
+   "type": "node",
+   "id": 13372697045,
+   "lat": 43.6061799,
+   "lon": 3.8981994,
+   "tags": {
+    "bus": "yes",
+    "name": "Pont Juvénal",
+    "network": "TaM",
+    "operator": "Transports de l'agglomération de Montpellier",
+    "public_transport": "stop_position",
+    "source": "knowledge 2019"
+   }
+  }
+ ]
+}

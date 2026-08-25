@@ -1,12 +1,22 @@
-import { byId } from "../data.ts";
+import { byId, linesFor } from "../data.ts";
+import { todayStr } from "../format.ts";
 
-/** Légende : les 5 couleurs = les lignes de tram (pas l'originalité). */
-export function LineLegend({ caption = "= les lignes de tram" }: { caption?: string }) {
+/**
+ * Légende : les couleurs = les lignes du réseau (pas l'originalité). Datée, pour
+ * qu'une grille d'archive n'annonce pas une ligne ouverte depuis.
+ */
+export function LineLegend({
+  caption = "= les lignes du réseau",
+  date = todayStr(),
+}: {
+  caption?: string;
+  date?: string;
+}) {
   return (
     <div className="linelegend">
-      {[1, 2, 3, 4, 5].map((n) => (
-        <span key={n} className={`ll v${n}`}>
-          {n}
+      {linesFor(date).map((ref) => (
+        <span key={ref} className={`ll v${ref}`}>
+          {ref}
         </span>
       ))}
       <span className="ll-cap">{caption}</span>

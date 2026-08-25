@@ -8,7 +8,7 @@ import type { useGame } from "../useGame.ts";
 import { Icon } from "./icons.tsx";
 import { InstallButton } from "./InstallButton.tsx";
 import { PracticeCard } from "./PracticeCard.tsx";
-import { RuleFixNotice } from "./RuleFixNotice.tsx";
+import { NewsNotice } from "./NewsNotice.tsx";
 
 export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
   const { g } = ctrl;
@@ -199,7 +199,7 @@ export function Home({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
         </div>
       </div>
 
-      <RuleFixNotice />
+      <NewsNotice />
     </div>
   );
 }

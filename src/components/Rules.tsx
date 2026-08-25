@@ -1,6 +1,7 @@
-import { criteria, pool } from "../data.ts";
+import { criteria, poolFor } from "../data.ts";
 import type { RuleFamily } from "../../engine/types.ts";
 import type { useGame } from "../useGame.ts";
+import { todayStr } from "../format.ts";
 import { CritGlyph, Icon } from "./icons.tsx";
 
 const FAMILY_ORDER: { family: RuleFamily; label: string }[] = [
@@ -82,6 +83,9 @@ const STEPS: { n: number; body: React.ReactNode }[] = [
 ];
 
 export function Rules({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
+  // Les critères en vigueur aujourd'hui : une ligne ou une règle à venir n'a
+  // rien à faire dans la liste avant d'entrer au tirage.
+  const catalogue = poolFor(todayStr());
   return (
     <div className="screen">
       <div className="subhead">
@@ -102,7 +106,7 @@ export function Rules({ ctrl }: { ctrl: ReturnType<typeof useGame> }) {
           Tous les critères possibles
         </div>
         {FAMILY_ORDER.map(({ family, label }) => {
-          const rules = pool.filter((r) => r.family === family);
+          const rules = catalogue.filter((r) => r.family === family);
           if (rules.length === 0) return null;
           return (
             <div className="card" key={family}>

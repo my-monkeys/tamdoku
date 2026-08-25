@@ -13,9 +13,12 @@ const rule = (id: string) => {
 describe("catalogue de règles", () => {
   it("compte au moins 35 règles, toutes dans la bande de jouabilité", () => {
     expect(rules.length).toBeGreaterThanOrEqual(35);
+    // Le plafond suit la taille du réseau (80 %) : figé, une extension du réseau
+    // ferait sortir des critères entiers du catalogue.
+    const max = Math.round(0.8 * net.stations.length);
     for (const r of rules) {
       expect(r.stationIds.size, r.id).toBeGreaterThanOrEqual(6);
-      expect(r.stationIds.size, r.id).toBeLessThanOrEqual(88);
+      expect(r.stationIds.size, r.id).toBeLessThanOrEqual(max);
     }
   });
 
@@ -24,11 +27,22 @@ describe("catalogue de règles", () => {
     expect(families).toEqual(new Set(["ligne", "reseau", "nom", "semantique", "geo"]));
   });
 
-  it("les 5 règles de ligne collent à la desserte", () => {
+  it("les règles de ligne collent à la desserte", () => {
     expect(rule("ligne-1").stationIds.has("comedie")).toBe(true);
     expect(rule("ligne-3").stationIds.has("comedie")).toBe(false);
     expect(rule("ligne-4").stationIds.has("corum")).toBe(true);
     expect(rule("ligne-5").stationIds.has("gambetta")).toBe(true);
+    expect(rule("ligne-A").stationIds.has("verchant")).toBe(true);
+    expect(rule("ligne-A").stationIds.has("comedie")).toBe(false);
+  });
+
+  it("le Bustram compte comme une ligne : correspondance et terminus le voient", () => {
+    // Notre-Dame de Sablassou était desservie par la seule L2 ; le Bustram en
+    // fait une correspondance. Place de l'Europe y gagne un statut de terminus.
+    expect(rule("correspondance").stationIds.has("notre-dame-de-sablassou")).toBe(true);
+    expect(rule("terminus").stationIds.has("place-de-l-europe")).toBe(true);
+    // Une station propre au Bustram reste hors des correspondances.
+    expect(rule("correspondance").stationIds.has("pinville")).toBe(false);
   });
 
   it("appartenances de référence", () => {

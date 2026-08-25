@@ -11,7 +11,16 @@ import { generateDaily, seedForDate, type DailyPuzzle } from "../engine/daily.ts
 import { findStation, longerNamesakes, suggestStations } from "../engine/answer.ts";
 import type { LineRef, Station } from "../engine/types.ts";
 import { track } from "./analytics.ts";
-import { byId, fame, poolFor, poolForLines, satisfies, stations, stationsOnLines } from "./data.ts";
+import {
+  byId,
+  fame,
+  poolFor,
+  poolForLines,
+  satisfies,
+  stations,
+  stationsFor,
+  stationsOnLines,
+} from "./data.ts";
 import { cachedDay, cellScore, fetchAnswers, submitResults, warmPopularity, type CellAnswers } from "./stats.ts";
 import { emojiGrid, linesGrid, linesPhrase, todayStr, yesterdayStr } from "./format.ts";
 import {
@@ -125,6 +134,16 @@ export function archiveDates(): string[] {
   const out: string[] = [];
   for (let n = end; n >= start; n--) out.push(dateOfDayNum(n));
   return out;
+}
+
+/**
+ * Date dont le réseau fait foi pour une partie : périmètre de saisie, plan-indice,
+ * diagramme des lignes et légendes. Une ligne ouverte après coup n'existe pas
+ * dans une grille d'archive antérieure. L'entraînement, hors calendrier, se joue
+ * sur le réseau du jour — pas sur celui à venir.
+ */
+export function networkDateOf(g: Pick<Game, "game" | "puzzleDate">): string {
+  return g.game === "practice" || !g.puzzleDate ? todayStr() : g.puzzleDate;
 }
 
 function buzz(pattern: number | number[]): void {
@@ -285,12 +304,29 @@ export function useGame() {
     [patch, startDaily],
   );
 
+  const toast = useCallback(
+    (msg: string) => {
+      patch({ toast: msg });
+      window.clearTimeout(toastTimer.current);
+      toastTimer.current = window.setTimeout(() => patch({ toast: "" }), 1700);
+    },
+    [patch],
+  );
+
   /** Grille libre, hors calendrier : jamais sauvegardée ni remontée aux stats.
    * `lines` restreint le tirage à ces lignes ([] = tout le réseau). */
   const startPractice = useCallback((lines: LineRef[] = []) => {
     const seed = (seedForDate(todayStr()) ^ Math.floor(Math.random() * 0xffffffff)) >>> 0;
-    const { rules, lineRules } = poolForLines(lines);
-    const puzzle = generateDaily(rules, seed, { lineRules });
+    const { rules, lineRules } = poolForLines(lines, todayStr());
+    // Un périmètre trop étroit ne compose aucune grille (il faut 9 stations
+    // distinctes) : le dire plutôt que de laisser remonter l'exception.
+    let puzzle;
+    try {
+      puzzle = generateDaily(rules, seed, { lineRules });
+    } catch {
+      toast("Trop peu de stations sur ce périmètre");
+      return;
+    }
     track("play", { mode: lsGet<Mode>("mode", "simple"), game: "practice", lines: lines.join("+") });
     patch({
       screen: "game", game: "practice", puzzleDate: "", practiceLines: lines, puzzle,
@@ -298,7 +334,7 @@ export function useGame() {
       hinted: new Array(9).fill(false), hintMapCell: -1, replay: false,
       result: null, resultHidden: false, sel: -1, sheetOpen: false, query: "", sheetMsg: "",
     });
-  }, [patch]);
+  }, [patch, toast]);
 
   /** Relance de zéro une grille d'archive déjà terminée (demande joueurs : retenter
    * pour améliorer son score). Le meilleur résultat reste celui enregistré. */
@@ -355,15 +391,6 @@ export function useGame() {
   }, [savePlay]);
   const closeHintMap = useCallback(() => patch({ hintMapCell: -1 }), [patch]);
   const setQuery = useCallback((query: string) => patch({ query, sheetMsg: "" }), [patch]);
-
-  const toast = useCallback(
-    (msg: string) => {
-      patch({ toast: msg });
-      window.clearTimeout(toastTimer.current);
-      toastTimer.current = window.setTimeout(() => patch({ toast: "" }), 1700);
-    },
-    [patch],
-  );
 
   const finish = useCallback(
     (won: boolean, finalCells: (string | null)[], mistakes: number, game: GameType, date: string, hinted: boolean[], replay: boolean) => {
@@ -461,8 +488,22 @@ export function useGame() {
   const submit = useCallback((text: string, pickedId?: string) => {
     setG((prev) => {
       if (prev.status !== "playing" || prev.sel < 0) return prev;
-      const station = pickedId ? byId.get(pickedId) : findStation(text, stations);
-      if (!station) return { ...prev, sheetMsg: "Station inconnue — vérifie l’orthographe", sheetMsgCls: "warn" };
+      // Réseau de la grille, sans restreindre aux lignes de l'entraînement : une
+      // station hors périmètre doit être reconnue pour qu'on puisse le dire.
+      const scope = stationsFor(networkDateOf(prev));
+      const station = pickedId ? byId.get(pickedId) : findStation(text, scope);
+      if (!station) {
+        // Une station ouverte depuis peut être connue du joueur sans faire partie
+        // du réseau de la grille : le dire, plutôt que crier à la faute de frappe.
+        const tooRecent = prev.puzzleDate ? findStation(text, stations) : undefined;
+        return {
+          ...prev,
+          sheetMsg: tooRecent
+            ? `« ${tooRecent.name} » n’était pas encore desservie à cette date`
+            : "Station inconnue — vérifie l’orthographe",
+          sheetMsgCls: "warn",
+        };
+      }
       if (prev.practiceLines.length > 0 && !station.lines.some((ref) => prev.practiceLines.includes(ref))) {
         // Hors du périmètre choisi : l'entraînement ne pénalise pas ce qu'il n'a pas proposé.
         return {
@@ -481,7 +522,7 @@ export function useGame() {
         // Une saisie clavier peut désigner deux stations (« Saint-Éloi » vaut aussi
         // pour « Saint-Éloi - Docteur Pezet ») : on demande laquelle plutôt que de
         // faire perdre un cœur sur un malentendu. Cliquer une suggestion tranche.
-        if (!pickedId && longerNamesakes(text, stations).length > 0) {
+        if (!pickedId && longerNamesakes(text, scope).length > 0) {
           return {
             ...prev,
             sheetMsg: `Plusieurs stations commencent par « ${station.name} » — choisis dans la liste`,
@@ -594,8 +635,12 @@ export function useGame() {
     applyRouteMeta(g.screen, g.game, g.puzzleDate);
   }, [g.screen, g.game, g.puzzleDate]);
 
-  /** Périmètre jouable : tout le réseau, ou les seules lignes de l'entraînement. */
-  const playable = useMemo(() => stationsOnLines(g.practiceLines), [g.practiceLines]);
+  /** Périmètre jouable : le réseau à la date de la grille, ou les seules lignes
+   * de l'entraînement. */
+  const playable = useMemo(
+    () => stationsOnLines(g.practiceLines, networkDateOf(g)),
+    [g.practiceLines, g.game, g.puzzleDate],
+  );
 
   // Suggestions (mode simple) : dès le 1er caractère, jusqu'à 6 propositions.
   const suggestions = useMemo<Station[]>(() => {
