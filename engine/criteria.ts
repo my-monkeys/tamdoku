@@ -206,9 +206,9 @@ const META: Record<string, { icon: string; iconKey?: string; short: string; labe
   "geo-loin-comedie": {
     icon: "◌",
     iconKey: "expand",
-    short: "Loin du centre",
-    label: "Loin du centre",
-    expl: "La station est à plus de 5 km à vol d’oiseau du centre-ville.",
+    short: "+5 km du centre",
+    label: "À plus de 5 km du centre",
+    expl: "La station est à plus de 5 km à vol d’oiseau du centre-ville, qu’elle soit à Montpellier ou dans une autre commune.",
   },
 };
 
