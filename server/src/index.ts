@@ -10,12 +10,7 @@
  */
 
 import express from "express";
-import network from "../../data/network.json" with { type: "json" };
-import { buildRules, poolFor } from "../../engine/rules.ts";
-import { networkFor } from "../../engine/select.ts";
-import { buildCriteria } from "../../engine/criteria.ts";
-import { generateDaily, seedForDate } from "../../engine/daily.ts";
-import type { Network } from "../../engine/types.ts";
+import { grilleDu, libelle, surLaGrille } from "./grille.ts";
 import { apercu, appliquerSchema, popularite, reponsesDuJour, soumettre } from "./db.js";
 
 const DATE_RE = /^\d{4}-\d{2}-\d{2}$/;
@@ -49,6 +44,7 @@ app.post("/submit", async (req, res, next) => {
     if (!DATE_RE.test(date) || anon.length < 8 || anon.length > 64) {
       return res.json({ ok: false, reason: "bad-args" });
     }
+    if (!surLaGrille(date, cells)) return res.json({ ok: false, reason: "stale-grid" });
     res.json(await soumettre({ date, anon, cells }));
   } catch (e) {
     next(e);
@@ -82,29 +78,10 @@ app.get("/answers", async (req, res, next) => {
   }
 });
 
-// Grille déterministe d'une date : même network.json et même moteur que la SPA.
-// Le catalogue est recompilé sur le **réseau** de la date (une ligne ouverte
-// depuis n'existait pas dans les grilles antérieures), puis filtré des règles
-// pas encore entrées au tirage. Les deux étapes comptent, et il faut les mêmes
-// que src/data.ts, sinon la page ops étiquette l'archive avec de mauvais critères.
-const reseau = network as unknown as Network;
-const catalogues = new Map<string, ReturnType<typeof buildRules>>();
-function catalogueAt(date: string) {
-  const net = networkFor(reseau, date);
-  const cle = net.lines.map((l) => l.ref).join("");
-  const connu = catalogues.get(cle);
-  if (connu) return connu;
-  const compile = buildRules(net);
-  catalogues.set(cle, compile);
-  return compile;
-}
-const criteres = buildCriteria(catalogueAt(""));
-const libelle = (id: string): string => criteres.get(id)?.label ?? id;
-
 app.get("/grid", (req, res) => {
   const date = String(req.query.date ?? "");
   if (!DATE_RE.test(date)) return res.json({ date, rows: [], cols: [] });
-  const puzzle = generateDaily(poolFor(catalogueAt(date), date), seedForDate(date));
+  const puzzle = grilleDu(date);
   res.set("Cache-Control", "public, max-age=3600").json({
     date,
     rows: puzzle.rows.map((id) => ({ id, label: libelle(id) })),
