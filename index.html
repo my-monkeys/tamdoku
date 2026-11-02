@@ -212,6 +212,15 @@
         }
       }
 
+      /* Hauteur réservée avant le montage, égale au min-height de .app : sans elle,
+         #root est vide pendant le preloader, #seo-content remonte en haut de page, et
+         l'app qui se monte au-dessus le repousse d'un écran entier. Invisible sous le
+         preloader, mais compté par Chrome : CLS 0,91 mesuré. */
+      #root {
+        min-height: 100vh;
+        min-height: 100dvh;
+      }
+
       /* Contenu éditorial crawlable (statique, hors #root, sous le jeu).
          Présent dans le HTML brut pour tous les robots, même sans exécuter le JS. */
       #seo-content {
@@ -292,6 +301,9 @@
     <noscript><style>
         #preloader {
           display: none !important;
+        }
+        #root {
+          min-height: 0;
         }
       </style></noscript>
   </head>
